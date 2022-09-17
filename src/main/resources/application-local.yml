@@ -1,0 +1,40 @@
+server:
+  port: 8900
+
+spring:
+  application:
+    name: shopping.api
+  config:
+    activate:
+      on-profile:
+      - local
+    import:
+    - classpath:/application-local.yml
+  # r2dbc:
+  #   url: mysql://localhost:3306/messenger?useUnicode=true&characterEncoding=utf8
+  #   username: root
+  #   password: root
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
+    username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
+    password: ENC(wjWTVtQJFy4hqEvJtDRSGw==)
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+jwt:
+  auth:
+    key: ENC(hFrp1I+S0acB47a5Oaoy9Q==)
+
+jasypt:
+  encryptor:
+    bean: jasyptStringEncryptor

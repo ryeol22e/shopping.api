@@ -1,0 +1,12 @@
+server:
+  port: 8900
+
+spring:
+  application:
+    name: shopping.api
+  config:
+    activate:
+      on-profile:
+      - dev
+    import:
+    - classpath:/application-dev.yml
