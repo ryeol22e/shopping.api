@@ -35,9 +35,9 @@ public class UtilsJwt {
 			.setIssuer("fresh")
 			.setIssuedAt(now)
 			.setExpiration(new Date(now.getTime() + Duration.ofMinutes(30L).toMillis()))
-			.claim("userId", member.getUserId())
-			.claim("userEmail", member.getUserEmail())
-			.claim("nickName", member.getUserName())
+			.claim("memberId", member.getMemberId())
+			.claim("memberEmail", member.getMemberEmail())
+			.claim("memberName", member.getMemberName())
 			.signWith(SignatureAlgorithm.HS256, AUTH_KEY)
 			.compact();
 	}

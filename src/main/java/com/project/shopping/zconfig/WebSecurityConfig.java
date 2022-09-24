@@ -19,7 +19,7 @@ import com.project.shopping.zconfig.filters.JwtFilter;
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig {
-	private String WEB_URL = "http://localhost:8800";
+	private String WEB_URL = "http://localhost:7800";
 
 	/**
 	 * password encoder
