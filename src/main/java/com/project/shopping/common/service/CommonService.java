@@ -18,6 +18,6 @@ public class CommonService {
 
 	public List<CodeFieldDTO> getHeaders(String codeType) throws Exception {
 		log.info("header code type : {}", codeType);
-		return commonRepository.findByCodeTypeList(codeType);
+		return commonRepository.findByCodeType(codeType);
 	}
 }

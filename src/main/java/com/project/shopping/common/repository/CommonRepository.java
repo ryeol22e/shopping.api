@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 import com.project.shopping.common.dto.CodeFieldDTO;
 
 @Repository
-public interface CommonRepository extends JpaRepository<Long, CodeFieldDTO> {
-	public List<CodeFieldDTO> findByCodeTypeList(String codeType);
+public interface CommonRepository extends JpaRepository<CodeFieldDTO, Long> {
+	public List<CodeFieldDTO> findByCodeType(String codeType);
 }
