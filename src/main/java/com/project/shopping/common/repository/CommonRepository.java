@@ -9,5 +9,5 @@ import com.project.shopping.common.dto.CodeFieldDTO;
 
 @Repository
 public interface CommonRepository extends JpaRepository<CodeFieldDTO, Long> {
-	public List<CodeFieldDTO> findByCodeType(String codeType);
+	public List<CodeFieldDTO> findByCodeTypeAndCodeDepth(String codeType, Integer codeDepth);
 }
