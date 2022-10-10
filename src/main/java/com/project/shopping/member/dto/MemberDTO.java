@@ -18,31 +18,25 @@ import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
 import lombok.ToString;
 
 @Getter
 @Entity
 @IdClass(MemberPK.class)
 @Table(name = "MEMBER_TABLE")
-@JsonIgnoreProperties(value = {"changeBcryptPassword", "memberPassword", "updateLoginDtm"}, allowSetters = true)
 @ToString
 @NoArgsConstructor
+@JsonIgnoreProperties(value = {"changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber"}, allowSetters = true)
 public class MemberDTO {
 	@Id
-	@NonNull
 	@Column(name = "MEMBER_NO")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long memberNo;
 	@Id
-	@NonNull
 	@Column(name = "MEMBER_ID")
 	private String memberId;
-	@NonNull
 	private String memberPassword;
-	@NonNull
 	private String memberEmail;
-	@NonNull
 	private String memberName;
 	private String memberAddr;
 	private String memberToken;

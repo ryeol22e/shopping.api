@@ -8,7 +8,9 @@ import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.zconfig.UtilsJwt;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MemberService {
@@ -28,37 +30,23 @@ public class MemberService {
 	}
 
 	public String authNumber(MemberDTO member) throws Exception {
+		log.info("data : {}", member);
 		String authNumber = String.valueOf(Math.floor(Math.random()*900000));
 
 		member.setAuthNumber(authNumber.substring(0, authNumber.lastIndexOf(".")));
-		memberRepository.save(member);
 
+		log.info("auth number is {}", authNumber);
 		return authNumber;
 	}
 
 	public Boolean joinMember(MemberDTO member) throws Exception {
 		Boolean result = false;
+		
+		member.changeBcryptPassword();
+		MemberDTO memberResult = memberRepository.save(member);
 
-		if(joinCheckAuthNum(member.getAuthNumber(), member)) {
-			member.changeBcryptPassword();
-			MemberDTO memberResult = memberRepository.save(member);
-
-			if(memberResult!=null) {
-				result = true;
-			}
-		}
-
-		return result;
-	}
-
-	private Boolean joinCheckAuthNum(String authNumber, MemberDTO member) throws Exception {
-		MemberDTO getMember = memberRepository.findByMemberId(member.getMemberId());
-		Boolean result = false;
-
-		if(authNumber!=null) {
-			if(authNumber==getMember.getAuthNumber()) {
-				result = true;
-			}
+		if(memberResult!=null) {
+			result = true;
 		}
 
 		return result;
