@@ -8,6 +8,7 @@ import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.zconfig.UtilsJwt;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,8 +18,24 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 	private final MemberRepository memberRepository;
 
+	public Boolean checkLogin(HttpServletRequest request) throws Exception {
+		String token = request.getHeader("Authorization");
+		boolean result = false;
+
+		if(token!=null) {
+			if(token.toLowerCase().substring("bearer ".length()).length()>0) {
+				if(UtilsJwt.validate(token)) {
+					result = true;
+				}
+			}
+		}
+		
+		log.info("check login result : {}", result);
+		return result;
+	}
+
 	public String loginMember(String memberId, String memberPassword) throws Exception {
-		MemberDTO member = loginCheck(memberId, memberPassword);
+		MemberDTO member = loginProcessCheck(memberId, memberPassword);
 
 		if(member==null) {
 			throw new Exception("로그인에 실패했습니다.");
@@ -50,7 +67,7 @@ public class MemberService {
 		} else {
 			member.setMemberRole(MemberEnum.MEMBER.getValue());
 		}
-		
+
 		MemberDTO memberResult = memberRepository.save(member);
 
 		if(memberResult!=null) {
@@ -60,7 +77,7 @@ public class MemberService {
 		return result;
 	}
 
-	private MemberDTO loginCheck(String memberId, String memberPassword) throws Exception {
+	private MemberDTO loginProcessCheck(String memberId, String memberPassword) throws Exception {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		MemberDTO member = memberRepository.findByMemberId(memberId);
 		Boolean result = true;
