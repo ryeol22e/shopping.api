@@ -1,9 +1,13 @@
 package com.project.shopping.zconfig.filters;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.List;
 
 import org.springframework.http.HttpHeaders;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -38,8 +42,14 @@ public class JwtFilter extends OncePerRequestFilter {
 					// response.addCookie(cookie);
 					throw new IOException("로그인이 만료되었습니다.");
 				} else {
-					String email = UtilsJwt.getInfo(token).get("useEmail").toString();
-					UserAuthentication authentication = new UserAuthentication(email, null, null);
+					String email = UtilsJwt.getInfo(token).get("memberEmail").toString();
+					String role = UtilsJwt.getInfo(token).get("memberRole").toString();
+					GrantedAuthority authority = new SimpleGrantedAuthority(role);
+					List<GrantedAuthority> authorities = new ArrayList<>();
+
+					authorities.add(authority);
+
+					UserAuthentication authentication = new UserAuthentication(email, null, authorities);
 
 					authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		

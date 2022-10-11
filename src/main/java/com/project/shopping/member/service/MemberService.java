@@ -4,6 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.shopping.member.dto.MemberDTO;
+import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.zconfig.UtilsJwt;
 
@@ -43,6 +44,13 @@ public class MemberService {
 		Boolean result = false;
 		
 		member.changeBcryptPassword();
+
+		if(MemberEnum.getAdminData().containsKey(member.getMemberId())) {
+			member.setMemberRole(MemberEnum.ADMIN.getValue());
+		} else {
+			member.setMemberRole(MemberEnum.MEMBER.getValue());
+		}
+		
 		MemberDTO memberResult = memberRepository.save(member);
 
 		if(memberResult!=null) {

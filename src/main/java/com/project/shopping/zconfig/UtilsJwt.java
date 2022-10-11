@@ -38,6 +38,7 @@ public class UtilsJwt {
 			.claim("memberId", member.getMemberId())
 			.claim("memberEmail", member.getMemberEmail())
 			.claim("memberName", member.getMemberName())
+			.claim("memberRole", member.getMemberRole())
 			.signWith(SignatureAlgorithm.HS256, AUTH_KEY)
 			.compact();
 	}

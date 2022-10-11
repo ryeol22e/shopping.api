@@ -43,6 +43,7 @@ public class MemberDTO {
 	private String refreshToken;
 	private String tempYn;
 	private String authNumber;
+	private String memberRole;
 	@CreationTimestamp
 	private LocalDateTime joinDtm = LocalDateTime.now();
 	@UpdateTimestamp
@@ -50,6 +51,10 @@ public class MemberDTO {
 
 	public void setAuthNumber(String authNum) {
 	  this.authNumber = authNum;
+	}
+
+	public void setMemberRole(String memberRole) {
+		this.memberRole = memberRole;
 	}
 	
 	public void changeBcryptPassword() {
