@@ -29,7 +29,6 @@ import lombok.extern.slf4j.Slf4j;
 public class JwtFilter extends OncePerRequestFilter {
 	private final MemberService memberService;
 
-
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		// TODO Auto-generated method stub
@@ -42,9 +41,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		while(headers.hasMoreElements()) {
 			String value = headers.nextElement();
 
-			if(value.toLowerCase().startsWith("bearer ")) {
-				token = value.substring("Bearer ".length());
-
+			if(value.startsWith("Bearer ")) {
 				if(!UtilsJwt.validate(token)) {
 					log.info("access token is expired.");
 					token = memberService.getRefreshToken(request.getHeader("MemberId"));

@@ -1,5 +1,8 @@
 package com.project.shopping.member.service;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
+	private static Map<String, String> refreshTokenMap = new LinkedHashMap<>();
 
 	/**
 	 * refresh token 가져오기
@@ -23,7 +27,17 @@ public class MemberService {
 	 * @return
 	 */
 	public String getRefreshToken(String memberId) {
-		return memberRepository.findByMemberId(memberId).getRefreshToken();
+		String token = "";
+		String id = memberId.concat(".refreshToken");
+
+		if(refreshTokenMap.containsKey(id)) {
+			token = refreshTokenMap.get(id);
+		} else {
+			token = memberRepository.findByMemberId(memberId).getRefreshToken();
+			refreshTokenMap.put(id, token);
+		}
+
+		return token;
 	}
 
 	/**
@@ -43,6 +57,7 @@ public class MemberService {
 		member.setAccessToken(UtilsJwt.createAccessToken(member));
 		member.setRefreshToken(UtilsJwt.createRefreshToken(member));
 		memberRepository.save(member);
+		refreshTokenMap.put(member.getMemberId().concat(".refreshToken"), member.getRefreshToken());
 
 		return member;
 	}

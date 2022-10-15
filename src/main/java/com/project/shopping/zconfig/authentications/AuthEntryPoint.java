@@ -24,8 +24,7 @@ public class AuthEntryPoint implements AuthenticationEntryPoint {
 	private void setResponse(HttpServletResponse response) throws IOException {
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-
-        response.getWriter().print("잘못된 접근입니다.");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "잘못된 접근입니다.");
     }
 	
 }
