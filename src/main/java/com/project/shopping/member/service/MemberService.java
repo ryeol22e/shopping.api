@@ -17,21 +17,34 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 	private final MemberRepository memberRepository;
 
+	/**
+	 * refresh token 가져오기
+	 * @param memberId
+	 * @return
+	 */
 	public String getRefreshToken(String memberId) {
 		return memberRepository.findByMemberId(memberId).getRefreshToken();
 	}
 
-	public String loginMember(String memberId, String memberPassword) throws Exception {
+	/**
+	 * 로그인
+	 * @param memberId
+	 * @param memberPassword
+	 * @return
+	 * @throws Exception
+	 */
+	public MemberDTO loginMember(String memberId, String memberPassword) throws Exception {
 		MemberDTO member = loginProcessCheck(memberId, memberPassword);
-
+		
 		if(member==null) {
 			throw new Exception("로그인에 실패했습니다.");
 		}
 		
-		member.updateLoginDtm();
+		member.setAccessToken(UtilsJwt.createAccessToken(member));
+		member.setRefreshToken(UtilsJwt.createRefreshToken(member));
 		memberRepository.save(member);
 
-		return UtilsJwt.createAccessToken(member);
+		return member;
 	}
 
 	public String authNumber(MemberDTO member) throws Exception {
@@ -71,8 +84,7 @@ public class MemberService {
 
 		if(member==null) {
 			result = false;
-		}
-		if(encoder.matches(memberPassword, member.getMemberPassword())) {
+		} else if(encoder.matches(memberPassword, member.getMemberPassword())) {
 			result = false;
 		}
 

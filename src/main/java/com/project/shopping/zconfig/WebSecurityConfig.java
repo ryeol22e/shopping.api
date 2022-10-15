@@ -53,7 +53,7 @@ public class WebSecurityConfig {
 				.authenticationEntryPoint(new AuthEntryPoint())
 			.and()
 				.authorizeRequests()
-				.antMatchers("/api/auth/check").authenticated()
+				.antMatchers("/api/auth/**").authenticated()
 				.antMatchers("/api/chat/**").authenticated()
 				.antMatchers("/api/member/**").permitAll()
 			.and()
@@ -83,6 +83,7 @@ public class WebSecurityConfig {
 		config.addAllowedOrigin(WEB_URL);
 		config.addAllowedHeader("Content-Type");
 		config.addAllowedHeader("Authorization");
+		config.addAllowedHeader("MemberId");
 		config.addAllowedMethod(HttpMethod.GET);
 		config.addAllowedMethod(HttpMethod.POST);
 		config.setMaxAge(3600L);

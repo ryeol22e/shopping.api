@@ -42,7 +42,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		while(headers.hasMoreElements()) {
 			String value = headers.nextElement();
 
-			if(value.toLowerCase().startsWith("bearer")) {
+			if(value.toLowerCase().startsWith("bearer ")) {
 				token = value.substring("Bearer ".length());
 
 				if(!UtilsJwt.validate(token)) {
@@ -64,7 +64,7 @@ public class JwtFilter extends OncePerRequestFilter {
 		String role = MemberEnum.ANONYMOUS.getValue();
 
 		if(!"".equals(token) && !tokenExpired) {
-			email = UtilsJwt.getInfo(token).get("memberEmail").toString();
+			email = UtilsJwt.getInfo(token).get("memberId").toString();
 			role = UtilsJwt.getInfo(token).get("memberRole").toString();
 		}
 		

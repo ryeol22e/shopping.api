@@ -20,7 +20,7 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@GetMapping("/login")
-	public ResponseEntity<String> login(@RequestParam(name = "memberId") String memberId, @RequestParam(name = "memberPassword") String memberPassword) throws Exception {
+	public ResponseEntity<MemberDTO> login(@RequestParam(name = "memberId") String memberId, @RequestParam(name = "memberPassword") String memberPassword) throws Exception {
 		return ResponseEntity.ok(memberService.loginMember(memberId, memberPassword));
 	}
 

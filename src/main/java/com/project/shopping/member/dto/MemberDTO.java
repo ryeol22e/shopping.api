@@ -54,16 +54,19 @@ public class MemberDTO {
 	public void setAuthNumber(String authNum) {
 	  this.authNumber = authNum;
 	}
-
 	public void setMemberRole(String memberRole) {
 		this.memberRole = memberRole;
 	}
-	
+	public void setAccessToken(String accessToken) {
+		this.accessToken = accessToken;
+	}
+	public void setRefreshToken(String refreshToken) {
+		this.refreshToken = refreshToken;
+	}
 	public void changeBcryptPassword() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		this.memberPassword = encoder.encode(getMemberPassword());
 	}
-
 	public void updateLoginDtm() {
 		this.loginDtm = LocalDateTime.now();
 	}

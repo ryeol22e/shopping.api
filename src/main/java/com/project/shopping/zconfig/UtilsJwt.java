@@ -36,8 +36,6 @@ public class UtilsJwt {
 			.setIssuedAt(now)
 			.setExpiration(new Date(now.getTime() + Duration.ofMinutes(30L).toMillis()))
 			.claim("memberId", member.getMemberId())
-			.claim("memberEmail", member.getMemberEmail())
-			.claim("memberName", member.getMemberName())
 			.claim("memberRole", member.getMemberRole())
 			.signWith(SignatureAlgorithm.HS256, AUTH_KEY)
 			.compact();
@@ -57,8 +55,6 @@ public class UtilsJwt {
 			.setIssuedAt(now)
 			.setExpiration(new Date(now.getTime() + Duration.ofDays(2L).toMillis()))
 			.claim("memberId", member.getMemberId())
-			.claim("memberEmail", member.getMemberEmail())
-			.claim("memberName", member.getMemberName())
 			.claim("memberRole", member.getMemberRole())
 			.signWith(SignatureAlgorithm.HS256, AUTH_KEY)
 			.compact();
