@@ -16,6 +16,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -26,7 +27,7 @@ import lombok.ToString;
 @Table(name = "MEMBER_TABLE")
 @ToString
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber"}, allowSetters = true)
+@JsonIgnoreProperties(value = {"changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber","refreshToken"}, allowSetters = true)
 public class MemberDTO {
 	@Id
 	@Column(name = "MEMBER_NO")
@@ -39,7 +40,8 @@ public class MemberDTO {
 	private String memberEmail;
 	private String memberName;
 	private String memberAddr;
-	private String memberToken;
+	@Transient
+	private String accessToken;
 	private String refreshToken;
 	private String tempYn;
 	private String authNumber;

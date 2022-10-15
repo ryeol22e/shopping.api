@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.shopping.member.dto.MemberDTO;
 import com.project.shopping.member.service.MemberService;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,11 +18,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class MemberController {
 	private final MemberService memberService;
-
-	@GetMapping("/check/login")
-	public ResponseEntity<Boolean> checkLogin(HttpServletRequest request) throws Exception {
-		return ResponseEntity.ok(memberService.checkLogin(request));
-	}
 
 	@GetMapping("/login")
 	public ResponseEntity<String> login(@RequestParam(name = "memberId") String memberId, @RequestParam(name = "memberPassword") String memberPassword) throws Exception {

@@ -8,7 +8,6 @@ import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.zconfig.UtilsJwt;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,20 +17,8 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 	private final MemberRepository memberRepository;
 
-	public Boolean checkLogin(HttpServletRequest request) throws Exception {
-		String token = request.getHeader("Authorization");
-		boolean result = false;
-
-		if(token!=null) {
-			if(token.toLowerCase().substring("bearer ".length()).length()>0) {
-				if(UtilsJwt.validate(token)) {
-					result = true;
-				}
-			}
-		}
-		
-		log.info("check login result : {}", result);
-		return result;
+	public String getRefreshToken(String memberId) {
+		return memberRepository.findByMemberId(memberId).getRefreshToken();
 	}
 
 	public String loginMember(String memberId, String memberPassword) throws Exception {
@@ -44,7 +31,7 @@ public class MemberService {
 		member.updateLoginDtm();
 		memberRepository.save(member);
 
-		return UtilsJwt.createToken(member);
+		return UtilsJwt.createAccessToken(member);
 	}
 
 	public String authNumber(MemberDTO member) throws Exception {

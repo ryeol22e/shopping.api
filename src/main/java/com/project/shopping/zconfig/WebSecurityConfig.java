@@ -14,12 +14,18 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.project.shopping.member.service.MemberService;
+import com.project.shopping.zconfig.authentications.AuthEntryPoint;
 import com.project.shopping.zconfig.filters.JwtFilter;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 	private String WEB_URL = "http://localhost:7800";
+	private final MemberService memberService;
 
 	/**
 	 * password encoder
@@ -41,14 +47,17 @@ public class WebSecurityConfig {
 		http.httpBasic().disable().csrf().disable().formLogin().disable().logout().disable()
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
 			.and()
-			.cors()
+				.cors()
 			.and()
-			.authorizeRequests()
-			.antMatchers("/api/auth/check").authenticated()
-			.antMatchers("/api/chat/**").authenticated()
-			.antMatchers("/api/member/**").permitAll()
+				.exceptionHandling()
+				.authenticationEntryPoint(new AuthEntryPoint())
 			.and()
-			.addFilterBefore(new JwtFilter(), UsernamePasswordAuthenticationFilter.class);
+				.authorizeRequests()
+				.antMatchers("/api/auth/check").authenticated()
+				.antMatchers("/api/chat/**").authenticated()
+				.antMatchers("/api/member/**").permitAll()
+			.and()
+				.addFilterBefore(new JwtFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -60,7 +69,8 @@ public class WebSecurityConfig {
 	 */
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() throws Exception {
-		return (web) -> web.ignoring();
+		return (web) -> web.ignoring()
+			.antMatchers("/api/common/headers");
 	}
 
 	@Bean

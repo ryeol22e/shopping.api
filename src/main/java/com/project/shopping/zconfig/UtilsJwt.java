@@ -16,18 +16,18 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @Component
 public class UtilsJwt {
 	private static String AUTH_KEY;
-	private static String PRE_AUTH = "Bearer ";
+	private static final String PRE_AUTH = "Bearer ";
 
 	@Value("${jwt.auth.key}")
 	private void setKey(String value) {
 		AUTH_KEY = value;
 	}
 	/**
-	 * 토큰 생성
+	 * access 생성
 	 * @param email
 	 * @return
 	 */
-	public static String createToken(MemberDTO member) {
+	public static String createAccessToken(MemberDTO member) {
 		Date now = new Date();
 		
 		return Jwts.builder()
@@ -35,6 +35,27 @@ public class UtilsJwt {
 			.setIssuer("fresh")
 			.setIssuedAt(now)
 			.setExpiration(new Date(now.getTime() + Duration.ofMinutes(30L).toMillis()))
+			.claim("memberId", member.getMemberId())
+			.claim("memberEmail", member.getMemberEmail())
+			.claim("memberName", member.getMemberName())
+			.claim("memberRole", member.getMemberRole())
+			.signWith(SignatureAlgorithm.HS256, AUTH_KEY)
+			.compact();
+	}
+
+	/**
+	 * refreshToken 생성
+	 * @param member
+	 * @return
+	 */
+	public static String createRefreshToken(MemberDTO member) {
+		Date now = new Date();
+
+		return Jwts.builder()
+			.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
+			.setIssuer("fresh")
+			.setIssuedAt(now)
+			.setExpiration(new Date(now.getTime() + Duration.ofDays(2L).toMillis()))
 			.claim("memberId", member.getMemberId())
 			.claim("memberEmail", member.getMemberEmail())
 			.claim("memberName", member.getMemberName())
@@ -71,13 +92,11 @@ public class UtilsJwt {
 	}
 
 	private final static String combineToken(String token) {
-		String result = token;
-		
 		if(token.startsWith(PRE_AUTH)) {
-			result = token.substring(PRE_AUTH.length());
+			token = token.substring(PRE_AUTH.length());
 		}
 
-		return result;
+		return token;
 	}
 	
 }
