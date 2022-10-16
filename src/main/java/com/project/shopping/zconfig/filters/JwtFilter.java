@@ -44,9 +44,12 @@ public class JwtFilter extends OncePerRequestFilter {
 			if(value.startsWith("Bearer ")) {
 				if(!UtilsJwt.validate(token)) {
 					log.info("access token is expired.");
-					token = memberService.getRefreshToken(request.getHeader("MemberId"));
+					String memberId = request.getHeader("MemberId");
+					
+					token = memberService.getRefreshToken(memberId);
 
 					if(!UtilsJwt.validate(token)) {
+						memberService.removeRefreshToken(memberId);
 						tokenExpired = true;
 					}
 				}

@@ -41,6 +41,16 @@ public class MemberService {
 	}
 
 	/**
+	 * refresh token 삭제
+	 * @param memberId
+	 */
+	public void removeRefreshToken(String memberId) {
+		if(refreshTokenMap.containsKey(memberId)) {
+			refreshTokenMap.remove(memberId);
+		}
+	}
+
+	/**
 	 * 로그인
 	 * @param memberId
 	 * @param memberPassword
