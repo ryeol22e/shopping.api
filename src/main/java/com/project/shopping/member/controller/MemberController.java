@@ -14,8 +14,8 @@ import com.project.shopping.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/member")
 @RequiredArgsConstructor
+@RequestMapping("/api/member")
 public class MemberController {
 	private final MemberService memberService;
 

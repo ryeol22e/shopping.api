@@ -6,8 +6,8 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/display")
 @RequiredArgsConstructor
+@RequestMapping("/api/display")
 public class DisplayController {
 	
 }

@@ -15,8 +15,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestController
-@RequestMapping("/api/common")
 @RequiredArgsConstructor
+@RequestMapping("/api/common")
 public class CommonController {
 	private final CommonService commonService;
 

@@ -52,10 +52,10 @@ public class WebSecurityConfig {
 				.exceptionHandling()
 				.authenticationEntryPoint(new AuthEntryPoint())
 			.and()
-				.authorizeRequests()
-				.antMatchers("/api/auth/**").authenticated()
-				.antMatchers("/api/chat/**").authenticated()
-				.antMatchers("/api/member/**").permitAll()
+				.authorizeHttpRequests()
+				.requestMatchers("/api/auth/**").authenticated()
+				.requestMatchers("/api/chat/**").authenticated()
+				.requestMatchers("/api/member/**").permitAll()
 			.and()
 				.addFilterBefore(new JwtFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
@@ -70,7 +70,7 @@ public class WebSecurityConfig {
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() throws Exception {
 		return (web) -> web.ignoring()
-			.antMatchers("/api/common/headers");
+			.requestMatchers("/api/common/headers");
 	}
 
 	@Bean

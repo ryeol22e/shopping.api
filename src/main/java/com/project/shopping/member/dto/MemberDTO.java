@@ -27,6 +27,7 @@ import lombok.ToString;
 @Table(name = "MEMBER_TABLE")
 @ToString
 @NoArgsConstructor
+// setters response 보낼때 제외시킴, getters request 받을때 제외
 @JsonIgnoreProperties(value = {"changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber","refreshToken"}, allowSetters = true)
 public class MemberDTO {
 	@Id
