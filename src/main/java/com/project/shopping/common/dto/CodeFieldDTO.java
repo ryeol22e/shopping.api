@@ -21,6 +21,7 @@ public class CodeFieldDTO {
 	private String codeType;
 	private Integer codeDepth;
 	private String codeName;
+	private char useYn;
 	private String addInfo1;
 	private String addInfo2;
 }

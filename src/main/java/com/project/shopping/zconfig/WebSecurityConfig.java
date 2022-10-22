@@ -14,6 +14,7 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.service.MemberService;
 import com.project.shopping.zconfig.authentications.AuthEntryPoint;
 import com.project.shopping.zconfig.filters.JwtFilter;
@@ -55,6 +56,7 @@ public class WebSecurityConfig {
 				.authorizeHttpRequests()
 				.requestMatchers("/api/auth/**").authenticated()
 				.requestMatchers("/api/chat/**").authenticated()
+				.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
 				.requestMatchers("/api/member/**").permitAll()
 			.and()
 				.addFilterBefore(new JwtFilter(memberService), UsernamePasswordAuthenticationFilter.class);

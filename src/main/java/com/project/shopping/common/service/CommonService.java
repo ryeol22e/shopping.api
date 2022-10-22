@@ -18,6 +18,6 @@ public class CommonService {
 
 	public List<CodeFieldDTO> getCommonList(CodeFieldDTO param) throws Exception {
 		log.info("common code type : {}", param.getCodeType());
-		return commonRepository.findByCodeTypeAndCodeDepth(param.getCodeType(), param.getCodeDepth());
+		return commonRepository.findByCodeTypeAndCodeDepthAndUseYn(param.getCodeType(), param.getCodeDepth(), param.getUseYn());
 	}
 }
