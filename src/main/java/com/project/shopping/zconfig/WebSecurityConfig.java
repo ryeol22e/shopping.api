@@ -58,6 +58,8 @@ public class WebSecurityConfig {
 				.requestMatchers("/api/chat/**").authenticated()
 				.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
 				.requestMatchers("/api/member/**").permitAll()
+				.requestMatchers("/api/display/**").permitAll()
+				.requestMatchers("/api/product/**").permitAll()
 			.and()
 				.addFilterBefore(new JwtFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 

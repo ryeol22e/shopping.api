@@ -9,6 +9,6 @@ import com.project.shopping.product.dto.ProductDTO;
 
 @Repository
 public interface ProductRepository extends JpaRepository<ProductDTO, Long> {
-	public List<ProductDTO> findAllByCateNo(String cateNo);
+	public List<ProductDTO> findAllByCateNoAndUseYnAndDispYn(String cateNo, char useYn, char dispYn);
 	public ProductDTO findByPrdtNo(String prdtNo);
 }

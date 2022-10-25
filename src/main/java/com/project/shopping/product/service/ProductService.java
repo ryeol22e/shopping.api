@@ -14,8 +14,12 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 	private final ProductRepository productRepository;
 
-	public List<ProductDTO> getProductList(String cateNo) throws Exception {
-		return productRepository.findAllByCateNo(cateNo);
+	public List<ProductDTO> getProductList(ProductDTO productDTO) throws Exception {
+		String cateNo = productDTO.getCateNo();
+		char useYn = productDTO.getUseYn();
+		char dispYn = productDTO.getDispYn();
+		
+		return productRepository.findAllByCateNoAndUseYnAndDispYn(cateNo, useYn, dispYn);
 	}
 
 	public ProductDTO getProductDetail(String prdtNo) throws Exception {
