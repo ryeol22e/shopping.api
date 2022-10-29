@@ -27,7 +27,7 @@ import lombok.NoArgsConstructor;
 public class ProductDTO {
 	@Id
 	@Column(name = "PRDT_INDEX")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long prdtIndex;
 	@Id
 	@Column(name = "PRDT_NO")

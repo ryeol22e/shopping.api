@@ -25,4 +25,15 @@ public class ProductService {
 	public ProductDTO getProductDetail(String prdtNo) throws Exception {
 		return productRepository.findByPrdtNo(prdtNo);
 	}
+
+	public Boolean saveProduct(ProductDTO parameter) throws Exception {
+		ProductDTO data = productRepository.save(parameter);
+		boolean result = false;
+
+		if(data!=null) {
+			result = true;
+		}
+
+		return result;
+	}
 }

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,9 +20,9 @@ import lombok.extern.slf4j.Slf4j;
 public class CategoryController {
 	private final CategoryService categoryService;
 
-	@GetMapping("/{cateNo}")
-	public ResponseEntity<List<CategoryDTO>> getCateList(@PathVariable(name = "cateNo") String cateNo) throws Exception {
+	@GetMapping("/list")
+	public ResponseEntity<List<CategoryDTO>> getCateList(CategoryDTO parameter) throws Exception {
 		log.info("request category list.");
-		return ResponseEntity.ok(categoryService.getCateList(cateNo));
+		return ResponseEntity.ok(categoryService.getCateList(parameter));
 	}
 }

@@ -9,5 +9,5 @@ import com.project.shopping.display.dto.CategoryDTO;
 
 @Repository
 public interface CategoryRepository extends JpaRepository<CategoryDTO, Long> {
-	public List<CategoryDTO> findByUpCateNo(String cateNo);
+	public List<CategoryDTO> findByUpCateNoAndUseYnAndDispYn(String cateNo, char useYn, char dispYn);
 }

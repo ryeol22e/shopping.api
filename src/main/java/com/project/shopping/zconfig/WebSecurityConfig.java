@@ -60,6 +60,7 @@ public class WebSecurityConfig {
 				.requestMatchers("/api/member/**").permitAll()
 				.requestMatchers("/api/display/**").permitAll()
 				.requestMatchers("/api/product/**").permitAll()
+				.requestMatchers("/api/cate/**").permitAll()
 			.and()
 				.addFilterBefore(new JwtFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
