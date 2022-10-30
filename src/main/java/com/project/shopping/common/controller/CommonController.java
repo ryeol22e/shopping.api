@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,8 +21,9 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonController {
 	private final CommonService commonService;
 
-	@GetMapping("/headers")
-	public ResponseEntity<List<CodeFieldDTO>> getHeaderList(CodeFieldDTO param) throws Exception {
+	@GetMapping("/{codeType}")
+	public ResponseEntity<List<CodeFieldDTO>> getHeaderList(@PathVariable(name = "codeType", required = true) String codeType, CodeFieldDTO param) throws Exception {
+		log.info("commonCode codeType is {}", codeType);
 		log.info("commonCode data is {}", param);
 		return ResponseEntity.ok(commonService.getCommonList(param));
 	}
