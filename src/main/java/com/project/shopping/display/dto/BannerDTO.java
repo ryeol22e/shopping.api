@@ -22,7 +22,7 @@ import lombok.ToString;
 @IdClass(value = BannerDTO.class)
 @Table(name = "BANNER_TABLE")
 @NoArgsConstructor
-@JsonIgnoreProperties
+@JsonIgnoreProperties(value = {"imageData"}, allowGetters = true)
 public class BannerDTO {
 
 	@Id
@@ -30,7 +30,8 @@ public class BannerDTO {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String bannerType;
-	private Blob imageUrl;
+	private Blob imageData;
+	private byte[] image;
 	private String title;
 	private String description;
 	private String linkUrl;

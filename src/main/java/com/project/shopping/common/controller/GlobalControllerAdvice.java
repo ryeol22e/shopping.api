@@ -17,6 +17,7 @@ public class GlobalControllerAdvice {
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
+		binder.setDisallowedFields("file", "imageData");
 		binder.initDirectFieldAccess();
 	}
 
