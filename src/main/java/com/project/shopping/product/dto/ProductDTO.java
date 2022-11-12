@@ -47,7 +47,7 @@ public class ProductDTO {
 	@UpdateTimestamp
 	private LocalDateTime updateDtime;
 	@Transient
-	MultipartFile file;
+	private MultipartFile file;
 	@NonNull
 	private Blob imageData;
 	@Transient
