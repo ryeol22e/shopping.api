@@ -44,8 +44,7 @@ public class ProductService {
 	}
 
 	public Boolean saveProduct(ProductDTO parameter) throws Exception {
-		byte[] bytes = parameter.getFile().getBytes();
-		parameter.setImageData(new SerialBlob(bytes));
+		parameter.setImageData(new SerialBlob(parameter.getFile().getBytes()));
 
 		ProductDTO data = productRepository.save(parameter);
 		boolean result = false;

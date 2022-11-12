@@ -42,16 +42,16 @@ public class ProductDTO {
 	private char useYn;
 	private String normalPrice;
 	private String sellPrice;
-	@NonNull
-	private Blob imageData;
-	@Transient
-	private byte[] image;
 	@CreationTimestamp
 	private LocalDateTime regDtime;
 	@UpdateTimestamp
 	private LocalDateTime updateDtime;
 	@Transient
 	MultipartFile file;
+	@NonNull
+	private Blob imageData;
+	@Transient
+	private byte[] image;
 
 	public void setImageData(Blob blob) {
 		this.imageData = blob;
