@@ -21,7 +21,7 @@ public class CategoryController {
 	private final CategoryService categoryService;
 
 	@GetMapping("/list")
-	public ResponseEntity<List<CategoryDTO>> getCateList(CategoryDTO parameter) throws Exception {
+	public ResponseEntity<List<CategoryDTO>> getCateList(CategoryDTO parameter) {
 		log.info("request category list.");
 		return ResponseEntity.ok(categoryService.getCateList(parameter));
 	}

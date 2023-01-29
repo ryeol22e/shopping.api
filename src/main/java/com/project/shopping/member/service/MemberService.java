@@ -57,22 +57,23 @@ public class MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public MemberDTO loginMember(String memberId, String memberPassword) throws Exception {
+	public MemberDTO loginMember(String memberId, String memberPassword) {
 		MemberDTO member = loginProcessCheck(memberId, memberPassword);
 		
-		if(member==null) {
-			throw new Exception("로그인에 실패했습니다.");
+		try {
+			member.setAccessToken(UtilsJwt.createAccessToken(member));
+			member.setRefreshToken(UtilsJwt.createRefreshToken(member));
+			memberRepository.save(member);
+			refreshTokenMap.put(member.getMemberId().concat(".refreshToken"), member.getRefreshToken());	
+		} catch (NullPointerException e) {
+			// TODO: handle exception
+			throw new NullPointerException("로그인에 실패했습니다.");
 		}
-		
-		member.setAccessToken(UtilsJwt.createAccessToken(member));
-		member.setRefreshToken(UtilsJwt.createRefreshToken(member));
-		memberRepository.save(member);
-		refreshTokenMap.put(member.getMemberId().concat(".refreshToken"), member.getRefreshToken());
 
 		return member;
 	}
 
-	public String authNumber(MemberDTO member) throws Exception {
+	public String authNumber(MemberDTO member) {
 		log.info("data : {}", member);
 		String authNumber = String.valueOf(Math.floor(Math.random()*900000));
 
@@ -82,7 +83,7 @@ public class MemberService {
 		return authNumber;
 	}
 
-	public Boolean joinMember(MemberDTO member) throws Exception {
+	public Boolean joinMember(MemberDTO member) {
 		Boolean result = false;
 		
 		member.changeBcryptPassword();
@@ -102,7 +103,7 @@ public class MemberService {
 		return result;
 	}
 
-	private MemberDTO loginProcessCheck(String memberId, String memberPassword) throws Exception {
+	private MemberDTO loginProcessCheck(String memberId, String memberPassword) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		MemberDTO member = memberRepository.findByMemberId(memberId);
 		Boolean result = true;

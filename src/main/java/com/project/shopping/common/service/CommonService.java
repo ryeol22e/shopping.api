@@ -16,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CommonService {
 	private final CommonRepository commonRepository;
 
-	public List<CodeFieldDTO> getCommonList(CodeFieldDTO param) throws Exception {
+	public List<CodeFieldDTO> getCommonList(CodeFieldDTO param) {
 		log.info("common code type : {}", param.getCodeType());
 		return commonRepository.findByCodeTypeAndCodeDepthAndUseYn(param.getCodeType(), param.getCodeDepth(), param.getUseYn());
 	}

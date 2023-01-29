@@ -22,7 +22,7 @@ public class CommonController {
 	private final CommonService commonService;
 
 	@GetMapping("/{codeType}")
-	public ResponseEntity<List<CodeFieldDTO>> getHeaderList(@PathVariable(name = "codeType", required = true) String codeType, CodeFieldDTO param) throws Exception {
+	public ResponseEntity<List<CodeFieldDTO>> getHeaderList(@PathVariable(name = "codeType", required = true) String codeType, CodeFieldDTO param) {
 		log.info("commonCode codeType is {}", codeType);
 		log.info("commonCode data is {}", param);
 		return ResponseEntity.ok(commonService.getCommonList(param));

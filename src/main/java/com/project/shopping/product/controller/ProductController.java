@@ -19,12 +19,12 @@ public class ProductController {
 	private final ProductService productService;
 
 	@GetMapping("/{prdtNo}")
-	public ResponseEntity<ProductDTO> getProductDetail(@PathVariable(name = "prdtNo") String prdtNo) throws Exception {
+	public ResponseEntity<ProductDTO> getProductDetail(@PathVariable(name = "prdtNo") String prdtNo) {
 		return ResponseEntity.ok(productService.getProductDetail(prdtNo));
 	}
 
 	@PostMapping("/{prdtNo}")
-	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductDTO parameter) throws Exception {
+	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductDTO parameter) {
 		return ResponseEntity.ok(productService.saveProduct(parameter));
 	}
 }

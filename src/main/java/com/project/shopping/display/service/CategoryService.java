@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 public class CategoryService {
 	private final CategoryRepository categoryRepository;
 
-	public List<CategoryDTO> getCateList(CategoryDTO parameter) throws Exception {
+	public List<CategoryDTO> getCateList(CategoryDTO parameter) {
 		return categoryRepository.findByUpCateNoAndUseYnAndDispYn(parameter.getUpCateNo(), parameter.getUseYn(), parameter.getDispYn());
 	}
 }

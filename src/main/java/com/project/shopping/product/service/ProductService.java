@@ -1,5 +1,7 @@
 package com.project.shopping.product.service;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.sql.rowset.serial.SerialBlob;
@@ -11,13 +13,15 @@ import com.project.shopping.product.repository.ProductRepository;
 import com.project.shopping.utils.UtilsData;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductService {
 	private final ProductRepository productRepository;
 
-	public List<ProductDTO> getProductList(ProductDTO productDTO) throws Exception {
+	public List<ProductDTO> getProductList(ProductDTO productDTO) {
 		String cateNo = productDTO.getCateNo();
 		char useYn = productDTO.getUseYn();
 		char dispYn = productDTO.getDispYn();
@@ -34,21 +38,28 @@ public class ProductService {
 		return list;
 	}
 
-	public ProductDTO getProductDetail(String prdtNo) throws Exception {
+	public ProductDTO getProductDetail(String prdtNo) {
 		ProductDTO product = productRepository.findByPrdtNo(prdtNo);
 		product.setImage(UtilsData.getBlobToByte(product.getImageData()));
 
 		return product;
 	}
 
-	public Boolean saveProduct(ProductDTO parameter) throws Exception {
-		parameter.setImageData(new SerialBlob(parameter.getFile().getBytes()));
-
-		ProductDTO data = productRepository.save(parameter);
+	public Boolean saveProduct(ProductDTO parameter) {
 		boolean result = false;
 
-		if(data!=null) {
-			result = true;
+		try {
+			parameter.setImageData(new SerialBlob(parameter.getFile().getBytes()));	
+			ProductDTO data = productRepository.save(parameter);
+
+			if(data!=null) {
+				result = true;
+			}
+		} catch (IOException e) {
+			// TODO: handle exception
+			log.error("io exception {}", e.getMessage());
+		} catch (SQLException e2) {
+			log.error("sql exception {}", e2.getMessage());
 		}
 
 		return result;

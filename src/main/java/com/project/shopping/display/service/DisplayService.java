@@ -16,7 +16,7 @@ import lombok.RequiredArgsConstructor;
 public class DisplayService {
 	private final BannerRepository bannerRepository;
 
-	public List<BannerDTO> getBannerList(BannerDTO dto) throws Exception {
+	public List<BannerDTO> getBannerList(BannerDTO dto) {
 		LocalDateTime today = LocalDateTime.now();
 		List<BannerDTO> list = bannerRepository.findByBannerTypeAndUseYnAndDispYn(dto.getBannerType(), dto.getUseYn(), dto.getDispYn()).stream()
 		.filter(x-> today.compareTo(x.getDispStartDtm())>=0 && today.compareTo(x.getDispEndDtm())<=0).toList();

@@ -20,17 +20,17 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@GetMapping("/login")
-	public ResponseEntity<MemberDTO> login(@RequestParam(name = "memberId") String memberId, @RequestParam(name = "memberPassword") String memberPassword) throws Exception {
+	public ResponseEntity<MemberDTO> login(@RequestParam(name = "memberId") String memberId, @RequestParam(name = "memberPassword") String memberPassword) {
 		return ResponseEntity.ok(memberService.loginMember(memberId, memberPassword));
 	}
 
 	@PostMapping("/join")
-	public ResponseEntity<Boolean> join(@RequestBody MemberDTO member) throws Exception {
+	public ResponseEntity<Boolean> join(@RequestBody MemberDTO member) {
 		return ResponseEntity.ok(memberService.joinMember(member));
 	}
 
 	@PostMapping("/auth/number")
-	public ResponseEntity<String> authNumber(@RequestBody MemberDTO member) throws Exception {
+	public ResponseEntity<String> authNumber(@RequestBody MemberDTO member) {
 		return ResponseEntity.ok(memberService.authNumber(member));
 	}
 }
