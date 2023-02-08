@@ -87,7 +87,7 @@ public class WebSecurityConfig {
 	CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		final List<String> WEB_URL_LIST = List.of("http://".concat(profile.equals("prod") ? "www" : profile).concat(".shoppingmall.com:7800"), "http://localhost:7800");
+		final List<String> WEB_URL_LIST = List.of("https://".concat(profile.equals("prod") ? "www" : profile).concat(".shoppingmall.com:7800"), "http://localhost:7800");
 		
 		config.setAllowCredentials(true);
 		config.setAllowedOrigins(WEB_URL_LIST);
