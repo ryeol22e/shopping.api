@@ -7,6 +7,7 @@ import java.util.List;
 import javax.sql.rowset.serial.SerialBlob;
 
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.project.shopping.product.dto.ProductDTO;
 import com.project.shopping.product.repository.ProductRepository;
@@ -40,7 +41,10 @@ public class ProductService {
 
 	public ProductDTO getProductDetail(String prdtNo) {
 		ProductDTO product = productRepository.findByPrdtNo(prdtNo);
-		product.setImage(UtilsData.getBlobToByte(product.getImageData()));
+
+		if(!ObjectUtils.isEmpty(product.getImageData())) {
+			product.setImage(UtilsData.getBlobToByte(product.getImageData()));
+		}
 
 		return product;
 	}
