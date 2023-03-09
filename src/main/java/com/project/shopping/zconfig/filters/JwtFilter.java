@@ -62,7 +62,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 		String email = MemberEnum.ANONYMOUS.name();
 		String role = MemberEnum.ANONYMOUS.getValue();
-
+		
 		if(!"".equals(token) && !tokenExpired) {
 			email = UtilsJwt.getInfo(token).get("memberId").toString();
 			role = UtilsJwt.getInfo(token).get("memberRole").toString();

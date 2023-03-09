@@ -24,10 +24,10 @@ public class AuthController {
 		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		String memberId = request.getHeader("MemberId");
 		
-		if(token==null || "".equals(token)) {
+		if((memberId!=null && !memberId.isEmpty()) && (token==null || "".equals(token))) {
 			token = memberService.getRefreshToken(memberId);
+			log.info("token is {}", token);
 		}
-		log.info("token is {}", token);
 
 		return ResponseEntity.ok(token==null || "".equals(token) ? false : true);
 	}
