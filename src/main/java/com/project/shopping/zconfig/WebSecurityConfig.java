@@ -50,9 +50,7 @@ public class WebSecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.httpBasic().disable().csrf().disable().formLogin().disable().logout().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-			.and()
-				.cors()
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 			.and()
 				.exceptionHandling()
 				.authenticationEntryPoint(new AuthEntryPoint())
