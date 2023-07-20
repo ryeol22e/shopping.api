@@ -31,6 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+		request.getSession(true);
 		String uri = request.getRequestURI();
 		boolean checkAuth = uri.equalsIgnoreCase("/api/auth/check") ? true : false;
 		boolean tokenExpired = false;
