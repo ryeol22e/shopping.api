@@ -18,19 +18,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 import com.project.shopping.member.dto.MemberEnum;
-import com.project.shopping.member.service.MemberService;
 import com.project.shopping.zconfig.authentications.AuthEntryPoint;
-import com.project.shopping.zconfig.filters.JwtFilter;
-
-import lombok.RequiredArgsConstructor;
+import com.project.shopping.zconfig.filters.MemberFilter;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
-	private final MemberService memberService;
 
 	/**
 	 * password encoder
@@ -50,12 +45,13 @@ public class WebSecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.httpBasic().disable().csrf().disable().formLogin().disable().logout().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
 			.and()
 				.exceptionHandling()
 				.authenticationEntryPoint(new AuthEntryPoint())
 			.and()
 				.authorizeHttpRequests()
+				.requestMatchers("/api/member/login").permitAll()
 				.requestMatchers("/api/auth/**").authenticated()
 				.requestMatchers("/api/chat/**").authenticated()
 				.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
@@ -65,7 +61,7 @@ public class WebSecurityConfig {
 				.requestMatchers("/api/product/**").permitAll()
 				.requestMatchers("/api/cate/**").permitAll()
 			.and()
-				.addFilterBefore(new JwtFilter(memberService), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(new MemberFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

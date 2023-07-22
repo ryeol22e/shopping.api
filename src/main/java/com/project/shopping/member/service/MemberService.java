@@ -11,6 +11,7 @@ import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.zconfig.UtilsJwt;
 
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -57,16 +58,20 @@ public class MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public MemberDTO loginMember(String memberId, String memberPassword) {
+	public MemberDTO loginMember(HttpServletRequest request) {
+		String memberId = (String) request.getParameter("memberId");
+		String memberPassword = (String) request.getParameter("memberPassword");
 		MemberDTO member = loginProcessCheck(memberId, memberPassword);
 		
 		try {
 			member.setAccessToken(UtilsJwt.createAccessToken(member));
 			member.setRefreshToken(UtilsJwt.createRefreshToken(member));
 			memberRepository.save(member);
-			refreshTokenMap.put(member.getMemberId().concat(".refreshToken"), member.getRefreshToken());	
+			
+			request.getSession().setMaxInactiveInterval(3600);
+			request.getSession().setAttribute("memberInfo", member);
 		} catch (NullPointerException e) {
-			// TODO: handle exception
+			log.error("login error : {}", e.getMessage());
 			throw new NullPointerException("로그인에 실패했습니다.");
 		}
 
