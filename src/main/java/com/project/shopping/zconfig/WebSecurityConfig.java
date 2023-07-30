@@ -19,7 +19,7 @@ import org.springframework.web.filter.CorsFilter;
 
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.zconfig.authentications.AuthEntryPoint;
-import com.project.shopping.zconfig.filters.MemberFilter;
+import com.project.shopping.zconfig.filters.LoginFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -61,7 +61,7 @@ public class WebSecurityConfig {
 				.requestMatchers("/api/product/**").permitAll()
 				.requestMatchers("/api/cate/**").permitAll()
 			.and()
-				.addFilterBefore(new MemberFilter(), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(new LoginFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}

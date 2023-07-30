@@ -21,14 +21,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class MemberFilter extends OncePerRequestFilter {
+public class LoginFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		String email = MemberEnum.ANONYMOUS.name();
 		String role = MemberEnum.ANONYMOUS.getValue();
 		MemberDTO memberInfo = (MemberDTO) request.getSession(true).getAttribute("memberInfo");
-		System.out.println("::::::::::::::::::::::>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> " + request.getSession().getAttribute("memberInfo"));
+		
 		if(memberInfo!=null) {
 			email = memberInfo.getMemberEmail();
 			role = memberInfo.getMemberRole();
