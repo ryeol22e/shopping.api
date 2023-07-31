@@ -1,7 +1,6 @@
 package com.project.shopping.member.controller;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +18,9 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberService memberService;
 
-	@GetMapping("/login")
-	public ResponseEntity<MemberDTO> login(HttpServletRequest request) {
-		return ResponseEntity.ok(memberService.loginMember(request));
+	@PostMapping("/login")
+	public ResponseEntity<MemberDTO> login(@RequestBody MemberDTO member, HttpServletRequest request) {
+		return ResponseEntity.ok(memberService.loginMember(member, request));
 	}
 
 	@PostMapping("/join")

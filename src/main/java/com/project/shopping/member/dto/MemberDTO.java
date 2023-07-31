@@ -1,5 +1,6 @@
 package com.project.shopping.member.dto;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -29,7 +30,7 @@ import lombok.ToString;
 @NoArgsConstructor
 // setters response 보낼때 제외시킴, getters request 받을때 제외
 @JsonIgnoreProperties(value = {"changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber","refreshToken"}, allowSetters = true)
-public class MemberDTO {
+public class MemberDTO implements Serializable {
 	@Id
 	@Column(name = "MEMBER_NO")
 	@GeneratedValue(strategy = GenerationType.AUTO)

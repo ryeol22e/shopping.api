@@ -58,9 +58,9 @@ public class MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public MemberDTO loginMember(HttpServletRequest request) {
-		String memberId = (String) request.getParameter("memberId");
-		String memberPassword = (String) request.getParameter("memberPassword");
+	public MemberDTO loginMember(MemberDTO reqMember, HttpServletRequest request) {
+		String memberId = reqMember.getMemberId();
+		String memberPassword = reqMember.getMemberPassword();
 		MemberDTO member = loginProcessCheck(memberId, memberPassword);
 		
 		try {
