@@ -23,6 +23,19 @@ public class MemberController {
 		return ResponseEntity.ok(memberService.loginMember(member, request));
 	}
 
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(HttpServletRequest request) {
+		MemberDTO member = (MemberDTO) request.getSession().getAttribute("memberInfo");
+		boolean result = false;
+		
+		if(member!=null) {
+			request.getSession().removeAttribute("memberInfo");
+			result = true;
+		}
+
+		return  ResponseEntity.ok(result);
+	}
+
 	@PostMapping("/join")
 	public ResponseEntity<Boolean> join(@RequestBody MemberDTO member) {
 		return ResponseEntity.ok(memberService.joinMember(member));

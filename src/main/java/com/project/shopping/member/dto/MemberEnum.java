@@ -6,6 +6,7 @@ import java.util.Map;
 public enum MemberEnum {
 	ADMIN("10003"),
 	MEMBER("10000"),
+	VIP("10001"),
 	ANONYMOUS("99999");
 
 	private String roleType;
@@ -15,9 +16,11 @@ public enum MemberEnum {
 	}
 
 	public static Map<String, Object> getAdminData() {
-		Map<String, Object> admin = new HashMap<>();
-
-		admin.put("ryeol22e", ADMIN.roleType);
+		Map<String, Object> admin = new HashMap<>(){
+			{
+				put("ryeol22e", ADMIN.roleType);
+			}
+		};
 
 		return admin;
 	}
