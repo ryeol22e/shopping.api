@@ -1,6 +1,10 @@
 package com.project.shopping.member.controller;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,7 +23,7 @@ public class MemberController {
 	private final MemberService memberService;
 
 	@PostMapping("/login")
-	public ResponseEntity<MemberDTO> login(@RequestBody MemberDTO member, HttpServletRequest request) {
+	public ResponseEntity<Boolean> login(@RequestBody MemberDTO member, HttpServletRequest request) {
 		return ResponseEntity.ok(memberService.loginMember(member, request));
 	}
 
@@ -34,6 +38,19 @@ public class MemberController {
 		}
 
 		return  ResponseEntity.ok(result);
+	}
+
+	@GetMapping("/info")
+	public ResponseEntity<Map<String, Object>> defaultInfo(HttpServletRequest request) {
+		MemberDTO info = (MemberDTO) request.getSession().getAttribute("memberInfo");
+		Map<String, Object> defaultInfo = new HashMap<>();
+
+		if(info!=null) {
+			defaultInfo.put("memberNo", info.getMemberNo());
+			defaultInfo.put("memberName", info.getMemberName());
+			defaultInfo.put("memberRole", info.getMemberRole());
+		}
+		return ResponseEntity.ok(defaultInfo);
 	}
 
 	@PostMapping("/join")

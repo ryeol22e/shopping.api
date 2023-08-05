@@ -58,7 +58,8 @@ public class MemberService {
 	 * @return
 	 * @throws Exception
 	 */
-	public MemberDTO loginMember(MemberDTO reqMember, HttpServletRequest request) {
+	public boolean loginMember(MemberDTO reqMember, HttpServletRequest request) {
+		boolean result = false;
 		String memberId = reqMember.getMemberId();
 		String memberPassword = reqMember.getMemberPassword();
 		MemberDTO member = loginProcessCheck(memberId, memberPassword);
@@ -70,12 +71,13 @@ public class MemberService {
 			
 			request.getSession().setMaxInactiveInterval(3600);
 			request.getSession().setAttribute("memberInfo", member);
+			result = true;
 		} catch (NullPointerException e) {
 			log.error("login error : {}", e.getMessage());
 			throw new NullPointerException("로그인에 실패했습니다.");
 		}
 
-		return member;
+		return result;
 	}
 
 	public String authNumber(MemberDTO member) {
