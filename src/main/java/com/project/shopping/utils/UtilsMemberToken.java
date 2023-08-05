@@ -1,4 +1,4 @@
-package com.project.shopping.zconfig;
+package com.project.shopping.utils;
 
 import java.time.Duration;
 import java.util.Date;
@@ -14,7 +14,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
-public class UtilsJwt {
+public class UtilsMemberToken {
 	private static String AUTH_KEY;
 	private static final String PRE_AUTH = "Bearer ";
 

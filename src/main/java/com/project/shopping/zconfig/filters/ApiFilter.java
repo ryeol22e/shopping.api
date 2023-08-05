@@ -18,32 +18,31 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
-public class LoginFilter extends OncePerRequestFilter {
+public class ApiFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		String memberId = MemberEnum.ANONYMOUS.name();
-		String role = MemberEnum.ANONYMOUS.getValue();
 		MemberDTO memberInfo = (MemberDTO) request.getSession(true).getAttribute("memberInfo");
+		String memberId = MemberEnum.ANONYMOUS.name();
+		String memberRole = MemberEnum.ANONYMOUS.getValue();
 		
 		if(memberInfo!=null) {
 			memberId = memberInfo.getMemberId();
-			role = memberInfo.getMemberRole();
+			memberRole = memberInfo.getMemberRole();
 		}
 
-		GrantedAuthority authority = new SimpleGrantedAuthority(role);
-		List<GrantedAuthority> authorities = new ArrayList<>();
-
-		authorities.add(authority);
+		GrantedAuthority authority = new SimpleGrantedAuthority(memberRole);
+		List<GrantedAuthority> authorities = new ArrayList<>() {
+			{
+				add(authority);
+			}
+		};
 
 		UserAuthentication authentication = new UserAuthentication(memberId, null, authorities);
 
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
-		log.info("{}", SecurityContextHolder.getContext().getAuthentication());
 		
 		filterChain.doFilter(request, response);
 	}

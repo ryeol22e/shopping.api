@@ -19,14 +19,19 @@ import org.springframework.web.filter.CorsFilter;
 
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.zconfig.authentications.AuthEntryPoint;
-import com.project.shopping.zconfig.filters.LoginFilter;
+import com.project.shopping.zconfig.filters.ApiFilter;
+import com.project.shopping.zconfig.handler.LoginFailHandler;
+import com.project.shopping.zconfig.handler.LoginSuccessHandler;
+
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
-
+	
 	/**
 	 * password encoder
 	 * @return
@@ -44,14 +49,27 @@ public class WebSecurityConfig {
 	 */
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.httpBasic().disable().csrf().disable().formLogin().disable().logout().disable()
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
+		http.httpBasic().disable().csrf().disable()
+			.formLogin(login-> {
+				login.loginProcessingUrl("/api/member/login")
+					.usernameParameter("memberId")
+					.passwordParameter("memberPassword")
+					.successHandler(new LoginSuccessHandler())
+					.failureHandler(new LoginFailHandler())
+					.permitAll();
+			})
+			.logout(logout-> {
+				logout.logoutUrl("/api/member/logout")
+					.invalidateHttpSession(true)
+					.deleteCookies("JSESSIONID");
+			})
+			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 			.and()
 				.exceptionHandling()
 				.authenticationEntryPoint(new AuthEntryPoint())
 			.and()
 				.authorizeHttpRequests()
-				.requestMatchers("/api/member/**").permitAll()
+				.requestMatchers("/api/member/**").authenticated()
 				.requestMatchers("/api/auth/**").authenticated()
 				.requestMatchers("/api/chat/**").authenticated()
 				.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
@@ -60,7 +78,7 @@ public class WebSecurityConfig {
 				.requestMatchers("/api/product/**").permitAll()
 				.requestMatchers("/api/cate/**").permitAll()
 			.and()
-				.addFilterBefore(new LoginFilter(), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(new ApiFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -80,7 +98,7 @@ public class WebSecurityConfig {
 	CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		final List<String> WEB_URL_LIST = List.of("https://".concat(profile.equals("prod") ? "www" : profile).concat(".shoppingmall.com:7800"), "http://localhost:7800");
+		final List<String> WEB_URL_LIST = List.of("https://".concat("prod".equalsIgnoreCase(profile) ? "www" : profile).concat(".shoppingmall.com:7800"), "http://localhost:7800");
 		
 		config.setAllowCredentials(true);
 		config.setAllowedOrigins(WEB_URL_LIST);

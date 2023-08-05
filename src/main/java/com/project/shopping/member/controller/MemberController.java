@@ -22,24 +22,6 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberService memberService;
 
-	@PostMapping("/login")
-	public ResponseEntity<Boolean> login(@RequestBody MemberDTO member, HttpServletRequest request) {
-		return ResponseEntity.ok(memberService.loginMember(member, request));
-	}
-
-	@PostMapping("/logout")
-	public ResponseEntity<?> logout(HttpServletRequest request) {
-		MemberDTO member = (MemberDTO) request.getSession().getAttribute("memberInfo");
-		boolean result = false;
-		
-		if(member!=null) {
-			request.getSession().removeAttribute("memberInfo");
-			result = true;
-		}
-
-		return  ResponseEntity.ok(result);
-	}
-
 	@GetMapping("/info")
 	public ResponseEntity<Map<String, Object>> defaultInfo(HttpServletRequest request) {
 		MemberDTO info = (MemberDTO) request.getSession().getAttribute("memberInfo");

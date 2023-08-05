@@ -1,17 +1,11 @@
 package com.project.shopping.member.service;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
-
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.project.shopping.member.dto.MemberDTO;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
-import com.project.shopping.zconfig.UtilsJwt;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,66 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
-	private static Map<String, String> refreshTokenMap = new LinkedHashMap<>();
-
-	/**
-	 * refresh token 가져오기
-	 * @param memberId
-	 * @return
-	 */
-	public String getRefreshToken(String memberId) {
-		String token = "";
-		String id = memberId.concat(".refreshToken");
-
-		if(refreshTokenMap.containsKey(id)) {
-			token = refreshTokenMap.get(id);
-		} else {
-			token = memberRepository.findByMemberId(memberId).getRefreshToken();
-			refreshTokenMap.put(id, token);
-		}
-
-		return token;
-	}
-
-	/**
-	 * refresh token 삭제
-	 * @param memberId
-	 */
-	public void removeRefreshToken(String memberId) {
-		if(refreshTokenMap.containsKey(memberId)) {
-			refreshTokenMap.remove(memberId);
-		}
-	}
-
-	/**
-	 * 로그인
-	 * @param memberId
-	 * @param memberPassword
-	 * @return
-	 * @throws Exception
-	 */
-	public boolean loginMember(MemberDTO reqMember, HttpServletRequest request) {
-		boolean result = false;
-		String memberId = reqMember.getMemberId();
-		String memberPassword = reqMember.getMemberPassword();
-		MemberDTO member = loginProcessCheck(memberId, memberPassword);
-		
-		try {
-			member.setAccessToken(UtilsJwt.createAccessToken(member));
-			member.setRefreshToken(UtilsJwt.createRefreshToken(member));
-			memberRepository.save(member);
-			
-			request.getSession().setMaxInactiveInterval(3600);
-			request.getSession().setAttribute("memberInfo", member);
-			result = true;
-		} catch (NullPointerException e) {
-			log.error("login error : {}", e.getMessage());
-			throw new NullPointerException("로그인에 실패했습니다.");
-		}
-
-		return result;
-	}
-
+	
 	public String authNumber(MemberDTO member) {
 		log.info("data : {}", member);
 		String authNumber = String.valueOf(Math.floor(Math.random()*900000));
@@ -110,22 +45,6 @@ public class MemberService {
 		return result;
 	}
 
-	private MemberDTO loginProcessCheck(String memberId, String memberPassword) {
-		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		MemberDTO member = memberRepository.findByMemberId(memberId);
-		Boolean result = true;
-
-		if(member==null) {
-			result = false;
-		} else if(encoder.matches(memberPassword, member.getMemberPassword())) {
-			result = false;
-		}
-
-		if(result) {
-			member = null;
-		}
-
-		return member;
-	}
+	
 
 }

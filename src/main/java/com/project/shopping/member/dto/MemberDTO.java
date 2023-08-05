@@ -1,10 +1,14 @@
 package com.project.shopping.member.dto;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
@@ -30,7 +34,7 @@ import lombok.ToString;
 @NoArgsConstructor
 // setters response 보낼때 제외시킴, getters request 받을때 제외
 @JsonIgnoreProperties(value = {"changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber","refreshToken"}, allowSetters = true)
-public class MemberDTO implements Serializable {
+public class MemberDTO implements UserDetails {
 	@Id
 	@Column(name = "MEMBER_NO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -71,6 +75,39 @@ public class MemberDTO implements Serializable {
 	}
 	public void updateLoginDtm() {
 		this.loginDtm = LocalDateTime.now();
+	}
+
+	@Override
+	public String getUsername() {
+		return getMemberName();
+	}
+	@Override
+	public String getPassword() {
+		return getMemberPassword();
+	}
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return new ArrayList<>(){
+			{
+				add(new SimpleGrantedAuthority(getMemberRole()));
+			}
+		};
+	}
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+	@Override
+	public boolean isEnabled() {
+		return true;
 	}
 	
 }
