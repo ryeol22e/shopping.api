@@ -25,12 +25,12 @@ public class LoginFilter extends OncePerRequestFilter {
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		String email = MemberEnum.ANONYMOUS.name();
+		String memberId = MemberEnum.ANONYMOUS.name();
 		String role = MemberEnum.ANONYMOUS.getValue();
 		MemberDTO memberInfo = (MemberDTO) request.getSession(true).getAttribute("memberInfo");
 		
 		if(memberInfo!=null) {
-			email = memberInfo.getMemberEmail();
+			memberId = memberInfo.getMemberId();
 			role = memberInfo.getMemberRole();
 		}
 
@@ -39,7 +39,7 @@ public class LoginFilter extends OncePerRequestFilter {
 
 		authorities.add(authority);
 
-		UserAuthentication authentication = new UserAuthentication(email, null, authorities);
+		UserAuthentication authentication = new UserAuthentication(memberId, null, authorities);
 
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authentication);
