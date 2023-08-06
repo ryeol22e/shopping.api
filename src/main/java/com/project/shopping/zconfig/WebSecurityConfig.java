@@ -51,24 +51,24 @@ public class WebSecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.httpBasic().disable().csrf().disable()
-			.formLogin(login-> {
-				login.loginProcessingUrl("/api/member/login")
-					.usernameParameter("memberId")
-					.passwordParameter("memberPassword")
-					.successHandler(new LoginSuccessHandlers())
-					.failureHandler(new LoginFailHandlers())
-					.permitAll();
-			})
-			.logout(logout-> {
-				logout.logoutUrl("/api/member/logout")
-					.invalidateHttpSession(true)
-					.deleteCookies("JSESSIONID")
-					.logoutSuccessHandler(new LogoutSuccessHandlers());
-			})
-			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 			.and()
-				.exceptionHandling()
-				.authenticationEntryPoint(new AuthEntryPoint())
+				.formLogin(login-> {
+					login.loginProcessingUrl("/api/member/login")
+						.usernameParameter("memberId")
+						.passwordParameter("memberPassword")
+						.successHandler(new LoginSuccessHandlers())
+						.failureHandler(new LoginFailHandlers())
+						.permitAll();
+				})
+				.logout(logout-> {
+					logout.logoutUrl("/api/member/logout")
+						.invalidateHttpSession(true)
+						.deleteCookies("JSESSIONID")
+						.logoutSuccessHandler(new LogoutSuccessHandlers());
+				})
+			.exceptionHandling()
+			.authenticationEntryPoint(new AuthEntryPoint())
 			.and()
 				.authorizeHttpRequests()
 				.requestMatchers("/api/member/**").authenticated()
