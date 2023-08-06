@@ -80,7 +80,6 @@ public class UtilsMemberToken {
 		try {
 			Jwts.parser().setSigningKey(AUTH_KEY).parseClaimsJws(combineToken(token));
 		} catch (Exception e) {
-			//TODO: handle exception
 			flag = false;
 		}
 

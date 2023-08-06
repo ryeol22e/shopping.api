@@ -14,7 +14,6 @@ public class UtilsData {
 		try {
 			bytes = blob.getBinaryStream().readAllBytes();
 		} catch (SQLException e) {
-			// TODO: handle exception
 			log.error("sql exception {}", e.getMessage());
 		} catch (IOException e2) {
 			log.error("input output exception {}", e2.getMessage());

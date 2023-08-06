@@ -60,7 +60,6 @@ public class ProductService {
 				result = true;
 			}
 		} catch (IOException e) {
-			// TODO: handle exception
 			log.error("io exception {}", e.getMessage());
 		} catch (SQLException e2) {
 			log.error("sql exception {}", e2.getMessage());

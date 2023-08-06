@@ -20,6 +20,8 @@ public class LoginSuccessHandler implements AuthenticationSuccessHandler {
 
 		request.getSession().setMaxInactiveInterval(3600);
 		request.getSession().setAttribute("memberInfo", authentication.getPrincipal());
+		
+		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().write(new ObjectMapper().writeValueAsString(true));
 		
 	}
