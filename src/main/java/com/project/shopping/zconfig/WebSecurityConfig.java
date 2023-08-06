@@ -24,11 +24,8 @@ import com.project.shopping.zconfig.handler.LoginFailHandlers;
 import com.project.shopping.zconfig.handler.LoginSuccessHandlers;
 import com.project.shopping.zconfig.handler.LogoutSuccessHandlers;
 
-import lombok.RequiredArgsConstructor;
-
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
