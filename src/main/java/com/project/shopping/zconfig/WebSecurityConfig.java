@@ -20,8 +20,9 @@ import org.springframework.web.filter.CorsFilter;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.zconfig.authentications.AuthEntryPoint;
 import com.project.shopping.zconfig.filters.ApiFilter;
-import com.project.shopping.zconfig.handler.LoginFailHandler;
-import com.project.shopping.zconfig.handler.LoginSuccessHandler;
+import com.project.shopping.zconfig.handler.LoginFailHandlers;
+import com.project.shopping.zconfig.handler.LoginSuccessHandlers;
+import com.project.shopping.zconfig.handler.LogoutSuccessHandlers;
 
 import lombok.RequiredArgsConstructor;
 
@@ -54,14 +55,15 @@ public class WebSecurityConfig {
 				login.loginProcessingUrl("/api/member/login")
 					.usernameParameter("memberId")
 					.passwordParameter("memberPassword")
-					.successHandler(new LoginSuccessHandler())
-					.failureHandler(new LoginFailHandler())
+					.successHandler(new LoginSuccessHandlers())
+					.failureHandler(new LoginFailHandlers())
 					.permitAll();
 			})
 			.logout(logout-> {
 				logout.logoutUrl("/api/member/logout")
 					.invalidateHttpSession(true)
-					.deleteCookies("JSESSIONID");
+					.deleteCookies("JSESSIONID")
+					.logoutSuccessHandler(new LogoutSuccessHandlers());
 			})
 			.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
 			.and()
