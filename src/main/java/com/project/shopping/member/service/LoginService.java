@@ -33,7 +33,7 @@ public class LoginService implements UserDetailsService {
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberDTO member = memberRepository.findByMemberId(username);
 
-		if(member!=null) {
+		if (member != null) {
 			memberRepository.save(member);
 		}
 
@@ -42,6 +42,7 @@ public class LoginService implements UserDetailsService {
 
 	/**
 	 * 로그인(jwtToken)
+	 * 
 	 * @param memberId
 	 * @param memberPassword
 	 * @return
@@ -53,13 +54,14 @@ public class LoginService implements UserDetailsService {
 		String memberId = reqMember.getMemberId();
 		String memberPassword = reqMember.getMemberPassword();
 		MemberDTO member = loginProcessCheck(memberId, memberPassword);
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
-		
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+
 		try {
 			member.setAccessToken(UtilsMemberToken.createAccessToken(member));
 			member.setRefreshToken(UtilsMemberToken.createRefreshToken(member));
 			memberRepository.save(member);
-			
+
 			request.getSession().setMaxInactiveInterval(3600);
 			request.getSession().setAttribute("memberInfo", member);
 			result = true;
@@ -73,6 +75,7 @@ public class LoginService implements UserDetailsService {
 
 	/**
 	 * refresh token 가져오기
+	 * 
 	 * @param memberId
 	 * @return
 	 */
@@ -80,7 +83,7 @@ public class LoginService implements UserDetailsService {
 		String token = "";
 		String id = memberId.concat(".refreshToken");
 
-		if(refreshTokenMap.containsKey(id)) {
+		if (refreshTokenMap.containsKey(id)) {
 			token = refreshTokenMap.get(id);
 		} else {
 			token = memberRepository.findByMemberId(memberId).getRefreshToken();
@@ -92,16 +95,18 @@ public class LoginService implements UserDetailsService {
 
 	/**
 	 * refresh token 삭제
+	 * 
 	 * @param memberId
 	 */
 	public void removeRefreshToken(String memberId) {
-		if(refreshTokenMap.containsKey(memberId)) {
+		if (refreshTokenMap.containsKey(memberId)) {
 			refreshTokenMap.remove(memberId);
 		}
 	}
 
 	/**
 	 * 로그인 프로세스
+	 * 
 	 * @param memberId
 	 * @param memberPassword
 	 * @return
@@ -112,13 +117,13 @@ public class LoginService implements UserDetailsService {
 		MemberDTO member = memberRepository.findByMemberId(memberId);
 		Boolean result = true;
 
-		if(member==null) {
+		if (member == null) {
 			result = false;
-		} else if(encoder.matches(memberPassword, member.getMemberPassword())) {
+		} else if (encoder.matches(memberPassword, member.getMemberPassword())) {
 			result = false;
 		}
 
-		if(result) {
+		if (result) {
 			member = null;
 		}
 

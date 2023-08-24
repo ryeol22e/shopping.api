@@ -33,7 +33,8 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 // setters response 보낼때 제외시킴, getters request 받을때 제외
-@JsonIgnoreProperties(value = {"changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber","refreshToken"}, allowSetters = true)
+@JsonIgnoreProperties(value = { "changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber",
+		"refreshToken" }, allowSetters = true)
 public class MemberDTO implements UserDetails {
 	@Id
 	@Column(name = "MEMBER_NO")
@@ -58,21 +59,26 @@ public class MemberDTO implements UserDetails {
 	private LocalDateTime loginDtm;
 
 	public void setAuthNumber(String authNum) {
-	  this.authNumber = authNum;
+		this.authNumber = authNum;
 	}
+
 	public void setMemberRole(String memberRole) {
 		this.memberRole = memberRole;
 	}
+
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
+
 	public void setRefreshToken(String refreshToken) {
 		this.refreshToken = refreshToken;
 	}
+
 	public void changeBcryptPassword() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		this.memberPassword = encoder.encode(getMemberPassword());
 	}
+
 	public void updateLoginDtm() {
 		this.loginDtm = LocalDateTime.now();
 	}
@@ -81,33 +87,39 @@ public class MemberDTO implements UserDetails {
 	public String getUsername() {
 		return getMemberName();
 	}
+
 	@Override
 	public String getPassword() {
 		return getMemberPassword();
 	}
+
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<>(){
+		return new ArrayList<>() {
 			{
 				add(new SimpleGrantedAuthority(getMemberRole()));
 			}
 		};
 	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		return true;
 	}
+
 	@Override
 	public boolean isAccountNonLocked() {
 		return true;
 	}
+
 	@Override
 	public boolean isCredentialsNonExpired() {
 		return true;
 	}
+
 	@Override
 	public boolean isEnabled() {
 		return true;
 	}
-	
+
 }
