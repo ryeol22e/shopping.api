@@ -29,9 +29,10 @@ import com.project.shopping.zconfig.handler.LogoutSuccessHandlers;
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
-	
+
 	/**
 	 * password encoder
+	 * 
 	 * @return
 	 */
 	@Bean
@@ -41,32 +42,31 @@ public class WebSecurityConfig {
 
 	/**
 	 * security filter chain
+	 * 
 	 * @param http
 	 * @return
 	 * @throws Exception
 	 */
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.httpBasic().disable().csrf().disable()
-				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-			.and()
-				.formLogin(login-> {
+		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable())
+				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+				.formLogin(login -> {
 					login.loginProcessingUrl("/api/member/login")
-						.usernameParameter("memberId")
-						.passwordParameter("memberPassword")
-						.successHandler(new LoginSuccessHandlers())
-						.failureHandler(new LoginFailHandlers())
-						.permitAll();
+							.usernameParameter("memberId")
+							.passwordParameter("memberPassword")
+							.successHandler(new LoginSuccessHandlers())
+							.failureHandler(new LoginFailHandlers())
+							.permitAll();
 				})
-				.logout(logout-> {
+				.logout(logout -> {
 					logout.logoutUrl("/api/member/logout")
-						.invalidateHttpSession(true)
-						.deleteCookies("JSESSIONID")
-						.logoutSuccessHandler(new LogoutSuccessHandlers());
+							.invalidateHttpSession(true)
+							.deleteCookies("JSESSIONID")
+							.logoutSuccessHandler(new LogoutSuccessHandlers());
 				})
-			.exceptionHandling()
-			.authenticationEntryPoint(new AuthEntryPoint())
-			.and()
+				.exceptionHandling(handling -> handling
+						.authenticationEntryPoint(new AuthEntryPoint()))
 				.authorizeHttpRequests()
 				.requestMatchers("/api/member/**").authenticated()
 				.requestMatchers("/api/auth/**").authenticated()
@@ -76,7 +76,7 @@ public class WebSecurityConfig {
 				.requestMatchers("/api/display/**").permitAll()
 				.requestMatchers("/api/product/**").permitAll()
 				.requestMatchers("/api/cate/**").permitAll()
-			.and()
+				.and()
 				.addFilterBefore(new ApiFilter(), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
@@ -84,21 +84,24 @@ public class WebSecurityConfig {
 
 	/**
 	 * security ignore.
+	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() throws Exception {
 		return (web) -> web.ignoring()
-			.requestMatchers("/api/common/headers");
+				.requestMatchers("/api/common/headers");
 	}
 
 	@Bean
 	CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		final List<String> WEB_URL_LIST = List.of("https://".concat("prod".equalsIgnoreCase(profile) ? "www" : profile).concat(".shoppingmall.com:7800"), "http://localhost:7800");
-		
+		final List<String> WEB_URL_LIST = List.of(
+				"https://".concat("prod".equalsIgnoreCase(profile) ? "www" : profile).concat(".shoppingmall.com:7800"),
+				"http://localhost:7800");
+
 		config.setAllowCredentials(true);
 		config.setAllowedOrigins(WEB_URL_LIST);
 		config.addAllowedHeader("Content-Type");
@@ -107,7 +110,7 @@ public class WebSecurityConfig {
 		config.addAllowedMethod(HttpMethod.GET);
 		config.addAllowedMethod(HttpMethod.POST);
 		config.setMaxAge(3600L);
-		
+
 		source.registerCorsConfiguration("/**", config);
 
 		return new CorsFilter(source);
