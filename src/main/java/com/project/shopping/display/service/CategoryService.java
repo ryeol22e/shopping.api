@@ -15,6 +15,6 @@ public class CategoryService {
 	private final CategoryRepository categoryRepository;
 
 	public List<CategoryDTO> getCateList(CategoryDTO parameter) {
-		return categoryRepository.findByUpCateNoAndUseYnAndDispYn(parameter.getUpCateNo(), parameter.getUseYn(), parameter.getDispYn());
+		return categoryRepository.findUpCateList(parameter);
 	}
 }

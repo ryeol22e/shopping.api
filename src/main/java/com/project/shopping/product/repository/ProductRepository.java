@@ -1,14 +1,30 @@
 package com.project.shopping.product.repository;
 
+import static com.project.shopping.product.dto.QProductDTO.productDTO;
 import java.util.List;
-
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-
 import com.project.shopping.product.dto.ProductDTO;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 
 @Repository
-public interface ProductRepository extends JpaRepository<ProductDTO, Long> {
-	public List<ProductDTO> findAllByCateNoAndUseYnAndDispYn(String cateNo, char useYn, char dispYn);
-	public ProductDTO findByPrdtNo(String prdtNo);
+@RequiredArgsConstructor
+public class ProductRepository {
+	private final JPAQueryFactory factory;
+
+	public List<ProductDTO> findProductList(ProductDTO dto) {
+		return factory.selectFrom(productDTO)
+				.where(productDTO.cateNo.eq(dto.getCateNo())
+						.and(productDTO.useYn.eq(dto.getUseYn())
+								.and(productDTO.dispYn.eq(dto.getDispYn()))))
+				.fetch();
+	}
+
+	public ProductDTO findProduct(String prdtNo) {
+		return factory.selectFrom(productDTO).where(productDTO.prdtNo.eq(prdtNo)).fetchOne();
+	}
+
+	public long save(ProductDTO dto) {
+		return factory.insert(productDTO).columns(productDTO).values(dto).execute();
+	}
 }

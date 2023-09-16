@@ -1,11 +1,36 @@
 package com.project.shopping.member.repository;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import static com.project.shopping.member.dto.QMemberDTO.memberDTO;
+import java.time.LocalDateTime;
 import org.springframework.stereotype.Repository;
-
 import com.project.shopping.member.dto.MemberDTO;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.transaction.Transactional;
+import jakarta.transaction.Transactional.TxType;
+import lombok.RequiredArgsConstructor;
 
 @Repository
-public interface MemberRepository extends JpaRepository<MemberDTO, Long> {
-	public MemberDTO findByMemberId(String loginId);
+@RequiredArgsConstructor
+public class MemberRepository {
+	private final JPAQueryFactory factory;
+
+	public MemberDTO findByMemberId(String loginId) {
+		return factory.selectFrom(memberDTO)
+				.where(memberDTO.memberId.eq(loginId))
+				.fetchOne();
+	}
+
+	public long save(MemberDTO dto) {
+		return factory.insert(memberDTO)
+				.columns(memberDTO).values(dto)
+				.execute();
+	}
+
+	@Transactional(value = TxType.REQUIRES_NEW)
+	public long updateLoginDate(MemberDTO dto) {
+		return factory.update(memberDTO)
+				.set(memberDTO.loginDtm, LocalDateTime.now())
+				.where(memberDTO.memberNo.eq(dto.getMemberNo()))
+				.execute();
+	}
 }

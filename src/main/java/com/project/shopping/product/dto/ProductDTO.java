@@ -2,14 +2,11 @@ package com.project.shopping.product.dto;
 
 import java.sql.Blob;
 import java.time.LocalDateTime;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.web.multipart.MultipartFile;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.shopping.product.dto.pk.ProductPK;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

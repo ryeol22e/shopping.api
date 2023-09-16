@@ -14,10 +14,10 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
-	
+
 	public String authNumber(MemberDTO member) {
 		log.info("data : {}", member);
-		String authNumber = String.valueOf(Math.floor(Math.random()*900000));
+		String authNumber = String.valueOf(Math.floor(Math.random() * 900000));
 
 		member.setAuthNumber(authNumber.substring(0, authNumber.lastIndexOf(".")));
 
@@ -27,24 +27,22 @@ public class MemberService {
 
 	public Boolean joinMember(MemberDTO member) {
 		Boolean result = false;
-		
+
 		member.changeBcryptPassword();
 
-		if(MemberEnum.getAdminData().containsKey(member.getMemberId())) {
+		if (MemberEnum.getAdminData().containsKey(member.getMemberId())) {
 			member.setMemberRole(MemberEnum.ADMIN.getValue());
 		} else {
 			member.setMemberRole(MemberEnum.MEMBER.getValue());
 		}
 
-		MemberDTO memberResult = memberRepository.save(member);
+		long memberResult = memberRepository.save(member);
 
-		if(memberResult!=null) {
+		if (memberResult != 0) {
 			result = true;
 		}
 
 		return result;
 	}
-
-	
 
 }

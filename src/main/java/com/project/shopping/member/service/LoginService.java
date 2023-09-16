@@ -2,7 +2,6 @@ package com.project.shopping.member.service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,11 +9,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.project.shopping.member.dto.MemberDTO;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.utils.UtilsMemberToken;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +31,7 @@ public class LoginService implements UserDetailsService {
 		MemberDTO member = memberRepository.findByMemberId(username);
 
 		if (member != null) {
-			memberRepository.save(member);
+			memberRepository.updateLoginDate(member);
 		}
 
 		return member;
@@ -54,8 +51,9 @@ public class LoginService implements UserDetailsService {
 		String memberId = reqMember.getMemberId();
 		String memberPassword = reqMember.getMemberPassword();
 		MemberDTO member = loginProcessCheck(memberId, memberPassword);
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-				.getRequest();
+		HttpServletRequest request =
+				((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+						.getRequest();
 
 		try {
 			member.setAccessToken(UtilsMemberToken.createAccessToken(member));

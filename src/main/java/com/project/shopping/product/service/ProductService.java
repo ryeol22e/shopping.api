@@ -23,15 +23,12 @@ public class ProductService {
 	private final ProductRepository productRepository;
 
 	public List<ProductDTO> getProductList(ProductDTO productDTO) {
-		String cateNo = productDTO.getCateNo();
-		char useYn = productDTO.getUseYn();
-		char dispYn = productDTO.getDispYn();
-		List<ProductDTO> list = productRepository.findAllByCateNoAndUseYnAndDispYn(cateNo, useYn, dispYn);
-		
-		for(int i=0, size=list.size() ; i<size ; i++) {
+		List<ProductDTO> list = productRepository.findProductList(productDTO);
+
+		for (int i = 0, size = list.size(); i < size; i++) {
 			ProductDTO product = list.get(i);
 
-			if(product.getImageData()!=null) {
+			if (product.getImageData() != null) {
 				product.setImage(UtilsData.getBlobToByte(product.getImageData()));
 			}
 		}
@@ -40,9 +37,9 @@ public class ProductService {
 	}
 
 	public ProductDTO getProductDetail(String prdtNo) {
-		ProductDTO product = productRepository.findByPrdtNo(prdtNo);
+		ProductDTO product = productRepository.findProduct(prdtNo);
 
-		if(!ObjectUtils.isEmpty(product.getImageData())) {
+		if (!ObjectUtils.isEmpty(product.getImageData())) {
 			product.setImage(UtilsData.getBlobToByte(product.getImageData()));
 		}
 
@@ -53,10 +50,10 @@ public class ProductService {
 		boolean result = false;
 
 		try {
-			parameter.setImageData(new SerialBlob(parameter.getFile().getBytes()));	
-			ProductDTO data = productRepository.save(parameter);
+			parameter.setImageData(new SerialBlob(parameter.getFile().getBytes()));
+			long data = productRepository.save(parameter);
 
-			if(data!=null) {
+			if (data != 0) {
 				result = true;
 			}
 		} catch (IOException e) {

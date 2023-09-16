@@ -1,16 +1,12 @@
 package com.project.shopping.admin.service;
 
 import java.util.List;
-
 import javax.sql.rowset.serial.SerialBlob;
-
 import org.springframework.stereotype.Service;
-
 import com.project.shopping.common.dto.CodeFieldDTO;
 import com.project.shopping.common.service.CommonService;
 import com.project.shopping.display.dto.BannerDTO;
 import com.project.shopping.display.repository.BannerRepository;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -28,14 +24,14 @@ public class AdminService {
 
 		param.setImageData(new SerialBlob(param.getFile().getBytes()));
 		param.setDispDate();
-		BannerDTO data = bannerRepository.save(param);
+		long data = bannerRepository.save(param);
 
-		if(data==null) {
+		if (data != 0) {
 			flag = false;
 			throw new Exception("저장 실패.");
 		}
 
 		return flag;
 	}
-	
+
 }
