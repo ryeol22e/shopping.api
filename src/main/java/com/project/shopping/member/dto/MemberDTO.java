@@ -3,17 +3,14 @@ package com.project.shopping.member.dto;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.shopping.member.dto.pk.MemberPK;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -33,7 +30,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 // setters response 보낼때 제외시킴, getters request 받을때 제외
-@JsonIgnoreProperties(value = { "changeBcryptPassword", "memberPassword", "updateLoginDtm", "setAuthNumber",
+@JsonIgnoreProperties(value = { "changeBcryptPassword", "memberPassword", "setAuthNumber",
 		"refreshToken" }, allowSetters = true)
 public class MemberDTO implements UserDetails {
 	@Id
@@ -77,10 +74,6 @@ public class MemberDTO implements UserDetails {
 	public void changeBcryptPassword() {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		this.memberPassword = encoder.encode(getMemberPassword());
-	}
-
-	public void updateLoginDtm() {
-		this.loginDtm = LocalDateTime.now();
 	}
 
 	@Override

@@ -2,12 +2,9 @@ package com.project.shopping.utils;
 
 import java.time.Duration;
 import java.util.Date;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
 import com.project.shopping.member.dto.MemberDTO;
-
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;

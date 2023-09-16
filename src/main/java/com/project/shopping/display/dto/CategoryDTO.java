@@ -1,7 +1,6 @@
 package com.project.shopping.display.dto;
 
 import com.project.shopping.display.dto.pk.CategoryPK;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

@@ -1,7 +1,6 @@
 package com.project.shopping.zconfig;
 
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,7 +15,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.zconfig.authentications.AuthEntryPoint;
 import com.project.shopping.zconfig.filters.ApiFilter;
@@ -53,29 +51,28 @@ public class WebSecurityConfig {
 				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
 				.formLogin(login -> {
 					login.loginProcessingUrl("/api/member/login")
-							.usernameParameter("memberId")
-							.passwordParameter("memberPassword")
-							.successHandler(new LoginSuccessHandlers())
-							.failureHandler(new LoginFailHandlers())
-							.permitAll();
+						.usernameParameter("memberId")
+						.passwordParameter("memberPassword")
+						.successHandler(new LoginSuccessHandlers())
+						.failureHandler(new LoginFailHandlers())
+						.permitAll();
 				})
 				.logout(logout -> {
 					logout.logoutUrl("/api/member/logout")
-							.invalidateHttpSession(true)
-							.deleteCookies("JSESSIONID")
-							.logoutSuccessHandler(new LogoutSuccessHandlers());
+						.invalidateHttpSession(true)
+						.deleteCookies("JSESSIONID")
+						.logoutSuccessHandler(new LogoutSuccessHandlers());
 				})
-				.exceptionHandling(handling -> handling
-						.authenticationEntryPoint(new AuthEntryPoint()))
+				.exceptionHandling(handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
 				.authorizeHttpRequests()
-				.requestMatchers("/api/member/**").authenticated()
-				.requestMatchers("/api/auth/**").authenticated()
-				.requestMatchers("/api/chat/**").authenticated()
-				.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
-				.requestMatchers("/api/common/**").permitAll()
-				.requestMatchers("/api/display/**").permitAll()
-				.requestMatchers("/api/product/**").permitAll()
-				.requestMatchers("/api/cate/**").permitAll()
+					.requestMatchers("/api/member/**").authenticated()
+					.requestMatchers("/api/auth/**").authenticated()
+					.requestMatchers("/api/chat/**").authenticated()
+					.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
+					.requestMatchers("/api/common/**").permitAll()
+					.requestMatchers("/api/display/**").permitAll()
+					.requestMatchers("/api/product/**").permitAll()
+					.requestMatchers("/api/cate/**").permitAll()
 				.and()
 				.addFilterBefore(new ApiFilter(), UsernamePasswordAuthenticationFilter.class);
 
@@ -95,6 +92,7 @@ public class WebSecurityConfig {
 	}
 
 	@Bean
+	@Deprecated
 	CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();

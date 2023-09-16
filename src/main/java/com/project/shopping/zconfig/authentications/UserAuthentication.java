@@ -1,7 +1,6 @@
 package com.project.shopping.zconfig.authentications;
 
 import java.util.List;
-
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 

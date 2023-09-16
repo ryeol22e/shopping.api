@@ -6,9 +6,7 @@ import org.jasypt.encryption.pbe.config.SimpleStringPBEConfig;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
-
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
