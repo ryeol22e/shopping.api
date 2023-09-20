@@ -1,7 +1,6 @@
 package com.project.shopping.zconfig.filters;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,25 +20,17 @@ public class ApiFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		MemberDTO memberInfo = (MemberDTO) request.getSession(true).getAttribute("memberInfo");
-		String memberId = MemberEnum.ANONYMOUS.name();
-		String memberRole = MemberEnum.ANONYMOUS.getValue();
 		
-		if(memberInfo!=null) {
-			memberId = memberInfo.getMemberId();
-			memberRole = memberInfo.getMemberRole();
+		if(memberInfo==null) {
+			String memberName = MemberEnum.ANONYMOUS.name();
+			String memberRole = MemberEnum.ANONYMOUS.getValue();
+			GrantedAuthority authority = new SimpleGrantedAuthority(memberRole);
+			List<GrantedAuthority> authorities = List.of(authority);
+			UserAuthentication authentication = new UserAuthentication(new MemberDTO(memberName, memberRole), null, authorities);
+
+			authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+			SecurityContextHolder.getContext().setAuthentication(authentication);
 		}
-
-		GrantedAuthority authority = new SimpleGrantedAuthority(memberRole);
-		List<GrantedAuthority> authorities = new ArrayList<>() {
-			{
-				add(authority);
-			}
-		};
-
-		UserAuthentication authentication = new UserAuthentication(memberId, null, authorities);
-
-		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
 		
 		filterChain.doFilter(request, response);
 	}

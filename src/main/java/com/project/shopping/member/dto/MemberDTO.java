@@ -1,8 +1,8 @@
 package com.project.shopping.member.dto;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,9 +30,14 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 // setters response 보낼때 제외시킴, getters request 받을때 제외
-@JsonIgnoreProperties(value = { "changeBcryptPassword", "memberPassword", "setAuthNumber",
-		"refreshToken" }, allowSetters = true)
+@JsonIgnoreProperties(value = { "changeBcryptPassword", "memberPassword", "setAuthNumber", "refreshToken" }, allowSetters = true)
 public class MemberDTO implements UserDetails {
+
+	public MemberDTO(String memberName, String memberRole) {
+		this.memberName = memberName;
+		this.memberRole = memberRole;
+	}
+
 	@Id
 	@Column(name = "MEMBER_NO")
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -75,6 +80,10 @@ public class MemberDTO implements UserDetails {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		this.memberPassword = encoder.encode(getMemberPassword());
 	}
+	
+	public void clearPassword() {
+		this.memberPassword = null;
+	}
 
 	@Override
 	public String getUsername() {
@@ -88,11 +97,7 @@ public class MemberDTO implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return new ArrayList<>() {
-			{
-				add(new SimpleGrantedAuthority(getMemberRole()));
-			}
-		};
+		return List.of(new SimpleGrantedAuthority(getMemberRole()));
 	}
 
 	@Override
