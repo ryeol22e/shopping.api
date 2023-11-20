@@ -13,10 +13,9 @@ public class ProductRepository {
 	private final JPAQueryFactory factory;
 
 	public List<ProductDTO> findProductList(ProductDTO dto) {
-		return factory.selectFrom(productDTO)
-				.where(productDTO.cateNo.eq(dto.getCateNo())
-						.and(productDTO.useYn.eq(dto.getUseYn())
-								.and(productDTO.dispYn.eq(dto.getDispYn()))))
+		return factory
+				.selectFrom(productDTO).where(productDTO.cateNo.eq(dto.getCateNo()),
+						productDTO.useYn.eq(dto.getUseYn()), productDTO.dispYn.eq(dto.getDispYn()))
 				.fetch();
 	}
 

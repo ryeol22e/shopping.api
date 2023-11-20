@@ -14,9 +14,9 @@ public class CommonRepository {
 
 	public List<CodeFieldDTO> findByCommonCodeList(CodeFieldDTO dto) {
 		return factory.selectFrom(codeFieldDTO)
-			.where(codeFieldDTO.codeType.eq(dto.getCodeType())
-				.and(codeFieldDTO.codeDepth.eq(dto.getCodeDepth())
-				.and(codeFieldDTO.useYn.eq(dto.getUseYn()))))
-			.fetch();
+				.where(codeFieldDTO.codeType.eq(dto.getCodeType()),
+						codeFieldDTO.codeDepth.eq(dto.getCodeDepth()),
+						codeFieldDTO.useYn.eq(dto.getUseYn()))
+				.fetch();
 	}
 }

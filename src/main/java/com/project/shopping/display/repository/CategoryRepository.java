@@ -13,10 +13,10 @@ public class CategoryRepository {
 	private final JPAQueryFactory factory;
 
 	public List<CategoryDTO> findUpCateList(CategoryDTO dto) {
-		return factory.selectFrom(categoryDTO)
-				.where(dto.getUpCateNo()==null ? categoryDTO.upCateNo.isNull() : categoryDTO.upCateNo.eq(dto.getUpCateNo())
-						.and(categoryDTO.useYn.eq(dto.getUseYn()))
-						.and(categoryDTO.dispYn.eq(dto.getDispYn())))
+		return factory.selectFrom(categoryDTO).where(
+				dto.getUpCateNo() == null ? null : categoryDTO.upCateNo.eq(dto.getUpCateNo()),
+				categoryDTO.useYn.eq(dto.getUseYn()), categoryDTO.dispYn.eq(dto.getDispYn()))
+
 				.fetch();
 	}
 }

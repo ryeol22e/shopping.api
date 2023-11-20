@@ -14,9 +14,8 @@ public class BannerRepository {
 
 	public List<BannerDTO> findByBannerList(BannerDTO dto) {
 		return jpaQueryFactory.selectFrom(bannerDTO)
-				.where(bannerDTO.bannerType.eq(dto.getBannerType())
-						.and(bannerDTO.useYn.eq(dto.getUseYn()))
-						.and(bannerDTO.dispYn.eq(dto.getDispYn())))
+				.where(bannerDTO.bannerType.eq(dto.getBannerType()),
+						bannerDTO.useYn.eq(dto.getUseYn()), bannerDTO.dispYn.eq(dto.getDispYn()))
 				.fetch();
 	}
 
