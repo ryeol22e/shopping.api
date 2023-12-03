@@ -22,7 +22,7 @@ public class LoginSuccessHandlers implements AuthenticationSuccessHandler {
 		
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter().write("true");
+		response.getWriter().write(String.valueOf(true));
 		
 	}
 }

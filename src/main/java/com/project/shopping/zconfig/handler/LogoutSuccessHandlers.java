@@ -10,6 +10,8 @@ import jakarta.servlet.http.HttpServletResponse;
 public class LogoutSuccessHandlers implements LogoutSuccessHandler {
 	@Override
 	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(HttpServletResponse.SC_OK);
+		response.getWriter().write(String.valueOf(true));
 	}
 }
