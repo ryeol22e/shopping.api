@@ -320,11 +320,11 @@ public class ListSearch<T> {
 	 * @param t2
 	 * @return
 	 */
-	private static Integer itemCompare(Object t1, Object t2) {
+	private static int itemCompare(Object t1, Object t2) {
 		Comparator<Object> comparator = (a, b) -> {
 			String aType = a.getClass().getTypeName().toLowerCase();
 			String bType = b.getClass().getTypeName().toLowerCase();
-			Integer compare = null;
+			int compare = 0;
 			String type = "";
 
 			if (aType.equals(bType)) {
@@ -332,7 +332,7 @@ public class ListSearch<T> {
 				type = typeName.substring(typeName.lastIndexOf(".") + 1);
 
 				switch (type) {
-					case "string":
+					case ("string"):
 						compare = String.valueOf(a).compareTo(String.valueOf(b));
 						break;
 					case "integer":
