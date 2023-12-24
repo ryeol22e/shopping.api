@@ -30,8 +30,8 @@ public class GlobalControllerAdvice {
 	}
 
 	@ExceptionHandler(Exception.class)
-	public ResponseEntity<String> exceptionHandler(Exception e) {
-		log.error(e.getMessage());
+	public ResponseEntity<String> exceptionHandler(HttpServletRequest request, Exception e) {
+		log.error("uri : {}, message : {}", request.getRequestURI(), e.getMessage());
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
 	}

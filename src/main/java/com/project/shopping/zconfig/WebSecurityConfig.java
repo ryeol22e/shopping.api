@@ -30,7 +30,7 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
-	private MemberService memberService;
+	private final MemberService memberService;
 	/**
 	 * password encoder
 	 * 
@@ -68,15 +68,15 @@ public class WebSecurityConfig {
 				})
 				.exceptionHandling(handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
 				.authorizeHttpRequests()
+					.requestMatchers("/api/member/**").authenticated()
+					.requestMatchers("/api/auth/**").authenticated()
+					.requestMatchers("/api/chat/**").authenticated()
+					.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
 					.requestMatchers("/api/auth/check").permitAll()
 					.requestMatchers("/api/common/**").permitAll()
 					.requestMatchers("/api/display/**").permitAll()
 					.requestMatchers("/api/product/**").permitAll()
 					.requestMatchers("/api/cate/**").permitAll()
-					.requestMatchers("/api/member/**").authenticated()
-					.requestMatchers("/api/auth/**").authenticated()
-					.requestMatchers("/api/chat/**").authenticated()
-					.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
 				.and()
 				.addFilterBefore(new ApiFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
