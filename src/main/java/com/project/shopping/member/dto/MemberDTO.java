@@ -18,7 +18,6 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.IdClass;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -33,7 +32,8 @@ import lombok.ToString;
 @JsonIgnoreProperties(value = { "changeBcryptPassword", "memberPassword", "setAuthNumber", "refreshToken" }, allowSetters = true)
 public class MemberDTO implements UserDetails {
 
-	public MemberDTO(String memberName, String memberRole) {
+	public MemberDTO(String memberNo, String memberName, String memberRole) {
+		this.memberNo = Long.getLong(memberNo);
 		this.memberName = memberName;
 		this.memberRole = memberRole;
 	}
@@ -49,7 +49,6 @@ public class MemberDTO implements UserDetails {
 	private String memberEmail;
 	private String memberName;
 	private String memberAddr;
-	@Transient
 	private String accessToken;
 	private String refreshToken;
 	private String tempYn;

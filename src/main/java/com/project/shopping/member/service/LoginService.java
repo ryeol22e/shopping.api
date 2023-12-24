@@ -24,21 +24,30 @@ public class LoginService implements UserDetailsService {
 	private static Map<String, String> refreshTokenMap = new LinkedHashMap<>();
 
 	/**
-	 * 로그인(JSESSION)
+	 * 로그인
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberDTO member = memberRepository.findByMemberId(username);
+		// HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 
-		if (member != null) {
+		try {
+			member.setAccessToken(UtilsMemberToken.createAccessToken(member));
+			member.setRefreshToken(UtilsMemberToken.createRefreshToken(member));
 			memberRepository.updateLoginDate(member);
+
+			// request.getSession().setMaxInactiveInterval(3600);
+			// request.getSession().setAttribute("memberInfo", member);
+		} catch (NullPointerException e) {
+			log.error("login error : {}", e.getMessage());
+			throw new NullPointerException("로그인에 실패했습니다.");
 		}
 
 		return member;
 	}
 
 	/**
-	 * 로그인(jwtToken)
+	 * 로그인
 	 * 
 	 * @param memberId
 	 * @param memberPassword

@@ -1,9 +1,9 @@
 package com.project.shopping.zconfig;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,18 +16,21 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 import com.project.shopping.member.dto.MemberEnum;
+import com.project.shopping.member.service.MemberService;
 import com.project.shopping.zconfig.authentications.AuthEntryPoint;
 import com.project.shopping.zconfig.filters.ApiFilter;
 import com.project.shopping.zconfig.handler.LoginFailHandlers;
 import com.project.shopping.zconfig.handler.LoginSuccessHandlers;
 import com.project.shopping.zconfig.handler.LogoutSuccessHandlers;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
-
+	private MemberService memberService;
 	/**
 	 * password encoder
 	 * 
@@ -48,7 +51,7 @@ public class WebSecurityConfig {
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable())
-				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.ALWAYS))
+				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.formLogin(login -> {
 					login.loginProcessingUrl("/api/member/login")
 						.usernameParameter("memberId")
@@ -65,16 +68,17 @@ public class WebSecurityConfig {
 				})
 				.exceptionHandling(handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
 				.authorizeHttpRequests()
-					.requestMatchers("/api/member/**").authenticated()
-					.requestMatchers("/api/auth/**").authenticated()
-					.requestMatchers("/api/chat/**").authenticated()
-					.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
+					.requestMatchers("/api/auth/check").permitAll()
 					.requestMatchers("/api/common/**").permitAll()
 					.requestMatchers("/api/display/**").permitAll()
 					.requestMatchers("/api/product/**").permitAll()
 					.requestMatchers("/api/cate/**").permitAll()
+					.requestMatchers("/api/member/**").authenticated()
+					.requestMatchers("/api/auth/**").authenticated()
+					.requestMatchers("/api/chat/**").authenticated()
+					.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
 				.and()
-				.addFilterBefore(new ApiFilter(), UsernamePasswordAuthenticationFilter.class);
+				.addFilterBefore(new ApiFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
@@ -96,15 +100,10 @@ public class WebSecurityConfig {
 	CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		final List<String> WEB_URL_LIST = List.of(
-				"https://".concat("prod".equalsIgnoreCase(profile) ? "www" : profile).concat(".shoppingmall.com:7800"),
-				"http://localhost:7800");
 
 		config.setAllowCredentials(true);
-		config.setAllowedOrigins(WEB_URL_LIST);
-		config.addAllowedHeader("Content-Type");
-		config.addAllowedHeader("Authorization");
-		config.addAllowedHeader("MemberId");
+		config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
+		config.addAllowedHeader(HttpHeaders.AUTHORIZATION);
 		config.addAllowedMethod(HttpMethod.GET);
 		config.addAllowedMethod(HttpMethod.POST);
 		config.setMaxAge(3600L);

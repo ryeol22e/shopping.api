@@ -32,7 +32,8 @@ public class UtilsMemberToken {
 			.setIssuer("fresh")
 			.setIssuedAt(now)
 			.setExpiration(new Date(now.getTime() + Duration.ofMinutes(30L).toMillis()))
-			.claim("memberId", member.getMemberId())
+			.claim("memberNo", member.getMemberNo())
+			.claim("memberName", member.getMemberName())
 			.claim("memberRole", member.getMemberRole())
 			.signWith(SignatureAlgorithm.HS256, AUTH_KEY)
 			.compact();
@@ -51,7 +52,8 @@ public class UtilsMemberToken {
 			.setIssuer("fresh")
 			.setIssuedAt(now)
 			.setExpiration(new Date(now.getTime() + Duration.ofDays(2L).toMillis()))
-			.claim("memberId", member.getMemberId())
+			.claim("memberNo", member.getMemberNo())
+			.claim("memberName", member.getMemberName())
 			.claim("memberRole", member.getMemberRole())
 			.signWith(SignatureAlgorithm.HS256, AUTH_KEY)
 			.compact();
@@ -63,7 +65,13 @@ public class UtilsMemberToken {
 	 * @return
 	 */
 	public static Claims getInfo(String token) {
-		return Jwts.parser().setSigningKey(AUTH_KEY).parseClaimsJws(combineToken(token)).getBody();
+		Claims claims = null;
+
+		try {
+			claims = Jwts.parser().setSigningKey(AUTH_KEY).parseClaimsJws(combineToken(token)).getBody();
+		} catch (Exception e) {}
+		
+		return claims;
 	}
 
 	/**

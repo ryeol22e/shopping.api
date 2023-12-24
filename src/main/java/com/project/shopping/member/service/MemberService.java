@@ -1,11 +1,12 @@
 package com.project.shopping.member.service;
 
 import org.springframework.stereotype.Service;
-
 import com.project.shopping.member.dto.MemberDTO;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
-
+import com.project.shopping.utils.UtilsMemberToken;
+import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -43,6 +44,40 @@ public class MemberService {
 		}
 
 		return result;
+	}
+
+	public String getRefreshByAccessToken(String accessToken) {
+		return memberRepository.findRefreshByAccess(accessToken);
+	}
+
+	public String getToken(HttpServletRequest request) {
+		String resultToken = "";
+		String accessToken = request.getHeader("authroization");
+		
+		if(accessToken!=null && !accessToken.isEmpty() && !accessToken.isBlank()) {
+			try {
+				Claims jwt = UtilsMemberToken.getInfo(accessToken);	
+
+				if(jwt!=null) {
+					resultToken = accessToken;
+				}
+			} catch (Exception e) {
+				String refreshToken = getRefreshByAccessToken(accessToken);
+				Claims jwt = UtilsMemberToken.getInfo(refreshToken);
+
+				if(jwt!=null) {
+					resultToken = refreshToken;
+				}
+			}
+		}
+
+		return resultToken;
+	}
+
+	public boolean checkToken(HttpServletRequest request) {
+		String token = getToken(request);
+
+		return !token.isEmpty() && !token.isBlank() ? true : false;
 	}
 
 }

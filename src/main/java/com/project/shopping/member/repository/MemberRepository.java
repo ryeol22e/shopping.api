@@ -20,6 +20,13 @@ public class MemberRepository {
 				.fetchOne();
 	}
 
+	public String findRefreshByAccess(String accessToken) {
+		return factory.select(memberDTO.refreshToken)
+			.from(memberDTO)
+			.where(memberDTO.accessToken.eq(accessToken))
+			.fetchOne();
+	}
+
 	public long save(MemberDTO dto) {
 		return factory.insert(memberDTO)
 				.columns(memberDTO).values(dto)
