@@ -25,4 +25,5 @@ public class ProductController {
 	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductDTO parameter) {
 		return ResponseEntity.ok(productService.saveProduct(parameter));
 	}
+
 }

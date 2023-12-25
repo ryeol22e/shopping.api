@@ -1,6 +1,5 @@
 package com.project.shopping.product.dto;
 
-import java.sql.Blob;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -17,14 +16,15 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.NonNull;
+import lombok.ToString;
 
 @Getter
 @Entity
+@ToString
 @IdClass(value = ProductPK.class)
 @Table(name = "PRODUCT_TABLE")
 @NoArgsConstructor
-@JsonIgnoreProperties(value = {"imageData"}, allowSetters = true)
+@JsonIgnoreProperties(value = {}, allowSetters = true)
 public class ProductDTO {
 	@Id
 	@Column(name = "PRDT_INDEX")
@@ -45,16 +45,11 @@ public class ProductDTO {
 	private LocalDateTime updateDtime;
 	@Transient
 	private MultipartFile file;
-	@NonNull
-	private Blob imageData;
-	@Transient
-	private byte[] image;
+	private String imagePath;
+	private String imageName;
 
-	public void setImageData(Blob blob) {
-		this.imageData = blob;
-	}
-
-	public void setImage(byte[] bytes) {
-		this.image = bytes;
+	public void setImageData(String imagePath, String imageName) {
+		this.imagePath = imagePath;
+		this.imageName = imageName;	
 	}
 }

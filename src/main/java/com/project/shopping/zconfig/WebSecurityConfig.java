@@ -1,5 +1,6 @@
 package com.project.shopping.zconfig;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +31,7 @@ public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
 	private final MemberService memberService;
+
 	/**
 	 * password encoder
 	 * 
@@ -49,10 +51,14 @@ public class WebSecurityConfig {
 	 */
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable())
-				.sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		http
+			.httpBasic(basic -> basic.disable())
+			.csrf(csrf -> csrf.disable())
+			.logout(logout-> logout.disable())
+			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.formLogin(login -> {
-					login.loginProcessingUrl("/api/member/login")
+					login
+						.loginProcessingUrl("/api/member/login")
 						.usernameParameter("memberId")
 						.passwordParameter("memberPassword")
 						.successHandler(new LoginSuccessHandlers())
@@ -71,7 +77,6 @@ public class WebSecurityConfig {
 					.requestMatchers("/api/auth/**").authenticated()
 					.requestMatchers("/api/chat/**").authenticated()
 					.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
-					.requestMatchers("/api/auth/check").permitAll()
 					.requestMatchers("/api/common/**").permitAll()
 					.requestMatchers("/api/display/**").permitAll()
 					.requestMatchers("/api/product/**").permitAll()
@@ -91,16 +96,19 @@ public class WebSecurityConfig {
 	@Bean
 	WebSecurityCustomizer webSecurityCustomizer() throws Exception {
 		return (web) -> web.ignoring()
-				.requestMatchers("/api/common/headers");
+				.requestMatchers("/api/common/headers")
+				.requestMatchers("/api/auth/check");
 	}
 
 	@Bean
-	@Deprecated
 	CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-
+		String clientURL = "https://".concat(profile).concat(".shoppingmall.com:7800");
+		List<String> ORIGIN_LIST = List.of(clientURL);
+		
 		config.setAllowCredentials(true);
+		config.setAllowedOrigins(ORIGIN_LIST);
 		config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
 		config.addAllowedHeader(HttpHeaders.AUTHORIZATION);
 		config.addAllowedMethod(HttpMethod.GET);

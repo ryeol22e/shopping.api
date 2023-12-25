@@ -16,7 +16,6 @@ public class GlobalControllerAdvice {
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
-		binder.setDisallowedFields("imageData");
 		binder.initDirectFieldAccess();
 	}
 
@@ -31,8 +30,9 @@ public class GlobalControllerAdvice {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> exceptionHandler(HttpServletRequest request, Exception e) {
-		log.error("uri : {}, message : {}", request.getRequestURI(), e.getMessage());
-
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+		String message = e.getMessage();
+		log.error("uri : {}, message : {}", request.getRequestURI(), message);
+		
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
 	}
 }
