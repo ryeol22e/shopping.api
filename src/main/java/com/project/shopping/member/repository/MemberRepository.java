@@ -37,6 +37,8 @@ public class MemberRepository {
 	public long updateLoginDate(MemberDTO dto) {
 		return factory.update(memberDTO)
 				.set(memberDTO.loginDtm, LocalDateTime.now())
+				.set(memberDTO.accessToken, dto.getAccessToken())
+				.set(memberDTO.refreshToken, dto.getRefreshToken())
 				.where(memberDTO.memberNo.eq(dto.getMemberNo()))
 				.execute();
 	}
