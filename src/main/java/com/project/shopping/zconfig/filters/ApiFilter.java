@@ -15,6 +15,7 @@ import com.project.shopping.zconfig.authentications.UserAuthentication;
 import io.jsonwebtoken.Claims;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -35,9 +36,17 @@ public class ApiFilter extends OncePerRequestFilter {
 		if(token!=null && (!token.isEmpty() && !token.isBlank())) {
 			Claims info =  UtilsMemberToken.getInfo(memberService.getToken(request));
 
-			memberNo = info.get("memberNo").toString();
-			memberName = info.get("memberName").toString();
-			memberRole = info.get("memberRole").toString();
+			if(info!=null) {
+				memberNo = info.get("memberNo").toString();
+				memberName = info.get("memberName").toString();
+				memberRole = info.get("memberRole").toString();
+			} else {
+				Cookie cookie = new Cookie("ACCESS_TOKEN", null);
+
+				cookie.setMaxAge(0);
+				cookie.setPath("/");
+				response.addCookie(cookie);
+			}
 		}
 		
 		GrantedAuthority authority = new SimpleGrantedAuthority(memberRole);

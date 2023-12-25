@@ -51,7 +51,7 @@ public class UtilsMemberToken {
 			.setHeaderParam(Header.TYPE, Header.JWT_TYPE)
 			.setIssuer("fresh")
 			.setIssuedAt(now)
-			.setExpiration(new Date(now.getTime() + Duration.ofDays(2L).toMillis()))
+			.setExpiration(new Date(now.getTime() + Duration.ofDays(30L).toMillis()))
 			.claim("memberNo", member.getMemberNo())
 			.claim("memberName", member.getMemberName())
 			.claim("memberRole", member.getMemberRole())

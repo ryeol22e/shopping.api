@@ -21,7 +21,6 @@ import com.project.shopping.zconfig.authentications.AuthEntryPoint;
 import com.project.shopping.zconfig.filters.ApiFilter;
 import com.project.shopping.zconfig.handler.LoginFailHandlers;
 import com.project.shopping.zconfig.handler.LoginSuccessHandlers;
-import com.project.shopping.zconfig.handler.LogoutSuccessHandlers;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
@@ -60,12 +59,12 @@ public class WebSecurityConfig {
 						.failureHandler(new LoginFailHandlers())
 						.permitAll();
 				})
-				.logout(logout -> {
-					logout.logoutUrl("/api/member/logout")
-						.invalidateHttpSession(true)
-						.deleteCookies("JSESSIONID")
-						.logoutSuccessHandler(new LogoutSuccessHandlers());
-				})
+				// .logout(logout -> {
+				// 	logout.logoutUrl("/api/member/logout")
+				// 		.invalidateHttpSession(true)
+				// 		.deleteCookies("JSESSIONID")
+				// 		.logoutSuccessHandler(new LogoutSuccessHandlers());
+				// })
 				.exceptionHandling(handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
 				.authorizeHttpRequests()
 					.requestMatchers("/api/member/**").authenticated()

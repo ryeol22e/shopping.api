@@ -54,12 +54,19 @@ public class MemberService {
 		String resultToken = "";
 		String accessToken = request.getHeader("authroization");
 		
-		if(accessToken!=null && !accessToken.isEmpty() && !accessToken.isBlank()) {
+		if(accessToken!=null && (!accessToken.isEmpty() && !accessToken.isBlank())) {
 			try {
 				Claims jwt = UtilsMemberToken.getInfo(accessToken);	
-
+				
 				if(jwt!=null) {
 					resultToken = accessToken;
+				} else {
+					String refreshToken = getRefreshByAccessToken(accessToken);
+					jwt = UtilsMemberToken.getInfo(refreshToken);
+
+					if(jwt!=null) {
+						resultToken = refreshToken;
+					}
 				}
 			} catch (Exception e) {
 				String refreshToken = getRefreshByAccessToken(accessToken);
