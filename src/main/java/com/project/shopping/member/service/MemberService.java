@@ -1,5 +1,6 @@
 package com.project.shopping.member.service;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Service;
 import com.project.shopping.member.dto.MemberDTO;
 import com.project.shopping.member.dto.MemberEnum;
@@ -52,7 +53,7 @@ public class MemberService {
 
 	public String getToken(HttpServletRequest request) {
 		String resultToken = "";
-		String accessToken = request.getHeader("authroization");
+		String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
 		
 		if(accessToken!=null && (!accessToken.isEmpty() && !accessToken.isBlank())) {
 			try {

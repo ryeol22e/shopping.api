@@ -2,6 +2,7 @@ package com.project.shopping.zconfig.filters;
 
 import java.io.IOException;
 import java.util.List;
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,7 +29,7 @@ public class ApiFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		// MemberDTO memberInfo = (MemberDTO) request.getSession(true).getAttribute("memberInfo");
-		String token = request.getHeader("authroization");
+		String token = request.getHeader(HttpHeaders.AUTHORIZATION);
 		String memberNo = "99999";
 		String memberName = MemberEnum.ANONYMOUS.name();
 		String memberRole = MemberEnum.ANONYMOUS.getValue(); 
