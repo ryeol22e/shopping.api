@@ -39,14 +39,14 @@ public class ProductDTO {
 	private char useYn;
 	private String normalPrice;
 	private String sellPrice;
-	@CreationTimestamp
-	private LocalDateTime regDtime;
-	@UpdateTimestamp
-	private LocalDateTime updateDtime;
-	@Transient
-	private MultipartFile file;
 	private String imagePath;
 	private String imageName;
+	@CreationTimestamp
+	private LocalDateTime regDtime = LocalDateTime.now();
+	@UpdateTimestamp
+	private LocalDateTime updateDtime = LocalDateTime.now();
+	@Transient
+	private MultipartFile file;
 
 	public void setImageData(String imagePath, String imageName) {
 		this.imagePath = imagePath;
