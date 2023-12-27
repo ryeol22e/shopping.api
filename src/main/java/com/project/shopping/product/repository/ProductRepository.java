@@ -25,8 +25,13 @@ public class ProductRepository {
 
 	public long save(ProductDTO dto) {
 		return factory.insert(productDTO)
-			.columns(productDTO.cateNo, productDTO.prdtNo, productDTO.prdtName, productDTO.dispYn, productDTO.useYn, productDTO.normalPrice, productDTO.sellPrice, productDTO.imagePath, productDTO.imageName, productDTO.regDtime)
-			.values(dto.getCateNo(), dto.getPrdtNo(), dto.getPrdtName(), dto.getDispYn(), dto.getUseYn(), dto.getNormalPrice(), dto.getSellPrice(), dto.getImagePath(), dto.getImageName(), dto.getRegDtime())
-			.execute();
+				.columns(productDTO.cateNo, productDTO.prdtNo, productDTO.prdtName,
+						productDTO.dispYn, productDTO.useYn, productDTO.normalPrice,
+						productDTO.sellPrice, productDTO.imagePath, productDTO.imageName,
+						productDTO.regDtime)
+				.values(dto.getCateNo(), dto.getPrdtNo(), dto.getPrdtName(), dto.getDispYn(),
+						dto.getUseYn(), dto.getNormalPrice(), dto.getSellPrice(),
+						dto.getImagePath(), dto.getImageName(), dto.getRegDtime())
+				.execute();
 	}
 }

@@ -1,5 +1,6 @@
 package com.project.shopping.product.dto;
 
+import java.io.File;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -51,5 +52,14 @@ public class ProductDTO {
 	public void setImageData(String imagePath, String imageName) {
 		this.imagePath = imagePath;
 		this.imageName = imageName;	
+	}
+
+	public String getImageFullPath() {
+		String imageFullPath = "";
+		if(this.imagePath!=null && this.imageName!=null) {
+			imageFullPath = this.imagePath.concat(File.separator).concat(this.imageName);
+		}
+		
+		return imageFullPath;
 	}
 }

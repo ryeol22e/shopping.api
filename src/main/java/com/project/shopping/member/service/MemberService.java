@@ -1,12 +1,13 @@
 package com.project.shopping.member.service;
 
-import org.springframework.http.HttpHeaders;
+import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import com.project.shopping.member.dto.MemberDTO;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.utils.UtilsMemberToken;
 import io.jsonwebtoken.Claims;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,19 +54,25 @@ public class MemberService {
 
 	public String getToken(HttpServletRequest request) {
 		String resultToken = "";
-		String accessToken = request.getHeader(HttpHeaders.AUTHORIZATION);
-		
-		if(accessToken!=null && (!accessToken.isEmpty() && !accessToken.isBlank())) {
+		Cookie[] cookies = request.getCookies();
+		String accessToken =
+				cookies != null && cookies.length > 0
+						? Stream.of(cookies)
+								.filter(cookie -> "ACCESS_TOKEN".equalsIgnoreCase(cookie.getName()))
+								.map(cookie -> cookie.getValue()).findFirst().orElse("")
+						: "";
+
+		if (accessToken != null && (!accessToken.isEmpty() && !accessToken.isBlank())) {
 			try {
-				Claims jwt = UtilsMemberToken.getInfo(accessToken);	
-				
-				if(jwt!=null) {
+				Claims jwt = UtilsMemberToken.getInfo(accessToken);
+
+				if (jwt != null) {
 					resultToken = accessToken;
 				} else {
 					String refreshToken = getRefreshByAccessToken(accessToken);
 					jwt = UtilsMemberToken.getInfo(refreshToken);
 
-					if(jwt!=null) {
+					if (jwt != null) {
 						resultToken = refreshToken;
 					}
 				}
@@ -73,7 +80,7 @@ public class MemberService {
 				String refreshToken = getRefreshByAccessToken(accessToken);
 				Claims jwt = UtilsMemberToken.getInfo(refreshToken);
 
-				if(jwt!=null) {
+				if (jwt != null) {
 					resultToken = refreshToken;
 				}
 			}
