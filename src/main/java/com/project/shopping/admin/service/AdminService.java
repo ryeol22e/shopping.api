@@ -3,17 +3,25 @@ package com.project.shopping.admin.service;
 import java.util.List;
 import javax.sql.rowset.serial.SerialBlob;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import com.project.shopping.common.dto.CodeFieldDTO;
 import com.project.shopping.common.service.CommonService;
 import com.project.shopping.display.dto.BannerDTO;
 import com.project.shopping.display.repository.BannerRepository;
+import com.project.shopping.product.dto.ProductDTO;
+import com.project.shopping.product.repository.ProductRepository;
+import com.project.shopping.utils.UtilsData;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AdminService {
 	private final CommonService commonService;
 	private final BannerRepository bannerRepository;
+	private final ProductRepository productRepository;
 
 	public List<CodeFieldDTO> getAdminMenuList(CodeFieldDTO param) throws Exception {
 		return commonService.getCommonList(param);
@@ -32,6 +40,25 @@ public class AdminService {
 		}
 
 		return flag;
+	}
+
+	@Transactional
+	public boolean saveProduct(ProductDTO product) {
+		boolean result = false;
+		MultipartFile image = product.getFile();
+		String path = UtilsData.getFileBasePath();
+
+		if(UtilsData.fileUpload(image, path)) {
+			String imagePath = path;
+			String imageName = image.getOriginalFilename();
+
+			product.setImageData(imagePath, imageName);
+			log.info("save product data : {}", product);
+			productRepository.save(product);
+			result = true;
+		}
+
+		return result;
 	}
 
 }

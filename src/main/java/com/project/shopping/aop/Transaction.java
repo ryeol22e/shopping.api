@@ -13,36 +13,38 @@ import org.springframework.transaction.interceptor.MatchAlwaysTransactionAttribu
 import org.springframework.transaction.interceptor.RollbackRuleAttribute;
 import org.springframework.transaction.interceptor.RuleBasedTransactionAttribute;
 import org.springframework.transaction.interceptor.TransactionInterceptor;
+import jakarta.persistence.EntityManager;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Configuration
 public class Transaction {
-	private TransactionManager transactionManager;
-	
-	Transaction(DataSource dataSource) {
-		DataSourceTransactionManager manager = new DataSourceTransactionManager();
-		manager.setDataSource(dataSource);
-		transactionManager = manager;
-	}
+	// private TransactionManager transactionManager;
 
-	@Bean
-	TransactionInterceptor transactionAdvice() {
-		MatchAlwaysTransactionAttributeSource source = new MatchAlwaysTransactionAttributeSource();
-		RuleBasedTransactionAttribute attribute = new RuleBasedTransactionAttribute();
+	// Transaction(DataSource dataSource) {
+	// 	DataSourceTransactionManager manager = new DataSourceTransactionManager();
+	// 	manager.setDataSource(dataSource);
+	// 	transactionManager = manager;
+	// }
 
-		attribute.setName("set*");
-		attribute.setRollbackRules(Collections.singletonList(new RollbackRuleAttribute(Exception.class)));
-		source.setTransactionAttribute(attribute);
+	// @Bean
+	// TransactionInterceptor transactionAdvice() {
+	// 	MatchAlwaysTransactionAttributeSource source = new MatchAlwaysTransactionAttributeSource();
+	// 	RuleBasedTransactionAttribute attribute = new RuleBasedTransactionAttribute();
 
-        return new TransactionInterceptor(transactionManager, source);
-	}
+	// 	attribute.setName("set*");
+	// 	attribute.setRollbackRules(
+	// 			Collections.singletonList(new RollbackRuleAttribute(Exception.class)));
+	// 	source.setTransactionAttribute(attribute);
 
-	 @Bean
-    Advisor transactionAdviceAdvisor() {
-        AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-        pointcut.setExpression("execution(* com.project.shopping.*.service.*Service.*(..))");
+	// 	return new TransactionInterceptor(transactionManager, source);
+	// }
 
-        return new DefaultPointcutAdvisor(pointcut, transactionAdvice());
-    }
+	// @Bean
+	// Advisor transactionAdviceAdvisor() {
+	// 	AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
+	// 	pointcut.setExpression("execution(* com.project.shopping.*.service.*Service.*(..))");
+
+	// 	return new DefaultPointcutAdvisor(pointcut, transactionAdvice());
+	// }
 }
