@@ -2,6 +2,7 @@ package com.project.shopping.zconfig.filters;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -29,14 +30,10 @@ public class ApiFilter extends OncePerRequestFilter {
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
 			FilterChain filterChain) throws ServletException, IOException {
-		// MemberDTO memberInfo = (MemberDTO) request.getSession(true).getAttribute("memberInfo");
-		Cookie[] cookies = request.getCookies();
-		String token =
-				cookies != null && cookies.length > 0
-						? Stream.of(cookies)
-								.filter(cookie -> "ACCESS_TOKEN".equalsIgnoreCase(cookie.getName()))
-								.map(cookie -> cookie.getValue()).findFirst().orElse("")
-						: "";
+		Cookie[] cookies = Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]);
+		String token = Stream.of(cookies)
+				.filter(cookie -> "ACCESS_TOKEN".equalsIgnoreCase(cookie.getName()))
+				.map(cookie -> cookie.getValue()).findFirst().orElse("");
 		String memberNo = "99999";
 		String memberName = MemberEnum.ANONYMOUS.name();
 		String memberRole = MemberEnum.ANONYMOUS.getValue();
