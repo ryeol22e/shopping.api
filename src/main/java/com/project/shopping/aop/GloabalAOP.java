@@ -2,6 +2,8 @@ package com.project.shopping.aop;
 
 import java.util.stream.Stream;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.stereotype.Component;
@@ -32,5 +34,25 @@ public class GloabalAOP {
 		
 		log.info("product dto : {}", product);
 		log.info("joinpoint signature : {}", joinPoint.getSignature());
+	}
+
+	@Around("(!execution(* com.project.shopping.member.service.MemberService.checkToken(..))"
+		+ "&& !execution(* com.project.shopping.member.service.MemberService.getToken(..))"
+		+ "&& execution(* com.project.shopping.*.service.*Service.*(..)))")
+	public Object bussinessProcessTime(ProceedingJoinPoint joinPoint) {
+		Object res = null;
+		long start = System.nanoTime();
+
+		try {
+			res = joinPoint.proceed();	
+		} catch (Throwable th) {
+			log.error("bussiness process error : {}", th.getMessage());
+		}
+		finally {
+			long end = System.nanoTime();
+			log.info("bussiness service name : \"{}\", process time : {}",joinPoint.getSignature().getName(), ((double) end-start)/1000000000);
+		}
+		
+		return res;
 	}
 }
