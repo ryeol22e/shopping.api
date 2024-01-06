@@ -1,4 +1,4 @@
-package com.project.shopping.common.controller;
+package com.project.shopping.zconfig;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RestControllerAdvice
-public class GlobalControllerAdvice {
+public class ControllerAdvice {
 	
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
