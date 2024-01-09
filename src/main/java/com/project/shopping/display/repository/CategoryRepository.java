@@ -16,7 +16,6 @@ public class CategoryRepository {
 		return factory.selectFrom(categoryDTO).where(
 				dto.getUpCateNo() == null ? null : categoryDTO.upCateNo.eq(dto.getUpCateNo()),
 				categoryDTO.useYn.eq(dto.getUseYn()), categoryDTO.dispYn.eq(dto.getDispYn()))
-
 				.fetch();
 	}
 }

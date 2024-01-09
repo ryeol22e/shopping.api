@@ -19,7 +19,8 @@ public class DisplayService {
 	public List<BannerDTO> getBannerList(BannerDTO dto) {
 		LocalDateTime today = LocalDateTime.now();
 		List<BannerDTO> list = bannerRepository.findByBannerList(dto).stream()
-				.filter(x -> today.compareTo(x.getDispStartDtm()) >= 0 && today.compareTo(x.getDispEndDtm()) <= 0)
+				.filter(x -> today.compareTo(x.getDispStartDtm()) >= 0
+						&& today.compareTo(x.getDispEndDtm()) <= 0)
 				.toList();
 
 		for (int i = 0, size = list.size(); i < size; i++) {

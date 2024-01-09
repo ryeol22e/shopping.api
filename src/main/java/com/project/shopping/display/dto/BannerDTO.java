@@ -59,11 +59,14 @@ public class BannerDTO {
 	public void setImageData(Blob data) {
 		this.imageData = data;
 	}
+
 	public void setImage(byte[] bytes) {
 		this.image = bytes;
 	}
+
 	public void setDispDate() {
-		this.dispStartDtm = LocalDateTime.of(LocalDate.parse(this.dispStart), LocalTime.of(00, 00, 00));
+		this.dispStartDtm =
+				LocalDateTime.of(LocalDate.parse(this.dispStart), LocalTime.of(00, 00, 00));
 		this.dispEndDtm = LocalDateTime.of(LocalDate.parse(this.dispEnd), LocalTime.of(23, 59, 59));
 	}
 }

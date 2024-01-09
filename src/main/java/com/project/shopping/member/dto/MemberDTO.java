@@ -29,7 +29,9 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 // setters response 보낼때 제외시킴, getters request 받을때 제외
-@JsonIgnoreProperties(value = { "changeBcryptPassword", "memberPassword", "setAuthNumber", "refreshToken" }, allowSetters = true)
+@JsonIgnoreProperties(
+		value = {"changeBcryptPassword", "memberPassword", "setAuthNumber", "refreshToken"},
+		allowSetters = true)
 public class MemberDTO implements UserDetails {
 
 	public MemberDTO(String memberNo, String memberName, String memberRole) {
@@ -79,7 +81,7 @@ public class MemberDTO implements UserDetails {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		this.memberPassword = encoder.encode(getMemberPassword());
 	}
-	
+
 	public void clearPassword() {
 		this.memberPassword = null;
 	}

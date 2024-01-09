@@ -26,7 +26,8 @@ public class UtilsData {
 	}
 
 	public static final String getFileBasePath() {
-		final String datePath = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhh"));
+		final String datePath =
+				LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhh"));
 		final String basePath = "d:\\devImages".concat(File.separator).concat(datePath);
 
 		return basePath;
@@ -36,15 +37,15 @@ public class UtilsData {
 		boolean result = true;
 
 		try {
-			if(file!=null && !file.isEmpty()) {
+			if (file != null && !file.isEmpty()) {
 				String fileName = file.getOriginalFilename();
 				File directory = new File(path);
 				File image = new File(path.concat(File.separator).concat(fileName));
 
-				if(!directory.exists()) {
+				if (!directory.exists()) {
 					directory.mkdirs();
 				}
-				
+
 				file.transferTo(image);
 			}
 		} catch (Exception e) {

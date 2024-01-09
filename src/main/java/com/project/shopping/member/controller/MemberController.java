@@ -26,12 +26,12 @@ public class MemberController {
 		// MemberDTO info = (MemberDTO) request.getSession().getAttribute("memberInfo");
 		Map<String, Object> defaultInfo = new HashMap<>();
 
-		if(memberService.checkToken(request)) {
-			Claims info =  UtilsMemberToken.getInfo(memberService.getToken(request));
+		if (memberService.checkToken(request)) {
+			Claims info = UtilsMemberToken.getInfo(memberService.getToken(request));
 			String memberNo = info.get("memberNo").toString();
 			String memberName = info.get("memberName").toString();
 			String memberRole = info.get("memberRole").toString();
-			
+
 			defaultInfo.put("memberNo", memberNo);
 			defaultInfo.put("memberName", memberName);
 			defaultInfo.put("memberRole", memberRole);

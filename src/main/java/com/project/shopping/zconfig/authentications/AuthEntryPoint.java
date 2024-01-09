@@ -12,14 +12,15 @@ import jakarta.servlet.http.HttpServletResponse;
 public class AuthEntryPoint implements AuthenticationEntryPoint {
 
 	@Override
-	public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
+	public void commence(HttpServletRequest request, HttpServletResponse response,
+			AuthenticationException authException) throws IOException, ServletException {
 		setResponse(response);
 	}
 
 	private void setResponse(HttpServletResponse response) throws IOException {
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "잘못된 접근입니다.");
-    }
-	
+		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "잘못된 접근입니다.");
+	}
+
 }

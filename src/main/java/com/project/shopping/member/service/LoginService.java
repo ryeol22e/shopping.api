@@ -29,7 +29,8 @@ public class LoginService implements UserDetailsService {
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		MemberDTO member = memberRepository.findByMemberId(username);
-		// HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+		// HttpServletRequest request = ((ServletRequestAttributes)
+		// RequestContextHolder.currentRequestAttributes()).getRequest();
 
 		try {
 			member.setAccessToken(UtilsMemberToken.createAccessToken(member));

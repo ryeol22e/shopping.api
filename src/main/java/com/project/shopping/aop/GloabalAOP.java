@@ -22,7 +22,9 @@ public class GloabalAOP {
 	// @annotation(org.springframework.web.bind.annotation.RestController)
 	@Before("execution(* com.project.shopping.*.controller.*Controller.*(..))")
 	public void insertRequestURI() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpServletRequest request =
+				((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
+						.getRequest();
 		String uri = request.getRequestURI();
 
 		log.info("request uri : {}", uri);
@@ -30,29 +32,30 @@ public class GloabalAOP {
 
 	@Before("execution(* com.project.shopping.display.controller.*Controller.*(..))")
 	public void setPageable(JoinPoint joinPoint) {
-		ProductDTO product = (ProductDTO) Stream.of(joinPoint.getArgs()).filter(ProductDTO.class::isInstance).findFirst().orElse(new ProductDTO());
-		
+		ProductDTO product = (ProductDTO) Stream.of(joinPoint.getArgs())
+				.filter(ProductDTO.class::isInstance).findFirst().orElse(new ProductDTO());
+
 		log.info("product dto : {}", product);
 		log.info("joinpoint signature : {}", joinPoint.getSignature());
 	}
 
 	@Around("(!execution(* com.project.shopping.member.service.MemberService.checkToken(..))"
-		+ "&& !execution(* com.project.shopping.member.service.MemberService.getToken(..))"
-		+ "&& execution(* com.project.shopping.*.service.*Service.*(..)))")
+			+ "&& !execution(* com.project.shopping.member.service.MemberService.getToken(..))"
+			+ "&& execution(* com.project.shopping.*.service.*Service.*(..)))")
 	public Object bussinessProcessTime(ProceedingJoinPoint joinPoint) {
 		Object res = null;
 		long start = System.nanoTime();
 
 		try {
-			res = joinPoint.proceed();	
+			res = joinPoint.proceed();
 		} catch (Throwable th) {
 			log.error("bussiness process error : {}", th.getMessage());
-		}
-		finally {
+		} finally {
 			long end = System.nanoTime();
-			log.info("bussiness service name : \"{}\", process time : {}",joinPoint.getSignature().getName(), ((double) end-start)/1000000000);
+			log.info("bussiness service name : \"{}\", process time : {}",
+					joinPoint.getSignature().getName(), ((double) end - start) / 1000000000);
 		}
-		
+
 		return res;
 	}
 }

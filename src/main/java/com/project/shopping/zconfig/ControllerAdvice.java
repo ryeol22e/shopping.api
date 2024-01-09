@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @RestControllerAdvice
 public class ControllerAdvice {
-	
+
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		binder.initDirectFieldAccess();
@@ -22,7 +22,7 @@ public class ControllerAdvice {
 	public ResponseEntity<String> exceptionHandler(HttpServletRequest request, Exception e) {
 		String message = e.getMessage();
 		log.error("uri : {}, message : {}", request.getRequestURI(), message);
-		
+
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
 	}
 }

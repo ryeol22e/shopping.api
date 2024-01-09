@@ -4,12 +4,13 @@ import java.util.function.Supplier;
 
 public class UseCase {
 	private UseCaseBuilder builder;
-	
+
 	private UseCase() {}
+
 	private UseCase(UseCaseBuilder builder) {
 		this.builder = builder;
 	}
-	
+
 	public static class UseCaseBuilder {
 		private int whenCount;
 		private int thenCount;
@@ -18,7 +19,7 @@ public class UseCase {
 		private Object data;
 
 		public UseCaseBuilder caseWhen(boolean bool) {
-			if(elseCount>0) {
+			if (elseCount > 0) {
 				throw new RuntimeException("anymore can\'t use caseWhen.");
 			}
 			whenCount++;
@@ -29,21 +30,21 @@ public class UseCase {
 
 		public UseCaseBuilder caseThen(Supplier<?> supplier) {
 			thenCount++;
-			if(whenCount!=thenCount) {
+			if (whenCount != thenCount) {
 				throw new RuntimeException("do not used \'caseWhen\'.");
 			}
 
 			data = supplier.get();
-			
+
 			return this;
 		}
 
 		public UseCaseBuilder caseThen(Runnable runnable) {
 			thenCount++;
-			if(whenCount!=thenCount) {
+			if (whenCount != thenCount) {
 				throw new RuntimeException("do not used \'caseWhen\'.");
 			}
-			if(this.bool) {
+			if (this.bool) {
 				runnable.run();
 			}
 
@@ -52,22 +53,22 @@ public class UseCase {
 
 		public UseCaseBuilder caseElse(Runnable runnable) {
 			elseCount++;
-			if(whenCount<elseCount) {
+			if (whenCount < elseCount) {
 				throw new RuntimeException("do not used \'caseWhen\'.");
 			}
-			if(!this.bool) {
+			if (!this.bool) {
 				runnable.run();
 			}
-			
+
 			return this;
 		}
 
 		public UseCaseBuilder caseElse(Supplier<?> supplier) {
 			elseCount++;
-			if(whenCount<elseCount) {
+			if (whenCount < elseCount) {
 				throw new RuntimeException("do not used \'caseWhen\'.");
 			}
-			if(!this.bool) {
+			if (!this.bool) {
 				data = supplier.get();
 			}
 

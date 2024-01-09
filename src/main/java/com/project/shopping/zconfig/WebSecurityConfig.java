@@ -8,7 +8,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
@@ -52,26 +51,25 @@ public class WebSecurityConfig {
 	 */
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http
-			.httpBasic(basic -> basic.disable())
-			.csrf(csrf -> csrf.disable())
-			.logout(logout-> logout.disable())
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable())
+				.logout(logout -> logout.disable())
+				.sessionManagement(
+						session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.formLogin(login -> {
-					login
-						.loginProcessingUrl("/api/member/login")
-						.usernameParameter("memberId")
-						.passwordParameter("memberPassword")
-						.successHandler(new LoginSuccessHandlers())
-						.failureHandler(new LoginFailHandlers())
-						.permitAll();
-				})
-				.logout(logout -> {
+					login.loginProcessingUrl("/api/member/login").usernameParameter("memberId")
+							.passwordParameter("memberPassword")
+							.successHandler(new LoginSuccessHandlers())
+							.failureHandler(new LoginFailHandlers()).permitAll();
+				}).logout(logout -> {
 					logout.logoutUrl("/api/member/logout")
-						.logoutSuccessHandler(new LogoutSuccessHandlers());
+							.logoutSuccessHandler(new LogoutSuccessHandlers());
 				})
-				.exceptionHandling(handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
+				.exceptionHandling(
+						handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
+
 				.authorizeHttpRequests()
+					.requestMatchers("/api/common/headers").permitAll()
+					.requestMatchers("/api/auth/check").permitAll()
 					.requestMatchers("/api/member/**").authenticated()
 					.requestMatchers("/api/auth/**").authenticated()
 					.requestMatchers("/api/chat/**").authenticated()
@@ -80,24 +78,12 @@ public class WebSecurityConfig {
 					.requestMatchers("/api/display/**").permitAll()
 					.requestMatchers("/api/product/**").permitAll()
 					.requestMatchers("/api/cate/**").permitAll()
-				.and()
-				.addFilterBefore(new ApiFilter(memberService), UsernamePasswordAuthenticationFilter.class);
+					.and()
+					.addFilterBefore(new ApiFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
 
-	/**
-	 * security ignore.
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
-	@Bean
-	WebSecurityCustomizer webSecurityCustomizer() throws Exception {
-		return (web) -> web.ignoring()
-				.requestMatchers("/api/common/headers")
-				.requestMatchers("/api/auth/check");
-	}
 
 	@Bean
 	CorsFilter corsFilter() {
@@ -105,7 +91,7 @@ public class WebSecurityConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		String clientURL = "https://".concat(profile).concat(".shoppingmall.com:7800");
 		List<String> ORIGIN_LIST = List.of(clientURL);
-		
+
 		config.setAllowCredentials(true);
 		config.setAllowedOrigins(ORIGIN_LIST);
 		config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
