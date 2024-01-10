@@ -14,15 +14,11 @@ public class ProductService {
 	private final ProductRepository productRepository;
 
 	public List<ProductDTO> getProductList(ProductDTO productDTO) {
-		List<ProductDTO> list = productRepository.findProductList(productDTO);
-
-		return list;
+		return productRepository.findProductList(productDTO);
 	}
 
 	public ProductDTO getProductDetail(String prdtNo) {
-		ProductDTO product = productRepository.findProduct(prdtNo);
-
-		return product;
+		return productRepository.findProduct(prdtNo);
 	}
 
 }
