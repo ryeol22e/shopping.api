@@ -51,6 +51,8 @@ public class WebSecurityConfig {
 	 */
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		final String[] IGNORE_PATH_ARRAY = {"/api/auth/check", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
+
 		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable())
 				.logout(logout -> logout.disable())
 				.sessionManagement(
@@ -68,16 +70,11 @@ public class WebSecurityConfig {
 						handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
 
 				.authorizeHttpRequests()
-				.requestMatchers("/api/common/headers").permitAll()
-				.requestMatchers("/api/auth/check").permitAll()
+				.requestMatchers(IGNORE_PATH_ARRAY).permitAll()
 				.requestMatchers("/api/member/**").authenticated()
 				.requestMatchers("/api/auth/**").authenticated()
 				.requestMatchers("/api/chat/**").authenticated()
 				.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
-				.requestMatchers("/api/common/**").permitAll()
-				.requestMatchers("/api/display/**").permitAll()
-				.requestMatchers("/api/product/**").permitAll()
-				.requestMatchers("/api/cate/**").permitAll()
 				.and()
 				.addFilterBefore(new ApiFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
@@ -89,7 +86,7 @@ public class WebSecurityConfig {
 	CorsFilter corsFilter() {
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		String clientURL = "https://".concat(profile).concat(".shoppingmall.com:7800");
+		final String clientURL = "https://".concat(profile).concat(".shoppingmall.com:7800");
 		List<String> ORIGIN_LIST = List.of(clientURL);
 
 		config.setAllowCredentials(true);
