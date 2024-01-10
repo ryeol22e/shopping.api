@@ -16,7 +16,7 @@ public enum MemberEnum {
 	}
 
 	public static Map<String, Object> getAdminData() {
-		Map<String, Object> admin = new HashMap<>(){
+		Map<String, Object> admin = new HashMap<>() {
 			{
 				put("ryeol22e", ADMIN.roleType);
 			}
