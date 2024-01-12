@@ -13,8 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class LoginSuccessHandlers implements AuthenticationSuccessHandler {
 	@Override
-	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
-			Authentication authentication) throws IOException, ServletException {
+	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		log.info("login success. > {}", authentication.getPrincipal());
 		MemberDTO member = (MemberDTO) authentication.getPrincipal();
 

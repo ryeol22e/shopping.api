@@ -28,12 +28,12 @@ public class ApiFilter extends OncePerRequestFilter {
 	private final MemberService memberService;
 
 	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
-			FilterChain filterChain) throws ServletException, IOException {
+	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 		Cookie[] cookies = Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]);
 		String token = Stream.of(cookies)
 				.filter(cookie -> "ACCESS_TOKEN".equalsIgnoreCase(cookie.getName()))
-				.map(cookie -> cookie.getValue()).findFirst().orElse("");
+				.map(cookie -> cookie.getValue())
+				.findFirst().orElse("");
 		String memberNo = "99999";
 		String memberName = MemberEnum.ANONYMOUS.name();
 		String memberRole = MemberEnum.ANONYMOUS.getValue();

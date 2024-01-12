@@ -22,9 +22,7 @@ public class GloabalAOP {
 	// @annotation(org.springframework.web.bind.annotation.RestController)
 	@Before("execution(* com.project.shopping.*.controller.*Controller.*(..))")
 	public void insertRequestURI() {
-		HttpServletRequest request =
-				((ServletRequestAttributes) RequestContextHolder.getRequestAttributes())
-						.getRequest();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String uri = request.getRequestURI();
 
 		log.info("request uri : {}", uri);

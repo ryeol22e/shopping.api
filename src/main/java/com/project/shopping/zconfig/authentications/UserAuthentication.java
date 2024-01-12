@@ -10,8 +10,7 @@ public class UserAuthentication extends UsernamePasswordAuthenticationToken {
 		super(principal, credentials);
 	}
 
-	public UserAuthentication(Object principal, String credentials,
-			List<GrantedAuthority> authorities) {
+	public UserAuthentication(Object principal, String credentials, List<GrantedAuthority> authorities) {
 		super(principal, credentials, authorities);
 	}
 }

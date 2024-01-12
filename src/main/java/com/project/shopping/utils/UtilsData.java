@@ -26,8 +26,7 @@ public class UtilsData {
 	}
 
 	public static final String getFileBasePath() {
-		final String datePath =
-				LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhh"));
+		final String datePath = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddhh"));
 		final String basePath = "d:\\devImages".concat(File.separator).concat(datePath);
 
 		return basePath;
