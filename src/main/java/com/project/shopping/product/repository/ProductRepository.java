@@ -2,9 +2,10 @@ package com.project.shopping.product.repository;
 
 import static com.project.shopping.product.dto.QProductDTO.productDTO;
 import java.util.List;
+import java.util.function.Function;
 import org.springframework.stereotype.Repository;
 import com.project.shopping.product.dto.ProductDTO;
-import com.project.shopping.utils.QueryBool;
+import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -15,14 +16,14 @@ public class ProductRepository {
 
 	public List<ProductDTO> findProductList(ProductDTO dto) {
 		final long limit = 6;
-		final QueryBool<String> prdtNoGt = (lastPrdtNo) -> !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productDTO.prdtNo.gt(lastPrdtNo) : null;
+		final Function<String, BooleanExpression> prdtNoGt = (lastPrdtNo) -> !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productDTO.prdtNo.gt(lastPrdtNo) : null;
 
 		return factory
 				.selectFrom(productDTO).where(
 						productDTO.cateNo.eq(dto.getCateNo()),
 						productDTO.useYn.eq(dto.getUseYn()),
 						productDTO.dispYn.eq(dto.getDispYn()),
-						prdtNoGt.getExpression(dto.getLastPrdtNo()))
+						prdtNoGt.apply(dto.getLastPrdtNo()))
 				.orderBy(productDTO.prdtNo.asc())
 				.limit(limit)
 				.fetch();

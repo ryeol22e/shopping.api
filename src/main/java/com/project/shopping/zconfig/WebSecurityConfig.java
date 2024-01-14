@@ -53,13 +53,13 @@ public class WebSecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		final String[] IGNORE_PATH_ARRAY = {"/api/auth/check", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
 
-		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable()).logout(logout -> logout.disable())
+		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable())
 				.sessionManagement(
 						session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.formLogin(login -> {
 					login.loginProcessingUrl("/api/member/login").usernameParameter("memberId")
 							.passwordParameter("memberPassword")
-							.successHandler(new LoginSuccessHandlers())
+							.successHandler(new LoginSuccessHandlers()).permitAll()
 							.failureHandler(new LoginFailHandlers()).permitAll();
 				}).logout(logout -> {
 					logout.logoutUrl("/api/member/logout")

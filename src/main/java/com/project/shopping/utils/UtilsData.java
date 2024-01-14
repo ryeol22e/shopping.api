@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class UtilsData {
+	@Deprecated
 	public static byte[] getBlobToByte(Blob blob) {
 		byte[] bytes = {};
 
