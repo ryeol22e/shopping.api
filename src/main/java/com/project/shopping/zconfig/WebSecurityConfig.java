@@ -22,12 +22,10 @@ import com.project.shopping.zconfig.filters.ApiFilter;
 import com.project.shopping.zconfig.handler.LoginFailHandlers;
 import com.project.shopping.zconfig.handler.LoginSuccessHandlers;
 import com.project.shopping.zconfig.handler.LogoutSuccessHandlers;
-import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
-@EnableEncryptableProperties
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")

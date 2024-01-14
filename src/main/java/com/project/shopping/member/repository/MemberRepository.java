@@ -22,9 +22,9 @@ public class MemberRepository {
 
 	public String findRefreshByAccess(String accessToken) {
 		return factory.select(memberDTO.refreshToken)
-			.from(memberDTO)
-			.where(memberDTO.accessToken.eq(accessToken))
-			.fetchOne();
+				.from(memberDTO)
+				.where(memberDTO.accessToken.eq(accessToken))
+				.fetchOne();
 	}
 
 	public long save(MemberDTO dto) {
