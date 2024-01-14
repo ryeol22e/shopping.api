@@ -53,8 +53,7 @@ public class WebSecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		final String[] IGNORE_PATH_ARRAY = {"/api/auth/check", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
 
-		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable())
-				.logout(logout -> logout.disable())
+		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable()).logout(logout -> logout.disable())
 				.sessionManagement(
 						session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 				.formLogin(login -> {
@@ -84,10 +83,9 @@ public class WebSecurityConfig {
 
 	@Bean
 	CorsFilter corsFilter() {
+		final List<String> ORIGIN_LIST = List.of("https://".concat(profile).concat(".shoppingmall.com:7800"));
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-		final String clientURL = "https://".concat(profile).concat(".shoppingmall.com:7800");
-		List<String> ORIGIN_LIST = List.of(clientURL);
 
 		config.setAllowCredentials(true);
 		config.setAllowedOrigins(ORIGIN_LIST);

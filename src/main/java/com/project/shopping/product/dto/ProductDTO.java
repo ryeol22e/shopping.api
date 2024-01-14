@@ -42,6 +42,8 @@ public class ProductDTO {
 	private String sellPrice;
 	private String imagePath;
 	private String imageName;
+	@Transient
+	private String lastPrdtNo;
 	@CreationTimestamp
 	private LocalDateTime regDtime = LocalDateTime.now();
 	@UpdateTimestamp
@@ -51,15 +53,15 @@ public class ProductDTO {
 
 	public void setImageData(String imagePath, String imageName) {
 		this.imagePath = imagePath;
-		this.imageName = imageName;	
+		this.imageName = imageName;
 	}
 
 	public String getImageFullPath() {
 		String imageFullPath = "";
-		if(this.imagePath!=null && this.imageName!=null) {
+		if (this.imagePath != null && this.imageName != null) {
 			imageFullPath = this.imagePath.concat(File.separator).concat(this.imageName);
 		}
-		
+
 		return imageFullPath;
 	}
 }

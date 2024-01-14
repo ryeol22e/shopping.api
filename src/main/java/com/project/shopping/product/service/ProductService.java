@@ -14,6 +14,7 @@ public class ProductService {
 	private final ProductRepository productRepository;
 
 	public List<ProductDTO> getProductList(ProductDTO productDTO) {
+		log.info(":::::::::::::::::::::::::::::::::::::::::::::::::::::: {}", productDTO.getLastPrdtNo());
 		return productRepository.findProductList(productDTO);
 	}
 

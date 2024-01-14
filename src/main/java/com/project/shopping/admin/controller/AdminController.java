@@ -24,15 +24,15 @@ public class AdminController {
 	public ResponseEntity<List<CodeFieldDTO>> getMenu(CodeFieldDTO param) throws Exception {
 		return ResponseEntity.ok(adminService.getAdminMenuList(param));
 	}
-	
+
 	@PostMapping("/banner/save")
 	public ResponseEntity<Boolean> registBanner(BannerDTO param) throws Exception {
 		return ResponseEntity.ok(adminService.registBanner(param));
 	}
 
-	@PostMapping("/{prdtNo}")
+	@PostMapping("/product/{prdtNo}")
 	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductDTO parameter) {
 		return ResponseEntity.ok(adminService.saveProduct(parameter));
 	}
-	
+
 }
