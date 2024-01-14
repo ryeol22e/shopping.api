@@ -22,10 +22,12 @@ import com.project.shopping.zconfig.filters.ApiFilter;
 import com.project.shopping.zconfig.handler.LoginFailHandlers;
 import com.project.shopping.zconfig.handler.LoginSuccessHandlers;
 import com.project.shopping.zconfig.handler.LogoutSuccessHandlers;
+import com.ulisesbocchio.jasyptspringboot.annotation.EnableEncryptableProperties;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@EnableEncryptableProperties
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
@@ -68,13 +70,13 @@ public class WebSecurityConfig {
 				.exceptionHandling(
 						handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
 
-				.authorizeHttpRequests()
-				.requestMatchers(IGNORE_PATH_ARRAY).permitAll()
-				.requestMatchers("/api/member/**").authenticated()
-				.requestMatchers("/api/auth/**").authenticated()
-				.requestMatchers("/api/chat/**").authenticated()
-				.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue())
-				.and()
+				.authorizeHttpRequests(auth -> {
+					auth.requestMatchers(IGNORE_PATH_ARRAY).permitAll();
+					auth.requestMatchers("/api/member/**").authenticated();
+					auth.requestMatchers("/api/auth/**").authenticated();
+					auth.requestMatchers("/api/chat/**").authenticated();
+					auth.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue());
+				})
 				.addFilterBefore(new ApiFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();

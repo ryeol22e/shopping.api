@@ -1,6 +1,7 @@
 package com.project.shopping.product.dto;
 
 import java.io.File;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -26,7 +27,7 @@ import lombok.ToString;
 @Table(name = "PRODUCT_TABLE")
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {}, allowSetters = true)
-public class ProductDTO {
+public class ProductDTO implements Serializable {
 	@Id
 	@Column(name = "PRDT_INDEX")
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)

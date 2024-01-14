@@ -1,6 +1,6 @@
 plugins {
-	id 'org.springframework.boot' version '3.0.0'
-	id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+	id 'org.springframework.boot' version '3.1.7'
+	id 'io.spring.dependency-management' version '1.0.14.RELEASE'
 	id 'java'
 }
 
@@ -24,11 +24,11 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-aop' 
-	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+	implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.5'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 	implementation "com.querydsl:querydsl-jpa:5.0.0:jakarta"	
-	implementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0"
+	implementation "com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.1"
 
 	annotationProcessor 'org.projectlombok:lombok'
 	annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
@@ -36,7 +36,7 @@ dependencies {
 	annotationProcessor 'jakarta.annotation:jakarta.annotation-api'
 
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'mysql:mysql-connector-java'
+	runtimeOnly 'com.mysql:mysql-connector-j'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

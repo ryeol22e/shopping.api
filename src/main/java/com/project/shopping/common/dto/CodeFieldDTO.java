@@ -1,5 +1,6 @@
 package com.project.shopping.common.dto;
 
+import java.io.Serializable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,7 +15,7 @@ import lombok.ToString;
 @Entity
 @Table(name = "COMMON_FIELD")
 @NoArgsConstructor
-public class CodeFieldDTO {
+public class CodeFieldDTO implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codeId;

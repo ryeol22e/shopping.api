@@ -1,5 +1,6 @@
 package com.project.shopping.display.dto;
 
+import java.io.Serializable;
 import java.sql.Blob;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -28,7 +29,7 @@ import lombok.ToString;
 @Table(name = "BANNER_TABLE")
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"imageData"}, allowSetters = true)
-public class BannerDTO {
+public class BannerDTO implements Serializable {
 
 	@Id
 	@Column(name = "id")
