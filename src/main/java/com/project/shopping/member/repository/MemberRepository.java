@@ -12,30 +12,30 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class MemberRepository {
-	private final JPAQueryFactory factory;
+	private final JPAQueryFactory mysqlFactory;
 
 	public MemberDTO findByMemberId(String loginId) {
-		return factory.selectFrom(memberDTO)
+		return mysqlFactory.selectFrom(memberDTO)
 				.where(memberDTO.memberId.eq(loginId))
 				.fetchOne();
 	}
 
 	public String findRefreshByAccess(String accessToken) {
-		return factory.select(memberDTO.refreshToken)
+		return mysqlFactory.select(memberDTO.refreshToken)
 				.from(memberDTO)
 				.where(memberDTO.accessToken.eq(accessToken))
 				.fetchOne();
 	}
 
 	public long save(MemberDTO dto) {
-		return factory.insert(memberDTO)
+		return mysqlFactory.insert(memberDTO)
 				.columns(memberDTO).values(dto)
 				.execute();
 	}
 
 	@Transactional(value = TxType.REQUIRES_NEW)
 	public long updateLoginDate(MemberDTO dto) {
-		return factory.update(memberDTO)
+		return mysqlFactory.update(memberDTO)
 				.set(memberDTO.loginDtm, LocalDateTime.now())
 				.set(memberDTO.accessToken, dto.getAccessToken())
 				.set(memberDTO.refreshToken, dto.getRefreshToken())

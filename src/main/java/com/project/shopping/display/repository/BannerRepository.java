@@ -10,16 +10,16 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class BannerRepository {
-	private final JPAQueryFactory jpaQueryFactory;
+	private final JPAQueryFactory mysqlFactory;
 
 	public List<BannerDTO> findByBannerList(BannerDTO dto) {
-		return jpaQueryFactory.selectFrom(bannerDTO)
+		return mysqlFactory.selectFrom(bannerDTO)
 				.where(bannerDTO.bannerType.eq(dto.getBannerType()),
 						bannerDTO.useYn.eq(dto.getUseYn()), bannerDTO.dispYn.eq(dto.getDispYn()))
 				.fetch();
 	}
 
 	public long save(BannerDTO dto) {
-		return jpaQueryFactory.insert(bannerDTO).columns(bannerDTO).values(dto).execute();
+		return mysqlFactory.insert(bannerDTO).columns(bannerDTO).values(dto).execute();
 	}
 }

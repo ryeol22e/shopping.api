@@ -9,11 +9,11 @@ import jakarta.persistence.PersistenceContext;
 @Configuration
 public class QueryDslConfig {
 
-	@PersistenceContext
-	private EntityManager entityManager;
+	@PersistenceContext(unitName = "mysqlEntityManager")
+	private EntityManager mysqlEntityManager;
 
-	@Bean
-	JPAQueryFactory jpaQueryFactory() {
-		return new JPAQueryFactory(entityManager);
+	@Bean(name = "mysqlFactory")
+	JPAQueryFactory mysqlFactory() {
+		return new JPAQueryFactory(mysqlEntityManager);
 	}
 }

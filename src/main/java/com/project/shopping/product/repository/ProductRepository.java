@@ -12,13 +12,13 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class ProductRepository {
-	private final JPAQueryFactory factory;
+	private final JPAQueryFactory mysqlFactory;
 
 	public List<ProductDTO> findProductList(ProductDTO dto) {
 		final long limit = 6;
 		final Function<String, BooleanExpression> prdtNoGt = (lastPrdtNo) -> !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productDTO.prdtNo.gt(lastPrdtNo) : null;
 
-		return factory
+		return mysqlFactory
 				.selectFrom(productDTO).where(
 						productDTO.cateNo.eq(dto.getCateNo()),
 						productDTO.useYn.eq(dto.getUseYn()),
@@ -30,11 +30,11 @@ public class ProductRepository {
 	}
 
 	public ProductDTO findProduct(String prdtNo) {
-		return factory.selectFrom(productDTO).where(productDTO.prdtNo.eq(prdtNo)).fetchOne();
+		return mysqlFactory.selectFrom(productDTO).where(productDTO.prdtNo.eq(prdtNo)).fetchOne();
 	}
 
 	public long save(ProductDTO dto) {
-		return factory.insert(productDTO)
+		return mysqlFactory.insert(productDTO)
 				.columns(productDTO.cateNo, productDTO.prdtNo, productDTO.prdtName,
 						productDTO.dispYn, productDTO.useYn, productDTO.normalPrice,
 						productDTO.sellPrice, productDTO.imagePath, productDTO.imageName,

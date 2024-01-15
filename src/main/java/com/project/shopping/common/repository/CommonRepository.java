@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class CommonRepository {
-	private final JPAQueryFactory factory;
+	private final JPAQueryFactory mysqlFactory;
 
 	public List<CodeFieldDTO> findByCommonCodeList(CodeFieldDTO dto) {
-		return factory.selectFrom(codeFieldDTO)
+		return mysqlFactory.selectFrom(codeFieldDTO)
 				.where(codeFieldDTO.codeType.eq(dto.getCodeType()),
 						codeFieldDTO.codeDepth.eq(dto.getCodeDepth()),
 						codeFieldDTO.useYn.eq(dto.getUseYn()))

@@ -18,11 +18,12 @@ spring:
   #   url: mysql://localhost:3306/messenger?useUnicode=true&characterEncoding=utf8
   #   username: root
   #   password: root
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
-    username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
-    password: ENC(wjWTVtQJFy4hqEvJtDRSGw==)
+  datasource-mysql:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
+      username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
+      password: ENC(wjWTVtQJFy4hqEvJtDRSGw==)
   jpa:
     show-sql: true
     hibernate:

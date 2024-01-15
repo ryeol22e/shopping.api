@@ -10,10 +10,10 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class CategoryRepository {
-	private final JPAQueryFactory factory;
+	private final JPAQueryFactory mysqlFactory;
 
 	public List<CategoryDTO> findUpCateList(CategoryDTO dto) {
-		return factory.selectFrom(categoryDTO).where(
+		return mysqlFactory.selectFrom(categoryDTO).where(
 				dto.getUpCateNo() == null ? null : categoryDTO.upCateNo.eq(dto.getUpCateNo()),
 				categoryDTO.useYn.eq(dto.getUseYn()), categoryDTO.dispYn.eq(dto.getDispYn()))
 				.fetch();
