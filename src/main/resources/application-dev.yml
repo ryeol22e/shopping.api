@@ -10,3 +10,9 @@ spring:
       - dev
     import:
     - classpath:/application-dev.yml
+  datasource-mysql:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: 
+      username: 
+      password: 
