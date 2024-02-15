@@ -3,6 +3,7 @@ package com.project.shopping.product.repository;
 import static com.project.shopping.product.dto.QProductDTO.productDTO;
 import java.util.List;
 import java.util.function.Function;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 import com.project.shopping.product.dto.ProductDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
@@ -12,13 +13,14 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class ProductRepository {
-	private final JPAQueryFactory mysqlFactory;
+	@Qualifier(value = "mariadbFactory")
+	private final JPAQueryFactory mariadbFactory;
 
 	public List<ProductDTO> findProductList(ProductDTO dto) {
 		final long limit = 6;
 		final Function<String, BooleanExpression> prdtNoGt = (lastPrdtNo) -> !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productDTO.prdtNo.gt(lastPrdtNo) : null;
 
-		return mysqlFactory
+		return mariadbFactory
 				.selectFrom(productDTO).where(
 						productDTO.cateNo.eq(dto.getCateNo()),
 						productDTO.useYn.eq(dto.getUseYn()),
@@ -30,11 +32,11 @@ public class ProductRepository {
 	}
 
 	public ProductDTO findProduct(String prdtNo) {
-		return mysqlFactory.selectFrom(productDTO).where(productDTO.prdtNo.eq(prdtNo)).fetchOne();
+		return mariadbFactory.selectFrom(productDTO).where(productDTO.prdtNo.eq(prdtNo)).fetchOne();
 	}
 
 	public long save(ProductDTO dto) {
-		return mysqlFactory.insert(productDTO)
+		return mariadbFactory.insert(productDTO)
 				.columns(productDTO.cateNo, productDTO.prdtNo, productDTO.prdtName,
 						productDTO.dispYn, productDTO.useYn, productDTO.normalPrice,
 						productDTO.sellPrice, productDTO.imagePath, productDTO.imageName,

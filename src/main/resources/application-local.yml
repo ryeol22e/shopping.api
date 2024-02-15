@@ -24,6 +24,12 @@ spring:
       jdbc-url: jdbc:mysql://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
       username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
       password: ENC(wjWTVtQJFy4hqEvJtDRSGw==)
+  datasource-mariadb:
+    hikari:
+      driver-class-name: org.mariadb.jdbc.Driver
+      jdbc-url: jdbc:mariadb://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
+      username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
+      password: ENC(WtVtMmFZZbVQqIYLF3Elng==)
   jpa:
     show-sql: true
     hibernate:

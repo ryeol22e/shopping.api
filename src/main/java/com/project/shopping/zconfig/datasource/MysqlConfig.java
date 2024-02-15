@@ -1,4 +1,4 @@
-package com.project.shopping.zconfig.database;
+package com.project.shopping.zconfig.datasource;
 
 import java.util.Map;
 import javax.sql.DataSource;
@@ -11,7 +11,6 @@ import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -30,14 +29,12 @@ public class MysqlConfig {
 	private final HibernateProperties hibernateProperties;
 
 	@Bean
-	@Primary
 	@ConfigurationProperties(prefix = "spring.datasource-mysql.hikari")
 	DataSource mysqlDataSource() {
 		return DataSourceBuilder.create().build();
 	}
 
 	@Bean
-	@Primary
 	LocalContainerEntityManagerFactoryBean mysqlEntityManagerFactory(EntityManagerFactoryBuilder builder) {
 		Map<String, Object> propertiesMap = hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
 
@@ -49,7 +46,6 @@ public class MysqlConfig {
 	}
 
 	@Bean
-	@Primary
 	PlatformTransactionManager mysqlTransactionManager(@Qualifier("mysqlEntityManagerFactory") LocalContainerEntityManagerFactoryBean factoryBean) {
 		return new JpaTransactionManager(factoryBean.getObject());
 	}
