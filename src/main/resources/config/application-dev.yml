@@ -1,15 +1,8 @@
-server:
-  port: 8900
-
 spring:
-  application:
-    name: shopping.api
   config:
     activate:
       on-profile:
       - dev
-    import:
-    - classpath:/application-dev.yml
   datasource-mysql:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver

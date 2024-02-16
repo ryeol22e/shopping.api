@@ -1,0 +1,13 @@
+server:
+  port: 9900
+
+spring:
+  profiles:
+    active: local
+  application:
+    name: shopping.api
+  config:
+    additional-location: classpath:/config/
+  
+  
+

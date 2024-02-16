@@ -1,15 +1,8 @@
-server:
-  port: 9900
-
 spring:
-  application:
-    name: shopping.api
   config:
     activate:
       on-profile:
       - local
-    import:
-    - classpath:/application-local.yml
   servlet:
     multipart:
       maxFileSize: 10MB
