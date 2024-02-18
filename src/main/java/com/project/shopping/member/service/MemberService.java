@@ -2,6 +2,7 @@ package com.project.shopping.member.service;
 
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import com.project.shopping.member.dto.MemberDTO;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
@@ -28,6 +29,7 @@ public class MemberService {
 		return authNumber;
 	}
 
+	@Transactional
 	public Boolean joinMember(MemberDTO member) {
 		Boolean result = false;
 

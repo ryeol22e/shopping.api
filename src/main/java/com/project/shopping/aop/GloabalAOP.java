@@ -47,7 +47,7 @@ public class GloabalAOP {
 		try {
 			res = joinPoint.proceed();
 		} catch (Throwable th) {
-			log.error("bussiness process error : {}", th.getMessage());
+			log.error("bussiness process error : ", th);
 		} finally {
 			long end = System.nanoTime();
 			log.info("bussiness service name : \"{}\", process time : {}",

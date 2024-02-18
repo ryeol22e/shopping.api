@@ -21,7 +21,7 @@ public class ControllerAdvice {
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<String> exceptionHandler(HttpServletRequest request, Exception e) {
 		String message = e.getMessage();
-		log.error("uri : {}, message : {}", request.getRequestURI(), message);
+		log.error("uri : {}, reason : {}", request.getRequestURI(), e);
 
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
 	}

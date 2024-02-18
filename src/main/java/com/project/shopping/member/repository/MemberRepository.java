@@ -31,7 +31,22 @@ public class MemberRepository {
 
 	public long save(MemberDTO dto) {
 		return mariadbFactory.insert(memberDTO)
-				.columns(memberDTO).values(dto)
+				.columns(memberDTO.memberId,
+						memberDTO.memberName,
+						memberDTO.memberPassword,
+						memberDTO.memberAddr,
+						memberDTO.memberEmail,
+						memberDTO.memberRole,
+						memberDTO.authNumber,
+						memberDTO.joinDtm)
+				.values(dto.getMemberId(),
+						dto.getMemberName(),
+						dto.getMemberPassword(),
+						dto.getMemberAddr(),
+						dto.getMemberEmail(),
+						dto.getMemberRole(),
+						dto.getAuthNumber(),
+						dto.getJoinDtm())
 				.execute();
 	}
 

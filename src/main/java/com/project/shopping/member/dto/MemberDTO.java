@@ -42,7 +42,7 @@ public class MemberDTO implements UserDetails {
 
 	@Id
 	@Column(name = "MEMBER_NO")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memberNo;
 	@Id
 	@Column(name = "MEMBER_ID")

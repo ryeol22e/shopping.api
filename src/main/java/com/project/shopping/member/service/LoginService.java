@@ -27,8 +27,8 @@ public class LoginService implements UserDetailsService {
 	 * 로그인
 	 */
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		MemberDTO member = memberRepository.findByMemberId(username);
+	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
+		MemberDTO member = memberRepository.findByMemberId(memberId);
 		// HttpServletRequest request = ((ServletRequestAttributes)
 		// RequestContextHolder.currentRequestAttributes()).getRequest();
 
