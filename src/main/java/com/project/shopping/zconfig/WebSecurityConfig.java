@@ -1,6 +1,5 @@
 package com.project.shopping.zconfig;
 
-import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -30,6 +29,8 @@ import lombok.RequiredArgsConstructor;
 public class WebSecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
+	@Value("${client.url}")
+	private String clientUrl;
 	private final MemberService memberService;
 
 	/**
@@ -83,12 +84,13 @@ public class WebSecurityConfig {
 
 	@Bean
 	CorsFilter corsFilter() {
-		final List<String> ORIGIN_LIST = List.of("https://".concat(profile).concat(".shoppingmall.com:7800"));
 		CorsConfiguration config = new CorsConfiguration();
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
 		config.setAllowCredentials(true);
-		config.setAllowedOrigins(ORIGIN_LIST);
+		// config.setAllowedOrigins(ORIGIN_LIST);
+
+		config.addAllowedOrigin(clientUrl);
 		config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
 		config.addAllowedHeader(HttpHeaders.AUTHORIZATION);
 		config.addAllowedMethod(HttpMethod.GET);
