@@ -30,7 +30,7 @@ public class MariaDBConfig {
 
 	@Bean
 	@Primary
-	@ConfigurationProperties(prefix = "spring.datasource-mariadb.hikari")
+	@ConfigurationProperties(prefix = "datasource.mariadb.hikari")
 	DataSource mariaDataSource() {
 		return DataSourceBuilder.create().build();
 	}

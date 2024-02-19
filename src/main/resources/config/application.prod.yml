@@ -1,11 +1,19 @@
-spring:
-  config:
-    activate:
-      on-profile:
-      - prod
-  datasource-mysql:
+datasource:
+  mysql:
     hikari:
       driver-class-name: com.mysql.cj.jdbc.Driver
       jdbc-url: 
       username: 
       password: 
+  mariadb:
+    hikari:
+      driver-class-name: org.mariadb.jdbc.Driver
+      jdbc-url: 
+      username: 
+      password: 
+
+spring:
+  config:
+    activate:
+      on-profile:
+      - prod

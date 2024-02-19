@@ -1,3 +1,17 @@
+datasource:
+  mysql:
+    hikari:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      jdbc-url: jdbc:mysql://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
+      username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
+      password: ENC(wjWTVtQJFy4hqEvJtDRSGw==)
+  mariadb:
+    hikari:
+      driver-class-name: org.mariadb.jdbc.Driver
+      jdbc-url: jdbc:mariadb://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
+      username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
+      password: ENC(WtVtMmFZZbVQqIYLF3Elng==)
+
 spring:
   config:
     activate:
@@ -11,25 +25,6 @@ spring:
   #   url: mysql://localhost:3306/messenger?useUnicode=true&characterEncoding=utf8
   #   username: root
   #   password: root
-  datasource-mysql:
-    hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
-      jdbc-url: jdbc:mysql://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
-      username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
-      password: ENC(wjWTVtQJFy4hqEvJtDRSGw==)
-  datasource-mariadb:
-    hikari:
-      driver-class-name: org.mariadb.jdbc.Driver
-      jdbc-url: jdbc:mariadb://localhost:3306/shoppingmall?useUnicode=true?serverTimezone=Asia/Seoul&characterEncoding=utf8
-      username: ENC(WtVtMmFZZbVQqIYLF3Elng==)
-      password: ENC(WtVtMmFZZbVQqIYLF3Elng==)
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        "[format_sql]": true
 logging:
   level:
     org:

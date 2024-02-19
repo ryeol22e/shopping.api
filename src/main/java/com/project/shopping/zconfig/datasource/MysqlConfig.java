@@ -31,7 +31,7 @@ public class MysqlConfig {
 	private final HibernateProperties hibernateProperties;
 
 	@Bean
-	@ConfigurationProperties(prefix = "spring.datasource-mysql.hikari")
+	@ConfigurationProperties(prefix = "datasource.mysql.hikari")
 	DataSource mysqlDataSource() {
 		return DataSourceBuilder.create().build();
 	}

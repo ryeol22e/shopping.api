@@ -8,6 +8,13 @@ spring:
     name: shopping.api
   config:
     additional-location: classpath:/config/
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        "[format_sql]": true
   
   
 
