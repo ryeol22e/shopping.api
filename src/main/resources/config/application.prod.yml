@@ -1,13 +1,13 @@
 datasource:
   mysql:
     hikari:
-      driver-class-name: com.mysql.cj.jdbc.Driver
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
       jdbc-url: 
       username: 
       password: 
   mariadb:
     hikari:
-      driver-class-name: org.mariadb.jdbc.Driver
+      driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
       jdbc-url: 
       username: 
       password: 
