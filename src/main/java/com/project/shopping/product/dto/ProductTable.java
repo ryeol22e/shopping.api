@@ -24,16 +24,16 @@ import lombok.ToString;
 @Entity
 @ToString
 @IdClass(value = ProductPK.class)
-@Table(name = "PRODUCT_TABLE")
+@Table
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {}, allowSetters = true)
-public class ProductDTO implements Serializable {
+public class ProductTable implements Serializable {
 	@Id
-	@Column(name = "PRDT_INDEX")
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@Column
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long prdtIndex;
 	@Id
-	@Column(name = "PRDT_NO")
+	@Column
 	private String prdtNo;
 	private String cateNo;
 	private String prdtName;

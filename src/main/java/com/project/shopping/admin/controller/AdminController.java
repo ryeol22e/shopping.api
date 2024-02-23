@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.project.shopping.admin.service.AdminService;
-import com.project.shopping.common.dto.CodeFieldDTO;
-import com.project.shopping.display.dto.BannerDTO;
-import com.project.shopping.product.dto.ProductDTO;
+import com.project.shopping.common.dto.CommonField;
+import com.project.shopping.display.dto.BannerTable;
+import com.project.shopping.product.dto.ProductTable;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -21,17 +21,17 @@ public class AdminController {
 
 
 	@GetMapping("/menu")
-	public ResponseEntity<List<CodeFieldDTO>> getMenu(CodeFieldDTO param) throws Exception {
+	public ResponseEntity<List<CommonField>> getMenu(CommonField param) throws Exception {
 		return ResponseEntity.ok(adminService.getAdminMenuList(param));
 	}
 
 	@PostMapping("/banner/save")
-	public ResponseEntity<Boolean> registBanner(BannerDTO param) throws Exception {
+	public ResponseEntity<Boolean> registBanner(BannerTable param) throws Exception {
 		return ResponseEntity.ok(adminService.registBanner(param));
 	}
 
 	@PostMapping("/product/{prdtNo}")
-	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductDTO parameter) {
+	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductTable parameter) {
 		return ResponseEntity.ok(adminService.saveProduct(parameter));
 	}
 

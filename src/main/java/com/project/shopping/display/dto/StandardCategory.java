@@ -2,7 +2,6 @@ package com.project.shopping.display.dto;
 
 import java.io.Serializable;
 import com.project.shopping.display.dto.pk.CategoryPK;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -19,13 +18,11 @@ import lombok.ToString;
 @IdClass(CategoryPK.class)
 @Table(name = "STANDARD_CATEGORY")
 @NoArgsConstructor
-public class CategoryDTO implements Serializable {
+public class StandardCategory implements Serializable {
 	@Id
-	@Column(name = "CATE_ID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cateId;
 	@Id
-	@Column(name = "CATE_NO")
 	private String cateNo;
 	private String cateDepth;
 	private String upCateNo;

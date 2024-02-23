@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.project.shopping.display.dto.BannerDTO;
+import com.project.shopping.display.dto.BannerTable;
 import com.project.shopping.display.repository.BannerRepository;
 import com.project.shopping.utils.UtilsData;
 
@@ -16,15 +16,15 @@ import lombok.RequiredArgsConstructor;
 public class DisplayService {
 	private final BannerRepository bannerRepository;
 
-	public List<BannerDTO> getBannerList(BannerDTO dto) {
+	public List<BannerTable> getBannerList(BannerTable dto) {
 		LocalDateTime today = LocalDateTime.now();
-		List<BannerDTO> list = bannerRepository.findByBannerList(dto).stream()
+		List<BannerTable> list = bannerRepository.findByBannerList(dto).stream()
 				.filter(x -> today.compareTo(x.getDispStartDtm()) >= 0
 						&& today.compareTo(x.getDispEndDtm()) <= 0)
 				.toList();
 
 		for (int i = 0, size = list.size(); i < size; i++) {
-			BannerDTO banner = list.get(i);
+			BannerTable banner = list.get(i);
 
 			if (banner.getImageData() != null) {
 				banner.setImage(UtilsData.getBlobToByte(banner.getImageData()));

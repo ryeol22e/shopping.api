@@ -4,7 +4,7 @@ import java.time.Duration;
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import com.project.shopping.member.dto.MemberDTO;
+import com.project.shopping.member.dto.MemberTable;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
@@ -26,7 +26,7 @@ public class UtilsMemberToken {
 	 * @param email
 	 * @return
 	 */
-	public static String createAccessToken(MemberDTO member) {
+	public static String createAccessToken(MemberTable member) {
 		Date now = new Date();
 
 		return Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE).setIssuer("fresh")
@@ -43,7 +43,7 @@ public class UtilsMemberToken {
 	 * @param member
 	 * @return
 	 */
-	public static String createRefreshToken(MemberDTO member) {
+	public static String createRefreshToken(MemberTable member) {
 		Date now = new Date();
 
 		return Jwts.builder().setHeaderParam(Header.TYPE, Header.JWT_TYPE).setIssuer("fresh")

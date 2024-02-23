@@ -12,6 +12,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+      naming:
+        physical-strategy: com.project.shopping.zconfig.JpaNamingStrategy
     properties:
       hibernate:
         "[format_sql]": true

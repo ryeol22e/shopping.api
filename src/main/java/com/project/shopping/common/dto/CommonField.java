@@ -13,9 +13,9 @@ import lombok.ToString;
 @Getter
 @ToString
 @Entity
-@Table(name = "COMMON_FIELD")
+@Table
 @NoArgsConstructor
-public class CodeFieldDTO implements Serializable {
+public class CommonField implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long codeId;

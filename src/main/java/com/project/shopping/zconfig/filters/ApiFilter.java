@@ -9,7 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.web.filter.OncePerRequestFilter;
-import com.project.shopping.member.dto.MemberDTO;
+import com.project.shopping.member.dto.MemberTable;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.service.MemberService;
 import com.project.shopping.utils.UtilsMemberToken;
@@ -57,7 +57,7 @@ public class ApiFilter extends OncePerRequestFilter {
 		GrantedAuthority authority = new SimpleGrantedAuthority(memberRole);
 		List<GrantedAuthority> authorities = List.of(authority);
 		UserAuthentication authentication = new UserAuthentication(
-				new MemberDTO(memberNo, memberName, memberRole), null, authorities);
+				new MemberTable(Long.parseLong(memberNo), memberName, memberRole), null, authorities);
 
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authentication);

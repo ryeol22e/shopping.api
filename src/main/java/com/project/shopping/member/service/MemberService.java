@@ -3,7 +3,7 @@ package com.project.shopping.member.service;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.project.shopping.member.dto.MemberDTO;
+import com.project.shopping.member.dto.MemberTable;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.utils.UtilsMemberToken;
@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 public class MemberService {
 	private final MemberRepository memberRepository;
 
-	public String authNumber(MemberDTO member) {
+	public String authNumber(MemberTable member) {
 		log.info("data : {}", member);
 		String authNumber = String.valueOf(Math.floor(Math.random() * 900000));
 
@@ -30,7 +30,7 @@ public class MemberService {
 	}
 
 	@Transactional
-	public Boolean joinMember(MemberDTO member) {
+	public Boolean joinMember(MemberTable member) {
 		Boolean result = false;
 
 		member.changeBcryptPassword();

@@ -1,10 +1,10 @@
 package com.project.shopping.common.repository;
 
-import static com.project.shopping.common.dto.QCodeFieldDTO.codeFieldDTO;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import com.project.shopping.common.dto.CodeFieldDTO;
+import com.project.shopping.common.dto.CommonField;
+import com.project.shopping.common.dto.QCommonField;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
 
@@ -14,11 +14,12 @@ public class CommonRepository {
 	@Qualifier(value = "mariadbFactory")
 	private final JPAQueryFactory mariadbFactory;
 
-	public List<CodeFieldDTO> findByCommonCodeList(CodeFieldDTO dto) {
-		return mariadbFactory.selectFrom(codeFieldDTO)
-				.where(codeFieldDTO.codeType.eq(dto.getCodeType()),
-						codeFieldDTO.codeDepth.eq(dto.getCodeDepth()),
-						codeFieldDTO.useYn.eq(dto.getUseYn()))
+	public List<CommonField> findByCommonCodeList(CommonField dto) {
+		QCommonField commonField = QCommonField.commonField;
+		return mariadbFactory.selectFrom(commonField)
+				.where(commonField.codeType.eq(dto.getCodeType()),
+						commonField.codeDepth.eq(dto.getCodeDepth()),
+						commonField.useYn.eq(dto.getUseYn()))
 				.fetch();
 	}
 }

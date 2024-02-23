@@ -29,7 +29,7 @@ import lombok.ToString;
 @Table(name = "BANNER_TABLE")
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"imageData"}, allowSetters = true)
-public class BannerDTO implements Serializable {
+public class BannerTable implements Serializable {
 
 	@Id
 	@Column(name = "id")

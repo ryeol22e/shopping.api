@@ -1,10 +1,10 @@
 package com.project.shopping.utils;
 
 import org.springframework.security.core.context.SecurityContextHolder;
-import com.project.shopping.member.dto.MemberDTO;
+import com.project.shopping.member.dto.MemberTable;
 
 public class LoginManager {
-	public static MemberDTO getMemberInfo() {
-		return (MemberDTO) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	public static MemberTable getMemberInfo() {
+		return (MemberTable) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	}
 }

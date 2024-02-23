@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.shopping.member.dto.pk.MemberPK;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,27 +24,25 @@ import lombok.ToString;
 @Getter
 @Entity
 @IdClass(MemberPK.class)
-@Table(name = "MEMBER_TABLE")
+@Table
 @ToString
 @NoArgsConstructor
 // setters response 보낼때 제외시킴, getters request 받을때 제외
 @JsonIgnoreProperties(
 		value = {"changeBcryptPassword", "memberPassword", "setAuthNumber", "refreshToken"},
 		allowSetters = true)
-public class MemberDTO implements UserDetails {
+public class MemberTable implements UserDetails {
 
-	public MemberDTO(String memberNo, String memberName, String memberRole) {
-		this.memberNo = Long.getLong(memberNo);
+	public MemberTable(Long memberNo, String memberName, String memberRole) {
+		this.memberNo = memberNo;
 		this.memberName = memberName;
 		this.memberRole = memberRole;
 	}
 
 	@Id
-	@Column(name = "MEMBER_NO")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long memberNo;
 	@Id
-	@Column(name = "MEMBER_ID")
 	private String memberId;
 	private String memberPassword;
 	private String memberEmail;
