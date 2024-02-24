@@ -10,7 +10,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import org.springframework.web.multipart.MultipartFile;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.project.shopping.display.dto.pk.BannerPK;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -26,13 +25,12 @@ import lombok.ToString;
 @Entity
 @ToString
 @IdClass(value = BannerPK.class)
-@Table(name = "BANNER_TABLE")
+@Table
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {"imageData"}, allowSetters = true)
-public class BannerTable implements Serializable {
+public class BannerInfo implements Serializable {
 
 	@Id
-	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String bannerType;

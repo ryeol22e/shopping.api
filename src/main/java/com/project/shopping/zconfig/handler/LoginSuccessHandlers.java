@@ -3,7 +3,7 @@ package com.project.shopping.zconfig.handler;
 import java.io.IOException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
-import com.project.shopping.member.dto.MemberTable;
+import com.project.shopping.member.dto.MemberInfo;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,7 +15,7 @@ public class LoginSuccessHandlers implements AuthenticationSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 		log.info("login success. > {}", authentication.getPrincipal());
-		MemberTable member = (MemberTable) authentication.getPrincipal();
+		MemberInfo member = (MemberInfo) authentication.getPrincipal();
 
 		member.clearPassword();
 		// request.getSession().setMaxInactiveInterval(3600);

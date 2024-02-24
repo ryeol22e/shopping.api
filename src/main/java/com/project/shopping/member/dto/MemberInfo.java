@@ -31,9 +31,9 @@ import lombok.ToString;
 @JsonIgnoreProperties(
 		value = {"changeBcryptPassword", "memberPassword", "setAuthNumber", "refreshToken"},
 		allowSetters = true)
-public class MemberTable implements UserDetails {
+public class MemberInfo implements UserDetails {
 
-	public MemberTable(Long memberNo, String memberName, String memberRole) {
+	public MemberInfo(Long memberNo, String memberName, String memberRole) {
 		this.memberNo = memberNo;
 		this.memberName = memberName;
 		this.memberRole = memberRole;

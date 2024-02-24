@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.project.shopping.product.dto.ProductTable;
+import com.project.shopping.product.dto.ProductInfo;
 import com.project.shopping.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -16,7 +16,7 @@ public class ProductController {
 	private final ProductService productService;
 
 	@GetMapping("/{prdtNo}")
-	public ResponseEntity<ProductTable> getProductDetail(
+	public ResponseEntity<ProductInfo> getProductDetail(
 			@PathVariable(name = "prdtNo") String prdtNo) {
 		return ResponseEntity.ok(productService.getProductDetail(prdtNo));
 	}

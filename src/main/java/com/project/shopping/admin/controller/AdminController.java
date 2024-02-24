@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import com.project.shopping.admin.service.AdminService;
 import com.project.shopping.common.dto.CommonField;
-import com.project.shopping.display.dto.BannerTable;
-import com.project.shopping.product.dto.ProductTable;
+import com.project.shopping.display.dto.BannerInfo;
+import com.project.shopping.product.dto.ProductInfo;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -26,12 +26,12 @@ public class AdminController {
 	}
 
 	@PostMapping("/banner/save")
-	public ResponseEntity<Boolean> registBanner(BannerTable param) throws Exception {
+	public ResponseEntity<Boolean> registBanner(BannerInfo param) throws Exception {
 		return ResponseEntity.ok(adminService.registBanner(param));
 	}
 
 	@PostMapping("/product/{prdtNo}")
-	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductTable parameter) {
+	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductInfo parameter) {
 		return ResponseEntity.ok(adminService.saveProduct(parameter));
 	}
 

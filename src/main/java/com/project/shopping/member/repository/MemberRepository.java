@@ -1,10 +1,10 @@
 package com.project.shopping.member.repository;
 
-import static com.project.shopping.member.dto.QMemberTable.memberTable;
+import static com.project.shopping.member.dto.QMemberInfo.memberInfo;
 import java.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
-import com.project.shopping.member.dto.MemberTable;
+import com.project.shopping.member.dto.MemberInfo;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.transaction.Transactional;
 import jakarta.transaction.Transactional.TxType;
@@ -16,29 +16,29 @@ public class MemberRepository {
 	@Qualifier(value = "mariadbFactory")
 	private final JPAQueryFactory mariadbFactory;
 
-	public MemberTable findByMemberId(String loginId) {
-		return mariadbFactory.selectFrom(memberTable)
-				.where(memberTable.memberId.eq(loginId))
+	public MemberInfo findByMemberId(String loginId) {
+		return mariadbFactory.selectFrom(memberInfo)
+				.where(memberInfo.memberId.eq(loginId))
 				.fetchOne();
 	}
 
 	public String findRefreshByAccess(String accessToken) {
-		return mariadbFactory.select(memberTable.refreshToken)
-				.from(memberTable)
-				.where(memberTable.accessToken.eq(accessToken))
+		return mariadbFactory.select(memberInfo.refreshToken)
+				.from(memberInfo)
+				.where(memberInfo.accessToken.eq(accessToken))
 				.fetchOne();
 	}
 
-	public long save(MemberTable dto) {
-		return mariadbFactory.insert(memberTable)
-				.columns(memberTable.memberId,
-						memberTable.memberName,
-						memberTable.memberPassword,
-						memberTable.memberAddr,
-						memberTable.memberEmail,
-						memberTable.memberRole,
-						memberTable.authNumber,
-						memberTable.joinDtm)
+	public long save(MemberInfo dto) {
+		return mariadbFactory.insert(memberInfo)
+				.columns(memberInfo.memberId,
+						memberInfo.memberName,
+						memberInfo.memberPassword,
+						memberInfo.memberAddr,
+						memberInfo.memberEmail,
+						memberInfo.memberRole,
+						memberInfo.authNumber,
+						memberInfo.joinDtm)
 				.values(dto.getMemberId(),
 						dto.getMemberName(),
 						dto.getMemberPassword(),
@@ -51,12 +51,12 @@ public class MemberRepository {
 	}
 
 	@Transactional(value = TxType.REQUIRES_NEW)
-	public long updateLoginDate(MemberTable dto) {
-		return mariadbFactory.update(memberTable)
-				.set(memberTable.loginDtm, LocalDateTime.now())
-				.set(memberTable.accessToken, dto.getAccessToken())
-				.set(memberTable.refreshToken, dto.getRefreshToken())
-				.where(memberTable.memberNo.eq(dto.getMemberNo()))
+	public long updateLoginDate(MemberInfo dto) {
+		return mariadbFactory.update(memberInfo)
+				.set(memberInfo.loginDtm, LocalDateTime.now())
+				.set(memberInfo.accessToken, dto.getAccessToken())
+				.set(memberInfo.refreshToken, dto.getRefreshToken())
+				.where(memberInfo.memberNo.eq(dto.getMemberNo()))
 				.execute();
 	}
 }

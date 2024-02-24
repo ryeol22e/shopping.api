@@ -9,7 +9,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-import com.project.shopping.member.dto.MemberTable;
+import com.project.shopping.member.dto.MemberInfo;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.utils.UtilsMemberToken;
 import jakarta.servlet.http.HttpServletRequest;
@@ -28,7 +28,7 @@ public class LoginService implements UserDetailsService {
 	 */
 	@Override
 	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-		MemberTable member = memberRepository.findByMemberId(memberId);
+		MemberInfo member = memberRepository.findByMemberId(memberId);
 		// HttpServletRequest request = ((ServletRequestAttributes)
 		// RequestContextHolder.currentRequestAttributes()).getRequest();
 
@@ -56,11 +56,11 @@ public class LoginService implements UserDetailsService {
 	 * @throws Exception
 	 */
 	@Deprecated
-	public boolean loginMember(MemberTable reqMember) {
+	public boolean loginMember(MemberInfo reqMember) {
 		boolean result = false;
 		String memberId = reqMember.getMemberId();
 		String memberPassword = reqMember.getMemberPassword();
-		MemberTable member = loginProcessCheck(memberId, memberPassword);
+		MemberInfo member = loginProcessCheck(memberId, memberPassword);
 		HttpServletRequest request =
 				((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
 						.getRequest();
@@ -120,9 +120,9 @@ public class LoginService implements UserDetailsService {
 	 * @return
 	 */
 	@Deprecated
-	private MemberTable loginProcessCheck(String memberId, String memberPassword) {
+	private MemberInfo loginProcessCheck(String memberId, String memberPassword) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-		MemberTable member = memberRepository.findByMemberId(memberId);
+		MemberInfo member = memberRepository.findByMemberId(memberId);
 		Boolean result = true;
 
 		if (member == null) {

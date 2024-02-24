@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.project.shopping.member.dto.MemberTable;
+import com.project.shopping.member.dto.MemberInfo;
 import com.project.shopping.member.service.MemberService;
 import com.project.shopping.utils.UtilsMemberToken;
 import io.jsonwebtoken.Claims;
@@ -41,12 +41,12 @@ public class MemberController {
 	}
 
 	@PostMapping("/join")
-	public ResponseEntity<Boolean> join(@RequestBody MemberTable member) {
+	public ResponseEntity<Boolean> join(@RequestBody MemberInfo member) {
 		return ResponseEntity.ok(memberService.joinMember(member));
 	}
 
 	@PostMapping("/auth/number")
-	public ResponseEntity<String> authNumber(@RequestBody MemberTable member) {
+	public ResponseEntity<String> authNumber(@RequestBody MemberInfo member) {
 		return ResponseEntity.ok(memberService.authNumber(member));
 	}
 }

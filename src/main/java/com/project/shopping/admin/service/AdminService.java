@@ -7,9 +7,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import com.project.shopping.common.dto.CommonField;
 import com.project.shopping.common.service.CommonService;
-import com.project.shopping.display.dto.BannerTable;
+import com.project.shopping.display.dto.BannerInfo;
 import com.project.shopping.display.repository.BannerRepository;
-import com.project.shopping.product.dto.ProductTable;
+import com.project.shopping.product.dto.ProductInfo;
 import com.project.shopping.product.repository.ProductRepository;
 import com.project.shopping.utils.UtilsData;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +27,7 @@ public class AdminService {
 		return commonService.getCommonList(param);
 	}
 
-	public Boolean registBanner(BannerTable param) throws Exception {
+	public Boolean registBanner(BannerInfo param) throws Exception {
 		boolean flag = true;
 
 		param.setImageData(new SerialBlob(param.getFile().getBytes()));
@@ -43,7 +43,7 @@ public class AdminService {
 	}
 
 	@Transactional
-	public boolean saveProduct(ProductTable product) {
+	public boolean saveProduct(ProductInfo product) {
 		boolean result = false;
 		MultipartFile image = product.getFile();
 		String path = UtilsData.getFileBasePath();

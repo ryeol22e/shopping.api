@@ -5,9 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import com.project.shopping.display.dto.BannerTable;
+import com.project.shopping.display.dto.BannerInfo;
 import com.project.shopping.display.service.DisplayService;
-import com.project.shopping.product.dto.ProductTable;
+import com.project.shopping.product.dto.ProductInfo;
 import com.project.shopping.product.service.ProductService;
 import lombok.RequiredArgsConstructor;
 
@@ -19,7 +19,7 @@ public class DisplayController {
 	private final ProductService productService;
 
 	@GetMapping("/main/banner")
-	public ResponseEntity<List<BannerTable>> getMainBanner(BannerTable bannerDTO) {
+	public ResponseEntity<List<BannerInfo>> getMainBanner(BannerInfo bannerDTO) {
 		return ResponseEntity.ok(displayService.getBannerList(bannerDTO));
 	}
 
@@ -29,7 +29,7 @@ public class DisplayController {
 	}
 
 	@GetMapping("/product/list")
-	public ResponseEntity<List<ProductTable>> getProductList(ProductTable productDTO) {
+	public ResponseEntity<List<ProductInfo>> getProductList(ProductInfo productDTO) {
 		return ResponseEntity.ok(productService.getProductList(productDTO));
 	}
 }

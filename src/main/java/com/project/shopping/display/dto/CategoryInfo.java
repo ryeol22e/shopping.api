@@ -16,9 +16,9 @@ import lombok.ToString;
 @ToString
 @Entity
 @IdClass(CategoryPK.class)
-@Table(name = "STANDARD_CATEGORY")
+@Table
 @NoArgsConstructor
-public class StandardCategory implements Serializable {
+public class CategoryInfo implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long cateId;
