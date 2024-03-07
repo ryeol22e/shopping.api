@@ -7,7 +7,6 @@ import org.springframework.boot.autoconfigure.orm.jpa.HibernateProperties;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateSettings;
 import org.springframework.boot.autoconfigure.orm.jpa.JpaProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -17,6 +16,8 @@ import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.transaction.PlatformTransactionManager;
 import com.project.shopping.zconfig.conditional.UseMysql;
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
 import lombok.RequiredArgsConstructor;
 
 @Conditional(UseMysql.class)
@@ -32,8 +33,13 @@ public class MysqlConfig {
 
 	@Bean
 	@ConfigurationProperties(prefix = "datasource.mysql.hikari")
+	HikariConfig hikariConfig() {
+		return new HikariConfig();
+	}
+
+	@Bean
 	DataSource mysqlDataSource() {
-		return DataSourceBuilder.create().build();
+		return new HikariDataSource(hikariConfig());
 	}
 
 	@Bean
