@@ -15,6 +15,6 @@ public class LoginFailHandlers implements AuthenticationFailureHandler {
 		log.error("login fail.");
 		response.setContentType("application/json;charset=UTF-8");
 		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "로그인에 실패했습니다");
+		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "로그인에 실패했습니다");
 	}
 }
