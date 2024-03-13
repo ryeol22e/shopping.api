@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-
    <!-- <property name="API_LOG" value="/users/logs/logback"/> -->
    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
       <encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
@@ -8,30 +7,21 @@
       </encoder>
    </appender>
 
-   <logger name="org.springframework.core">
-      <level value="info" />
-   </logger>
+   <!-- <logger name="org.springframework.core" value="info"/>
+	<logger name="org.springframework.beans" value="info"/>
+	<logger name="org.springframework.context" value="info"/>
+	<logger name="org.springframework.web" value="info"/> -->
 
-   <logger name="org.springframework.beans">
-      <level value="info" />
-   </logger>
+   <!-- <logger name="com.project.shopping">
+		<level value="info" />
+	</logger>
 
-   <logger name="org.springframework.context">
-      <level value="info" />
-   </logger>
+	<logger name="java.sql">
+		<level value="debug" />
+	</logger> -->
 
-   <logger name="org.springframework.web">
-      <level value="info" />
-   </logger>
-   <logger name="com.example.api">
-      <level value="debug" />
-   </logger>    
-   <logger name="java.sql">
-      <level value="debug" />
-   </logger>
-
-    <root level="info">
+   <root level="info">
       <!-- <appender-ref ref="FILEOUT"/>  -->
       <appender-ref ref="STDOUT" />
-    </root>
+   </root>
 </configuration>

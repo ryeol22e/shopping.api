@@ -17,3 +17,5 @@ spring:
     activate:
       on-profile:
       - dev
+logging:
+  config: classpath:logback/logback-dev.xml

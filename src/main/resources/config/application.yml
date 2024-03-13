@@ -9,7 +9,7 @@ spring:
   config:
     additional-location: classpath:/config/
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
       naming:
