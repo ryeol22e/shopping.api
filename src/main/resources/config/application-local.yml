@@ -30,10 +30,13 @@ spring:
     multipart:
       maxFileSize: 10MB
       maxRequestSize: 10MB
-  # r2dbc:
-  #   url: mysql://localhost:3306/messenger?useUnicode=true&characterEncoding=utf8
-  #   username: root
-  #   password: root
+  # data:
+  #   redis:
+  #     url: 
+  #     password: 
+  #     lettuce:
+  #       pool:
+  #         max-active: 5
 logging:
   config: classpath:logback/logback-local.xml
   level:

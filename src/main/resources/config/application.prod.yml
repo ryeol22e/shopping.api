@@ -17,5 +17,12 @@ spring:
     activate:
       on-profile:
       - prod
+  # data:
+  #   redis:
+  #     url: 
+  #     password: 
+  #     lettuce:
+  #       pool:
+  #         max-active: 5
 logging:
   config: classpath:logback/logback-prod.xml
