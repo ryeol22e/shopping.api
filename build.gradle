@@ -1,14 +1,18 @@
 buildscript {}
 
 plugins {
+	id 'java'
 	id 'org.springframework.boot' version '3.2.3'
 	id 'io.spring.dependency-management' version '1.0.15.RELEASE'
-	id 'java'
 }
 
 group = 'com.project.shopping'
 version = '0.0.1'
-sourceCompatibility = '17'
+
+java {
+	sourceCompatibility = '17'
+	targetCompatibility = '17'
+}
 
 configurations {
 	compileOnly {
@@ -47,9 +51,7 @@ dependencies {
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 }
-test {
-	exclude "**/*"
-}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
