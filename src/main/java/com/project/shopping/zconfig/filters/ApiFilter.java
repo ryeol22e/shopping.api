@@ -56,8 +56,7 @@ public class ApiFilter extends OncePerRequestFilter {
 
 		GrantedAuthority authority = new SimpleGrantedAuthority(memberRole);
 		List<GrantedAuthority> authorities = List.of(authority);
-		UserAuthentication authentication = new UserAuthentication(
-				new MemberInfo(Long.parseLong(memberNo), memberName, memberRole), null, authorities);
+		UserAuthentication authentication = new UserAuthentication(new MemberInfo(Long.parseLong(memberNo), memberName, memberRole), null, authorities);
 
 		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 		SecurityContextHolder.getContext().setAuthentication(authentication);

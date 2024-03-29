@@ -2,9 +2,6 @@ package com.project.shopping.member.service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -12,66 +9,43 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.project.shopping.member.dto.MemberInfo;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.utils.UtilsMemberToken;
-import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class LoginService implements UserDetailsService {
+public class LoginService {
 	private final MemberRepository memberRepository;
+	// redis 적용전 임시
 	private static Map<String, String> refreshTokenMap = new LinkedHashMap<>();
 
 	/**
-	 * 로그인
+	 * 로그인 프로세스
+	 * 
+	 * @param memberInfo
+	 * @return
 	 */
-	@Override
-	public UserDetails loadUserByUsername(String memberId) throws UsernameNotFoundException {
-		MemberInfo member = memberRepository.findByMemberId(memberId);
-		// HttpServletRequest request = ((ServletRequestAttributes)
-		// RequestContextHolder.currentRequestAttributes()).getRequest();
+	public boolean loginMemberProcess(MemberInfo memberInfo) {
+		boolean result = false;
+		String memberId = memberInfo.getMemberId();
+		String memberPassword = memberInfo.getMemberPassword();
+		MemberInfo member = loginProcessCheck(memberId, memberPassword);
+		HttpServletResponse response = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getResponse();
 
 		try {
 			member.setAccessToken(UtilsMemberToken.createAccessToken(member));
 			member.setRefreshToken(UtilsMemberToken.createRefreshToken(member));
 			memberRepository.updateLoginDate(member);
 
-			// request.getSession().setMaxInactiveInterval(3600);
-			// request.getSession().setAttribute("memberInfo", member);
-		} catch (NullPointerException e) {
-			log.error("login error : {}", e.getMessage());
-			throw new NullPointerException("로그인에 실패했습니다.");
-		}
+			Cookie tokenCookie = new Cookie("ACCESS_TOKEN", member.getAccessToken());
 
-		return member;
-	}
-
-	/**
-	 * 로그인
-	 * 
-	 * @param memberId
-	 * @param memberPassword
-	 * @return
-	 * @throws Exception
-	 */
-	@Deprecated
-	public boolean loginMember(MemberInfo reqMember) {
-		boolean result = false;
-		String memberId = reqMember.getMemberId();
-		String memberPassword = reqMember.getMemberPassword();
-		MemberInfo member = loginProcessCheck(memberId, memberPassword);
-		HttpServletRequest request =
-				((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
-						.getRequest();
-
-		try {
-			member.setAccessToken(UtilsMemberToken.createAccessToken(member));
-			member.setRefreshToken(UtilsMemberToken.createRefreshToken(member));
-			memberRepository.save(member);
-
-			request.getSession().setMaxInactiveInterval(3600);
-			request.getSession().setAttribute("memberInfo", member);
+			tokenCookie.setPath("/");
+			tokenCookie.setHttpOnly(true);
+			tokenCookie.setSecure(true);
+			response.addCookie(tokenCookie);
 			result = true;
 		} catch (NullPointerException e) {
 			log.error("login error : {}", e.getMessage());
@@ -119,7 +93,6 @@ public class LoginService implements UserDetailsService {
 	 * @param memberPassword
 	 * @return
 	 */
-	@Deprecated
 	private MemberInfo loginProcessCheck(String memberId, String memberPassword) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		MemberInfo member = memberRepository.findByMemberId(memberId);

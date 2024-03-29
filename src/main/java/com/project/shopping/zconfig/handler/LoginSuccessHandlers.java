@@ -1,6 +1,7 @@
 package com.project.shopping.zconfig.handler;
 
 import java.io.IOException;
+import org.springframework.http.MediaType;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import com.project.shopping.member.dto.MemberInfo;
@@ -11,6 +12,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@Deprecated
 public class LoginSuccessHandlers implements AuthenticationSuccessHandler {
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
@@ -27,7 +29,7 @@ public class LoginSuccessHandlers implements AuthenticationSuccessHandler {
 		tokenCookie.setPath("/");
 
 		response.addCookie(tokenCookie);
-		response.setContentType("application/json;charset=UTF-8");
+		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
 		response.setStatus(HttpServletResponse.SC_OK);
 		response.getWriter().write("true");
 
