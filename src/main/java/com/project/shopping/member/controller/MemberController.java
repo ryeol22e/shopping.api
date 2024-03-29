@@ -21,6 +21,11 @@ import lombok.RequiredArgsConstructor;
 public class MemberController {
 	private final MemberService memberService;
 
+	@GetMapping("/auth")
+	public ResponseEntity<Boolean> authCheck(HttpServletRequest request) {
+		return ResponseEntity.ok(memberService.checkToken(request));
+	}
+
 	@GetMapping("/info")
 	public ResponseEntity<Map<String, Object>> defaultInfo(HttpServletRequest request) {
 		// MemberDTO info = (MemberDTO) request.getSession().getAttribute("memberInfo");

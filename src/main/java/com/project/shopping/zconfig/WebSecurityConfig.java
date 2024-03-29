@@ -49,7 +49,7 @@ public class WebSecurityConfig {
 	 */
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		final String[] IGNORE_PATH_ARRAY = {"/api/auth/check", "/api/member/login", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
+		final String[] IGNORE_PATH_ARRAY = {"/api/member/auth", "/api/member/login", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
 
 		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable()).formLogin(login -> login.disable()).logout(logout -> logout.disable())
 				.sessionManagement(
