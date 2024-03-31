@@ -3,8 +3,9 @@ package com.project.shopping.member.service;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import com.project.shopping.member.dto.MemberInfo;
+import com.project.shopping.common.repository.TokenRepository;
 import com.project.shopping.member.dto.MemberEnum;
+import com.project.shopping.member.dto.MemberInfo;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.utils.UtilsMemberToken;
 import io.jsonwebtoken.Claims;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberRepository memberRepository;
+	private final TokenRepository tokenRepository;
 
 	public String authNumber(MemberInfo member) {
 		log.info("data : {}", member);

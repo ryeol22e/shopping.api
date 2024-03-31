@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CachingConfigurer;
@@ -15,6 +16,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.cache.RedisCacheManager;
+import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
@@ -33,6 +35,10 @@ import lombok.extern.slf4j.Slf4j;
 @EnableCaching
 @Configuration
 public class RedisConfig implements CachingConfigurer {
+	@Value("${spring.data.redis.host}")
+	private String host;
+	@Value("${spring.data.redis.port}")
+	private int port;
 	private Map<String, Duration> configMap;
 
 	@Autowired(required = false)
@@ -40,14 +46,9 @@ public class RedisConfig implements CachingConfigurer {
 		this.configMap = configMap;
 	}
 
-	private static class RelaxedCacheErrorHandler extends SimpleCacheErrorHandler {
-		@Override
-		public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {
-
-			if (log.isErrorEnabled()) {
-				log.error("error={}", exception.getMessage());
-			}
-		}
+	@Bean
+	RedisConnectionFactory redisConnectionFactory() {
+		return new LettuceConnectionFactory(host, port);
 	}
 
 	@Bean
@@ -100,6 +101,16 @@ public class RedisConfig implements CachingConfigurer {
 			}
 		}
 
+	}
+
+	private static class RelaxedCacheErrorHandler extends SimpleCacheErrorHandler {
+		@Override
+		public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {
+
+			if (log.isErrorEnabled()) {
+				log.error("error={}", exception.getMessage());
+			}
+		}
 	}
 
 	@Override

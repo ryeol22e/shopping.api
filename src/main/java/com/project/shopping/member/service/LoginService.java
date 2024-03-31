@@ -1,11 +1,11 @@
 package com.project.shopping.member.service;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import com.project.shopping.common.dto.TokenInfo;
+import com.project.shopping.common.repository.TokenRepository;
 import com.project.shopping.member.dto.MemberInfo;
 import com.project.shopping.member.repository.MemberRepository;
 import com.project.shopping.utils.UtilsMemberToken;
@@ -19,8 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class LoginService {
 	private final MemberRepository memberRepository;
-	// redis 적용전 임시
-	private static Map<String, String> refreshTokenMap = new LinkedHashMap<>();
+	private final TokenRepository tokenRepository;
 
 	/**
 	 * 로그인 프로세스
@@ -46,6 +45,9 @@ public class LoginService {
 			tokenCookie.setHttpOnly(true);
 			tokenCookie.setSecure(true);
 			response.addCookie(tokenCookie);
+			TokenInfo tokenInfo = new TokenInfo(memberId, member.getAccessToken(), member.getRefreshToken());
+
+			tokenRepository.save(tokenInfo);
 			result = true;
 		} catch (NullPointerException e) {
 			log.error("login error : {}", e.getMessage());
@@ -62,17 +64,7 @@ public class LoginService {
 	 * @return
 	 */
 	public String getRefreshToken(String memberId) {
-		String token = "";
-		String id = memberId.concat(".refreshToken");
-
-		if (refreshTokenMap.containsKey(id)) {
-			token = refreshTokenMap.get(id);
-		} else {
-			token = memberRepository.findByMemberId(memberId).getRefreshToken();
-			refreshTokenMap.put(id, token);
-		}
-
-		return token;
+		return tokenRepository.findById(memberId).get().getRefreshToken();
 	}
 
 	/**
@@ -81,9 +73,7 @@ public class LoginService {
 	 * @param memberId
 	 */
 	public void removeRefreshToken(String memberId) {
-		if (refreshTokenMap.containsKey(memberId)) {
-			refreshTokenMap.remove(memberId);
-		}
+		tokenRepository.deleteById(memberId);
 	}
 
 	/**
