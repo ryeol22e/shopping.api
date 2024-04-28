@@ -39,7 +39,7 @@ public class LoginService {
 			member.setRefreshToken(UtilsMemberToken.createRefreshToken(member));
 			memberRepository.updateLoginDate(member);
 
-			Cookie tokenCookie = new Cookie("ACCESS_TOKEN", member.getAccessToken());
+			Cookie tokenCookie = new Cookie("LOGIN_ID", memberId);
 
 			tokenCookie.setPath("/");
 			tokenCookie.setHttpOnly(true);
@@ -50,21 +50,11 @@ public class LoginService {
 			tokenRepository.save(tokenInfo);
 			result = true;
 		} catch (NullPointerException e) {
-			log.error("login error : {}", e.getMessage());
+			log.error("login error : {}", e);
 			throw new NullPointerException("로그인에 실패했습니다.");
 		}
 
 		return result;
-	}
-
-	/**
-	 * refresh token 가져오기
-	 * 
-	 * @param memberId
-	 * @return
-	 */
-	public String getRefreshToken(String memberId) {
-		return tokenRepository.findById(memberId).get().getRefreshToken();
 	}
 
 	/**
@@ -86,19 +76,13 @@ public class LoginService {
 	private MemberInfo loginProcessCheck(String memberId, String memberPassword) {
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		MemberInfo member = memberRepository.findByMemberId(memberId);
-		Boolean result = true;
+		boolean result = false;
 
-		if (member == null) {
-			result = false;
-		} else if (encoder.matches(memberPassword, member.getMemberPassword())) {
-			result = false;
+		if (member != null && encoder.matches(memberPassword, member.getMemberPassword())) {
+			result = true;
 		}
 
-		if (result) {
-			member = null;
-		}
-
-		return member;
+		return result ? member : null;
 	}
 
 }

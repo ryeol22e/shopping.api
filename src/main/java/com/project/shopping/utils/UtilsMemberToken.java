@@ -9,7 +9,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Component
 public class UtilsMemberToken {
 	private static String AUTH_KEY;
@@ -67,6 +69,7 @@ public class UtilsMemberToken {
 			claims = Jwts.parser().setSigningKey(AUTH_KEY).parseClaimsJws(combineToken(token))
 					.getBody();
 		} catch (Exception e) {
+			log.error("jwt token info error : {}", e);
 		}
 
 		return claims;

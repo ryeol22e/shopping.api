@@ -23,7 +23,7 @@ public class LoginSuccessHandlers implements AuthenticationSuccessHandler {
 		// request.getSession().setMaxInactiveInterval(3600);
 		// request.getSession().setAttribute("memberInfo", member);
 
-		Cookie tokenCookie = new Cookie("ACCESS_TOKEN", member.getAccessToken());
+		Cookie tokenCookie = new Cookie("LOGIN_ID", member.getMemberId());
 
 		tokenCookie.setHttpOnly(true);
 		tokenCookie.setPath("/");

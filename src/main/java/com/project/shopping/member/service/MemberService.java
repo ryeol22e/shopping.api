@@ -1,8 +1,10 @@
 package com.project.shopping.member.service;
 
+import java.util.Optional;
 import java.util.stream.Stream;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.project.shopping.common.dto.TokenInfo;
 import com.project.shopping.common.repository.TokenRepository;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.dto.MemberInfo;
@@ -52,51 +54,39 @@ public class MemberService {
 		return result;
 	}
 
-	public String getRefreshByAccessToken(String accessToken) {
-		return memberRepository.findRefreshByAccess(accessToken);
-	}
-
-	public String getToken(HttpServletRequest request) {
+	public String getToken(String memberId) {
+		TokenInfo info = tokenRepository.findById(memberId).orElse(null);
 		String resultToken = "";
-		Cookie[] cookies = request.getCookies();
-		String accessToken =
-				cookies != null && cookies.length > 0
-						? Stream.of(cookies)
-								.filter(cookie -> "ACCESS_TOKEN".equalsIgnoreCase(cookie.getName()))
-								.map(cookie -> cookie.getValue()).findFirst().orElse("")
-						: "";
 
-		if (accessToken != null && (!accessToken.isEmpty() && !accessToken.isBlank())) {
-			try {
-				Claims jwt = UtilsMemberToken.getInfo(accessToken);
+		try {
+			String accessToken = info.getAccessToken();
+			String refreshToken = info.getRefreshToken();
+			Claims jwt = UtilsMemberToken.getInfo(accessToken);
 
-				if (jwt != null) {
-					resultToken = accessToken;
-				} else {
-					String refreshToken = getRefreshByAccessToken(accessToken);
-					jwt = UtilsMemberToken.getInfo(refreshToken);
-
-					if (jwt != null) {
-						resultToken = refreshToken;
-					}
-				}
-			} catch (Exception e) {
-				String refreshToken = getRefreshByAccessToken(accessToken);
-				Claims jwt = UtilsMemberToken.getInfo(refreshToken);
+			if (jwt != null) {
+				resultToken = info.getAccessToken();
+			} else {
+				jwt = UtilsMemberToken.getInfo(refreshToken);
 
 				if (jwt != null) {
 					resultToken = refreshToken;
 				}
 			}
+		} catch (Exception e) {
+			log.error("not exists token", e);
 		}
 
 		return resultToken;
 	}
 
-	public boolean checkToken(HttpServletRequest request) {
-		String token = getToken(request);
+	public Claims getTokenInfo(HttpServletRequest request) {
+		Cookie[] cookies = Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]);
+		String memberId = Stream.of(cookies)
+				.filter(cookie -> "LOGIN_ID".equalsIgnoreCase(cookie.getName()))
+				.map(Cookie::getValue)
+				.findFirst().orElse("");
 
-		return !token.isEmpty() && !token.isBlank() ? true : false;
+		return UtilsMemberToken.getInfo(this.getToken(memberId));
 	}
 
 }
