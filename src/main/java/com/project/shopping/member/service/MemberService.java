@@ -73,7 +73,7 @@ public class MemberService {
 				}
 			}
 		} catch (Exception e) {
-			log.error("not exists token", e);
+			log.error("not exists token", e.getMessage());
 		}
 
 		return resultToken;
