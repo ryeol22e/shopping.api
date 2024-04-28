@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class WebSecurityConfig {
+public class SecurityConfig {
 	@Value("${spring.profiles.active}")
 	private String profile;
 	@Value("${client.url}")
@@ -49,7 +49,7 @@ public class WebSecurityConfig {
 	 */
 	@Bean
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		final String[] IGNORE_PATH_ARRAY = {"/api/member/auth", "/api/member/login", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
+		final String[] ignorePathArray = {"/api/member/auth", "/api/member/login", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
 
 		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable()).formLogin(login -> login.disable()).logout(logout -> logout.disable())
 				.sessionManagement(
@@ -58,7 +58,7 @@ public class WebSecurityConfig {
 						handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
 
 				.authorizeHttpRequests(auth -> {
-					auth.requestMatchers(IGNORE_PATH_ARRAY).permitAll();
+					auth.requestMatchers(ignorePathArray).permitAll();
 					auth.requestMatchers("/api/member/**").authenticated();
 					auth.requestMatchers("/api/auth/**").authenticated();
 					auth.requestMatchers("/api/chat/**").authenticated();
