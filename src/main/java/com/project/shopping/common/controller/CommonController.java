@@ -23,6 +23,7 @@ public class CommonController {
 			@PathVariable(name = "codeType", required = true) String codeType, CommonField param) {
 		log.info("commonCode codeType is {}", codeType);
 		log.info("commonCode data is {}", param);
+
 		return ResponseEntity.ok(commonService.getCommonList(param));
 	}
 }

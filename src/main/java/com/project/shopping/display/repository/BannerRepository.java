@@ -1,6 +1,7 @@
 package com.project.shopping.display.repository;
 
 import static com.project.shopping.display.dto.QBannerInfo.bannerInfo;
+import java.time.LocalDateTime;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -15,9 +16,14 @@ public class BannerRepository {
 	private final JPAQueryFactory mariadbFactory;
 
 	public List<BannerInfo> findByBannerList(BannerInfo dto) {
+		LocalDateTime tody = LocalDateTime.now();
+
 		return mariadbFactory.selectFrom(bannerInfo)
 				.where(bannerInfo.bannerType.eq(dto.getBannerType()),
-						bannerInfo.useYn.eq(dto.getUseYn()), bannerInfo.dispYn.eq(dto.getDispYn()))
+						bannerInfo.useYn.eq(dto.getUseYn()),
+						bannerInfo.dispYn.eq(dto.getDispYn()),
+						bannerInfo.dispStartDtm.loe(tody),
+						bannerInfo.dispEndDtm.goe(tody))
 				.fetch();
 	}
 

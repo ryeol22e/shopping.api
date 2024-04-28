@@ -69,7 +69,7 @@ public class UtilsMemberToken {
 			claims = Jwts.parser().setSigningKey(AUTH_KEY).parseClaimsJws(combineToken(token))
 					.getBody();
 		} catch (Exception e) {
-			log.error("jwt token info error : {}", e.getMessage());
+			claims = null;
 		}
 
 		return claims;

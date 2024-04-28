@@ -19,6 +19,7 @@ import org.springframework.data.redis.cache.RedisCacheManager;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.SerializationException;
@@ -58,6 +59,7 @@ public class RedisConfig implements CachingConfigurer {
 		final RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder
 				.fromConnectionFactory(factory);
 		final RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+				.disableCachingNullValues()
 				.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new JsonRedisSerializer()))
 				.entryTtl(Duration.ofHours(2L));
 		builder.cacheDefaults(configuration);
@@ -110,7 +112,7 @@ public class RedisConfig implements CachingConfigurer {
 		public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {
 
 			if (log.isErrorEnabled()) {
-				log.error("error={}", exception.getMessage());
+				log.error("handleCacheGetError error : {}", exception.getMessage());
 			}
 		}
 	}
@@ -125,7 +127,7 @@ public class RedisConfig implements CachingConfigurer {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setValueSerializer(new StringRedisSerializer());
+		redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
 		return redisTemplate;
 	}
