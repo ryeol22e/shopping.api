@@ -40,19 +40,14 @@ public class GloabalAOP {
 	@Around("(!execution(* com.project.shopping.member.service.MemberService.checkToken(..))"
 			+ "&& !execution(* com.project.shopping.member.service.MemberService.getToken(..))"
 			+ "&& execution(* com.project.shopping.*.service.*Service.*(..)))")
-	public Object bussinessProcessTime(ProceedingJoinPoint joinPoint) {
+	public Object bussinessProcessTime(ProceedingJoinPoint joinPoint) throws Throwable {
 		Object res = null;
 		long start = System.nanoTime();
 
-		try {
-			res = joinPoint.proceed();
-		} catch (Throwable th) {
-			log.error("bussiness process error : ", th);
-		} finally {
-			long end = System.nanoTime();
-			log.info("bussiness service name : \"{}\", process time : {}",
-					joinPoint.getSignature().getName(), ((double) end - start) / 1000000000);
-		}
+		res = joinPoint.proceed();
+
+		long end = System.nanoTime();
+		log.info("bussiness service name : \"{}\", process time : {}", joinPoint.getSignature().getName(), ((double) end - start) / 1000000000);
 
 		return res;
 	}
