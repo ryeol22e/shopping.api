@@ -64,9 +64,7 @@ public class RedisConfig implements CachingConfigurer {
 				.entryTtl(Duration.ofHours(2L));
 		builder.cacheDefaults(configuration);
 		if (configMap != null) {
-			configMap.entrySet().forEach(e -> {
-				builder.withCacheConfiguration(e.getKey(), configuration.entryTtl(e.getValue()));
-			});
+			configMap.entrySet().forEach(e -> builder.withCacheConfiguration(e.getKey(), configuration.entryTtl(e.getValue())));
 		}
 		return builder.build();
 
@@ -125,6 +123,7 @@ public class RedisConfig implements CachingConfigurer {
 	@Bean
 	RedisTemplate<String, Object> redisTemplate() {
 		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+
 		redisTemplate.setConnectionFactory(redisConnectionFactory());
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
