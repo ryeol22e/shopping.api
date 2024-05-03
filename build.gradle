@@ -38,6 +38,8 @@ dependencies {
 	implementation 'javax.xml.bind:jaxb-api:2.3.1'
 	// implementation 'io.jsonwebtoken:jjwt-api:0.12.5'
 	implementation 'io.jsonwebtoken:jjwt:0.9.1'
+	implementation 'com.navercorp.lucy:lucy-xss:1.6.3'
+
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 
