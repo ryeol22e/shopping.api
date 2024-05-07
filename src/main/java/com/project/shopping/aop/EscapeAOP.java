@@ -20,7 +20,7 @@ import com.nhncorp.lucy.security.xss.XssPreventer;
 @Component
 public class EscapeAOP {
 
-	@Before("execution(* com.project.shopping.*.repository.*.*(..))")
+	@Before("execution(* com.project.shopping.*.repository.*.insert*(..)) || execution(* com.project.shopping.*.repository.*.update*(..))")
 	public void runEscape(JoinPoint joinPoint) throws Throwable {
 		Object[] args = joinPoint.getArgs();
 
