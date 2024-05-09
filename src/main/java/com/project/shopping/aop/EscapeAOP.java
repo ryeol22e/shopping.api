@@ -1,6 +1,9 @@
 package com.project.shopping.aop;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -135,7 +138,11 @@ public class EscapeAOP {
 		return result;
 	}
 
-	private boolean isListTypeString(List<?> list) {
+	private boolean isListTypeString(List<?> list) throws NoSuchMethodException {
+		Method method = getClass().getDeclaredMethod("isListTypeString", List.class);
+		ReflectionUtils.makeAccessible(method);
+		Type type = ((ParameterizedType) method.getGenericParameterTypes()[0]).getActualTypeArguments()[0];
+
 		String typeName = "";
 		if (list != null && !list.isEmpty()) {
 			typeName = list.get(0).getClass().getSimpleName();
@@ -171,19 +178,22 @@ public class EscapeAOP {
 			Field field = fields[i];
 			Object value = null;
 
-			if (field.canAccess(dto)) {
+			if (!field.canAccess(dto)) {
 				ReflectionUtils.makeAccessible(field);
 			}
 
 			value = field.get(dto);
 
-			if (value instanceof String) {
-				ReflectionUtils.setField(field, dto, isEscape ? XssPreventer.escape((String) value) : XssPreventer.unescape((String) value));
+			if (value != null) {
+				if (value instanceof String) {
+					ReflectionUtils.setField(field, dto, isEscape ? XssPreventer.escape((String) value) : XssPreventer.unescape((String) value));
+				}
+
+				if (value instanceof List) {
+					listInField(dto, field, isEscape);
+				}
 			}
 
-			if (value instanceof List) {
-				listInField(dto, field, isEscape);
-			}
 		}
 
 	}
