@@ -78,7 +78,6 @@ public class XssFilterAOP {
 
 		}
 
-
 		return newArgs.toArray();
 	}
 
