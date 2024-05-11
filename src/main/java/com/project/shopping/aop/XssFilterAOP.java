@@ -41,9 +41,10 @@ public class XssFilterAOP {
 		}
 
 		// @After || @AfterReturning : unescape 처리
-		returnValue = afterRunMethod(newArgs != null && newArgs.length > 0 ? joinPoint.proceed(newArgs) : joinPoint.proceed());
+		// returnValue = afterRunMethod(newArgs != null && newArgs.length > 0 ? joinPoint.proceed(newArgs) : joinPoint.proceed());
+		returnValue = newArgs != null && newArgs.length > 0 ? joinPoint.proceed(newArgs) : joinPoint.proceed();
 		long end = System.nanoTime();
-		log.info("convert xss filter time : {}", String.format("%.2f", ((double) end - start) / 1000000000));
+		log.info("convert xss filter time : {}sec", String.format("%.2f", ((double) end - start) / 1000000000));
 
 		return returnValue;
 	}

@@ -47,7 +47,8 @@ public class GloabalAOP {
 		res = joinPoint.proceed();
 
 		long end = System.nanoTime();
-		log.info("bussiness service name : \"{}\", process time : {}", joinPoint.getSignature().getName(), ((double) end - start) / 1000000000);
+		log.info("bussiness service name : \"{}\"", joinPoint.getSignature().getName());
+		log.info("bussiness service process time : {}sec", String.format("%.2f", ((double) end - start) / 1000000000));
 
 		return res;
 	}
