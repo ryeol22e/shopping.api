@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.nhncorp.lucy.security.xss.XssPreventer;
 import com.project.shopping.ShoppingApplication;
 import lombok.extern.slf4j.Slf4j;
@@ -31,18 +32,18 @@ public class XssFilterAOP {
 	public Object executeXssFilter(ProceedingJoinPoint joinPoint) throws Throwable {
 		long start = System.nanoTime();
 		// @Before : escape 처리
-		Object[] orgArgs = joinPoint.getArgs();
+		// Object[] orgArgs = joinPoint.getArgs();
 		Object[] newArgs = null;
 		Object returnValue = null;
 
 		// s : method 실행
-		if (orgArgs.length > 0) {
-			newArgs = beforeRunMethod(orgArgs);
-		}
+		// if (orgArgs.length > 0) {
+		// newArgs = beforeRunMethod(orgArgs);
+		// }
 
 		// @After || @AfterReturning : unescape 처리
-		// returnValue = afterRunMethod(newArgs != null && newArgs.length > 0 ? joinPoint.proceed(newArgs) : joinPoint.proceed());
-		returnValue = newArgs != null && newArgs.length > 0 ? joinPoint.proceed(newArgs) : joinPoint.proceed();
+		returnValue = afterRunMethod(newArgs != null && newArgs.length > 0 ? joinPoint.proceed(newArgs) : joinPoint.proceed());
+
 		long end = System.nanoTime();
 		log.info("convert xss filter time : {}sec", String.format("%.2f", ((double) end - start) / 1000000000));
 
