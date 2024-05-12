@@ -99,6 +99,7 @@ public class SecurityConfig {
 	@Bean
 	FilterRegistrationBean<ApiXssFilter> filterRegistrationBean() {
 		FilterRegistrationBean<ApiXssFilter> filterRegistration = new FilterRegistrationBean<>();
+
 		filterRegistration.setFilter(new ApiXssFilter());
 		filterRegistration.setOrder(1);
 		filterRegistration.addUrlPatterns("/*");

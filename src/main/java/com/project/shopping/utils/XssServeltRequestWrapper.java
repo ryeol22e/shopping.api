@@ -33,7 +33,7 @@ public class XssServeltRequestWrapper extends HttpServletRequestWrapper {
 
 	@Override
 	public String[] getParameterValues(String paramName) {
-		String values[] = super.getParameterValues(paramName);
+		String[] values = super.getParameterValues(paramName);
 		if (values == null) {
 			return values;
 		}
@@ -43,7 +43,6 @@ public class XssServeltRequestWrapper extends HttpServletRequestWrapper {
 		return values;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Map<String, String[]> getParameterMap() {
 		Map<String, String[]> paramMap = super.getParameterMap();

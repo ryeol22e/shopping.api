@@ -1,6 +1,5 @@
 package com.project.shopping.product.service;
 
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.stereotype.Service;
 import com.project.shopping.product.dto.ProductInfo;
