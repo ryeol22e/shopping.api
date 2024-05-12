@@ -17,6 +17,7 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
@@ -33,6 +34,7 @@ public class ProductInfo implements Serializable {
 	@Id
 	private String prdtNo;
 	private String cateNo;
+	@Setter
 	private String prdtName;
 	private char dispYn;
 	private char useYn;

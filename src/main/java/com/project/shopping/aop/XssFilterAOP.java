@@ -14,7 +14,7 @@ import com.project.shopping.ShoppingApplication;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 
+ *
  * @author
  * @date 2024.05.07
  */
@@ -27,7 +27,7 @@ public class XssFilterAOP {
 	// 프로젝트 root packageName 작성
 	private static final String PROJECT_PATH = ShoppingApplication.class.getPackageName();
 
-	@Around("execution(* com.project.shopping.*.repository.*.*(..))")
+	// @Around("execution(* com.project.shopping.*.repository.*.*(..))")
 	public Object executeXssFilter(ProceedingJoinPoint joinPoint) throws Throwable {
 		long start = System.nanoTime();
 		// @Before : escape 처리
@@ -51,7 +51,7 @@ public class XssFilterAOP {
 
 	/**
 	 * 전처리
-	 * 
+	 *
 	 * @param orgArgs
 	 * @return
 	 * @throws Exception
@@ -84,7 +84,7 @@ public class XssFilterAOP {
 
 	/**
 	 * 후처리
-	 * 
+	 *
 	 * @param value
 	 * @return
 	 * @throws Exception
@@ -113,7 +113,7 @@ public class XssFilterAOP {
 
 	/**
 	 * 문자열 convert
-	 * 
+	 *
 	 * @param str
 	 * @param isEscape
 	 * @return
@@ -124,7 +124,7 @@ public class XssFilterAOP {
 
 	/**
 	 * 배열안의 문자열 convert
-	 * 
+	 *
 	 * @param arr
 	 * @param isEscape
 	 * @return
@@ -135,7 +135,7 @@ public class XssFilterAOP {
 
 	/**
 	 * List객체 요소 convert
-	 * 
+	 *
 	 * @param list
 	 * @param isEscape
 	 * @return
@@ -172,7 +172,7 @@ public class XssFilterAOP {
 
 	/**
 	 * DTO 객체 필드값 convert
-	 * 
+	 *
 	 * @param fields
 	 * @param dto
 	 * @param isEscape
@@ -204,7 +204,7 @@ public class XssFilterAOP {
 
 	/**
 	 * init DTO field
-	 * 
+	 *
 	 * @param dto
 	 * @param isEscape
 	 * @throws Exception
