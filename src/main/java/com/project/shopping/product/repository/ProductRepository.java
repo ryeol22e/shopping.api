@@ -18,7 +18,7 @@ public class ProductRepository {
 
 	public List<ProductInfo> findProductList(ProductInfo dto) {
 		final long limit = 6;
-		final Function<String, BooleanExpression> prdtNoGt = (lastPrdtNo) -> lastPrdtNo != null && !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productInfo.prdtNo.gt(lastPrdtNo) : null;
+		final Function<String, BooleanExpression> prdtNoGt = lastPrdtNo -> lastPrdtNo != null && !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productInfo.prdtNo.gt(lastPrdtNo) : null;
 
 		return mariadbFactory
 				.selectFrom(productInfo).where(

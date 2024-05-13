@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -16,10 +15,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.project.shopping.member.dto.MemberEnum;
 import com.project.shopping.member.service.MemberService;
-import com.project.shopping.utils.UtilsStringEscape;
 import com.project.shopping.zconfig.authentications.AuthEntryPoint;
 import com.project.shopping.zconfig.filters.ApiFilter;
 import com.project.shopping.zconfig.filters.ApiXssFilter;
@@ -34,7 +31,6 @@ public class SecurityConfig {
 	@Value("${client.url}")
 	private String clientUrl;
 	private final MemberService memberService;
-	private final ObjectMapper objectMapper;
 
 	/**
 	 * password encoder
@@ -107,12 +103,4 @@ public class SecurityConfig {
 		return filterRegistration;
 	}
 
-	@Bean
-	MappingJackson2HttpMessageConverter jsonEscapeConverter() {
-		ObjectMapper copy = objectMapper.copy();
-
-		copy.getFactory().setCharacterEscapes(new UtilsStringEscape());
-
-		return new MappingJackson2HttpMessageConverter(copy);
-	}
 }
