@@ -2,16 +2,22 @@ package com.project.shopping.aop;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.stream.Stream;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.util.ReflectionUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import com.nhncorp.lucy.security.xss.XssPreventer;
 import com.project.shopping.ShoppingApplication;
+import com.project.shopping.utils.ListSearch;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -28,59 +34,21 @@ public class XssFilterAOP {
 	// 프로젝트 root packageName 작성
 	private static final String PROJECT_PATH = ShoppingApplication.class.getPackageName();
 
-	// @Around("execution(* com.project.shopping.*.repository.*.*(..))")
+	@Around("execution(* com.project.shopping.*.controller.*Controller.*(..))")
 	public Object executeXssFilter(ProceedingJoinPoint joinPoint) throws Throwable {
+		final String[] ignorePathArray = {};
 		long start = System.nanoTime();
-		// @Before : escape 처리
-		// Object[] orgArgs = joinPoint.getArgs();
-		Object[] newArgs = null;
-		Object returnValue = null;
+		Object returnValue = joinPoint.proceed();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 
-		// s : method 실행
-		// if (orgArgs.length > 0) {
-		// newArgs = beforeRunMethod(orgArgs);
-		// }
-
-		// @After || @AfterReturning : unescape 처리
-		returnValue = afterRunMethod(newArgs != null && newArgs.length > 0 ? joinPoint.proceed(newArgs) : joinPoint.proceed());
+		if (!ListSearch.isExistItem(Arrays.asList(ignorePathArray), request.getRequestURI())) {
+			returnValue = afterRunMethod(returnValue);
+		}
 
 		long end = System.nanoTime();
 		log.info("convert xss filter time : {}sec", String.format("%.2f", ((double) end - start) / 1000000000));
 
 		return returnValue;
-	}
-
-	/**
-	 * 전처리
-	 *
-	 * @param orgArgs
-	 * @return
-	 * @throws Exception
-	 */
-	private Object[] beforeRunMethod(Object[] orgArgs) throws Exception {
-		List<Object> newArgs = new ArrayList<>();
-
-		for (int i = 0, length = orgArgs.length; i < length; i++) {
-			Object arg = orgArgs[i];
-			String pkgPath = arg.getClass().getPackageName();
-			String typeName = arg.getClass().getSimpleName();
-
-			if (TYPE_STRING.equalsIgnoreCase(typeName) || (TYPE_STRING.concat(TYPE_ARRAY)).equalsIgnoreCase(typeName)) {
-				newArgs.add(typeName.contains(TYPE_ARRAY) ? convertStringArray((String[]) arg, true) : convertString((String) arg, true));
-			}
-
-			if (pkgPath.contains(PROJECT_PATH)) {
-				initDtoInField(arg, true);
-				newArgs.add(arg);
-			}
-
-			if (arg instanceof List) {
-				newArgs.add(convertList((List<?>) arg, true));
-			}
-
-		}
-
-		return newArgs.toArray();
 	}
 
 	/**
@@ -96,15 +64,23 @@ public class XssFilterAOP {
 			String typeName = value.getClass().getSimpleName();
 
 			if (TYPE_STRING.equalsIgnoreCase(typeName) || (TYPE_STRING.concat(TYPE_ARRAY)).equalsIgnoreCase(typeName)) {
-				value = typeName.contains(TYPE_ARRAY) ? convertStringArray((String[]) value, false) : convertString((String) value, false);
+				value = typeName.contains(TYPE_ARRAY) ? convertStringArray((String[]) value, true) : convertString((String) value, true);
 			}
 
-			if (pkgPath.contains(PROJECT_PATH)) {
-				initDtoInField(value, false);
+			if (!(value instanceof Collection) && pkgPath.contains(PROJECT_PATH)) {
+				initDtoInField(value, true);
 			}
 
 			if (value instanceof List) {
-				value = convertList((List<?>) value, false);
+				value = convertList((List<?>) value, true);
+			}
+
+			if (value instanceof ResponseEntity) {
+				Field field = value.getClass().getSuperclass().getDeclaredField("body");
+				ReflectionUtils.makeAccessible(field);
+				Object body = field.get(value);
+
+				afterRunMethod(body);
 			}
 
 		}
@@ -158,7 +134,7 @@ public class XssFilterAOP {
 				resuList.add(convertStringArray((String[]) data, isEscape));
 			}
 
-			if (pkgPath.contains(PROJECT_PATH)) {
+			if (!(data instanceof Collection) && pkgPath.contains(PROJECT_PATH)) {
 				initDtoInField(data, isEscape);
 				resuList.add(data);
 			}
