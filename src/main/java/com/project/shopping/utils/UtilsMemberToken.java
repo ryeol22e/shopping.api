@@ -9,17 +9,15 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Header;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Component
 public class UtilsMemberToken {
-	private static String AUTH_KEY;
+	private static String authKey;
 	private static final String PRE_AUTH = "Bearer ";
 
 	@Value("${jwt.auth.key}")
-	private void setKey(String value) {
-		AUTH_KEY = value;
+	private synchronized void setKey(String value) {
+		authKey = value;
 	}
 
 	/**
@@ -36,7 +34,7 @@ public class UtilsMemberToken {
 				.setExpiration(new Date(now.getTime() + Duration.ofMinutes(30L).toMillis()))
 				.claim("memberNo", member.getMemberNo()).claim("memberName", member.getMemberName())
 				.claim("memberRole", member.getMemberRole())
-				.signWith(SignatureAlgorithm.HS256, AUTH_KEY).compact();
+				.signWith(SignatureAlgorithm.HS256, authKey).compact();
 	}
 
 	/**
@@ -53,7 +51,7 @@ public class UtilsMemberToken {
 				.setExpiration(new Date(now.getTime() + Duration.ofDays(30L).toMillis()))
 				.claim("memberNo", member.getMemberNo()).claim("memberName", member.getMemberName())
 				.claim("memberRole", member.getMemberRole())
-				.signWith(SignatureAlgorithm.HS256, AUTH_KEY).compact();
+				.signWith(SignatureAlgorithm.HS256, authKey).compact();
 	}
 
 	/**
@@ -66,7 +64,7 @@ public class UtilsMemberToken {
 		Claims claims = null;
 
 		try {
-			claims = Jwts.parser().setSigningKey(AUTH_KEY).parseClaimsJws(combineToken(token))
+			claims = Jwts.parser().setSigningKey(authKey).parseClaimsJws(combineToken(token))
 					.getBody();
 		} catch (Exception e) {
 			claims = null;
@@ -85,7 +83,7 @@ public class UtilsMemberToken {
 		boolean flag = true;
 
 		try {
-			Jwts.parser().setSigningKey(AUTH_KEY).parseClaimsJws(combineToken(token));
+			Jwts.parser().setSigningKey(authKey).parseClaimsJws(combineToken(token));
 		} catch (Exception e) {
 			flag = false;
 		}
@@ -93,7 +91,7 @@ public class UtilsMemberToken {
 		return flag;
 	}
 
-	private final static String combineToken(String token) {
+	private static String combineToken(String token) {
 		if (token.startsWith(PRE_AUTH)) {
 			token = token.substring(PRE_AUTH.length());
 		}
