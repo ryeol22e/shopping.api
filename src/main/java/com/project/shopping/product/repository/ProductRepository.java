@@ -17,7 +17,7 @@ public class ProductRepository {
 	private final JPAQueryFactory mariadbFactory;
 
 	public List<ProductInfo> findProductList(ProductInfo dto) {
-		final long limit = 6;
+		final long limit = 30;
 		final Function<String, BooleanExpression> prdtNoGt = lastPrdtNo -> lastPrdtNo != null && !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productInfo.prdtNo.gt(lastPrdtNo) : null;
 
 		return mariadbFactory
