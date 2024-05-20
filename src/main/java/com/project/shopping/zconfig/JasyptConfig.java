@@ -13,23 +13,23 @@ import lombok.extern.slf4j.Slf4j;
 @Configuration
 @EnableEncryptableProperties
 public class JasyptConfig {
-	@Value("${jasypt.encryptor.password}")
-	private String key;
+    @Value("${jasypt.encryptor.password}")
+    private String key;
 
-	@Bean
-	StringEncryptor jasyptStringEncryptor() {
-		log.info("key : {}", key);
-		PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
-		SimpleStringPBEConfig config = new SimpleStringPBEConfig();
+    @Bean
+    StringEncryptor jasyptStringEncryptor() {
+        log.info("key : {}", key);
+        PooledPBEStringEncryptor encryptor = new PooledPBEStringEncryptor();
+        SimpleStringPBEConfig config = new SimpleStringPBEConfig();
 
-		config.setPassword(key);
-		config.setPoolSize(1);
-		config.setAlgorithm("PBEWithMD5AndDES");
-		config.setStringOutputType("base64");
-		config.setKeyObtentionIterations("1000");
-		config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
-		encryptor.setConfig(config);
+        config.setPassword(key);
+        config.setPoolSize(1);
+        config.setAlgorithm("PBEWithMD5AndDES");
+        config.setStringOutputType("base64");
+        config.setKeyObtentionIterations("1000");
+        config.setSaltGeneratorClassName("org.jasypt.salt.RandomSaltGenerator");
+        encryptor.setConfig(config);
 
-		return encryptor;
-	}
+        return encryptor;
+    }
 }

@@ -13,12 +13,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/product")
 public class ProductController {
-	private final ProductService productService;
+    private final ProductService productService;
 
-	@GetMapping("/{prdtNo}")
-	public ResponseEntity<ProductInfo> getProductDetail(
-			@PathVariable(name = "prdtNo") String prdtNo) {
-		return ResponseEntity.ok(productService.getProductDetail(prdtNo));
-	}
+    @GetMapping("/{prdtNo}")
+    public ResponseEntity<ProductInfo> getProductDetail(
+            @PathVariable(name = "prdtNo") String prdtNo) {
+        return ResponseEntity.ok(productService.getProductDetail(prdtNo));
+    }
 
 }

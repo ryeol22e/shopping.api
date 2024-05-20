@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class CategoryPK implements Serializable {
-	private Long cateId;
-	private String cateNo;
+    private Long cateId;
+    private String cateNo;
 }

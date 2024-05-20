@@ -19,37 +19,37 @@ import lombok.extern.slf4j.Slf4j;
 @Component
 @RequiredArgsConstructor
 public class GloabalAOP {
-	// @annotation(org.springframework.web.bind.annotation.RestController)
-	@Before("execution(* com.project.shopping.*.controller.*Controller.*(..))")
-	public void insertRequestURI() {
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		String uri = request.getRequestURI();
+    // @annotation(org.springframework.web.bind.annotation.RestController)
+    @Before("execution(* com.project.shopping.*.controller.*Controller.*(..))")
+    public void insertRequestURI() {
+        HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+        String uri = request.getRequestURI();
 
-		log.info("request uri : {}", uri);
-	}
+        log.info("request uri : {}", uri);
+    }
 
-	@Before("execution(* com.project.shopping.display.controller.*Controller.*(..))")
-	public void setPageable(JoinPoint joinPoint) {
-		ProductInfo product = (ProductInfo) Stream.of(joinPoint.getArgs())
-				.filter(ProductInfo.class::isInstance).findFirst().orElse(new ProductInfo());
+    @Before("execution(* com.project.shopping.display.controller.*Controller.*(..))")
+    public void setPageable(JoinPoint joinPoint) {
+        ProductInfo product = (ProductInfo) Stream.of(joinPoint.getArgs())
+                .filter(ProductInfo.class::isInstance).findFirst().orElse(new ProductInfo());
 
-		log.info("product dto : {}", product);
-		log.info("joinpoint signature : {}", joinPoint.getSignature());
-	}
+        log.info("product dto : {}", product);
+        log.info("joinpoint signature : {}", joinPoint.getSignature());
+    }
 
-	@Around("(!execution(* com.project.shopping.member.service.MemberService.checkToken(..))"
-			+ "&& !execution(* com.project.shopping.member.service.MemberService.getToken(..))"
-			+ "&& execution(* com.project.shopping.*.service.*Service.*(..)))")
-	public Object bussinessProcessTime(ProceedingJoinPoint joinPoint) throws Throwable {
-		Object res = null;
-		long start = System.nanoTime();
+    @Around("(!execution(* com.project.shopping.member.service.MemberService.checkToken(..))"
+            + "&& !execution(* com.project.shopping.member.service.MemberService.getToken(..))"
+            + "&& execution(* com.project.shopping.*.service.*Service.*(..)))")
+    public Object bussinessProcessTime(ProceedingJoinPoint joinPoint) throws Throwable {
+        Object res = null;
+        long start = System.nanoTime();
 
-		res = joinPoint.proceed();
+        res = joinPoint.proceed();
 
-		long end = System.nanoTime();
-		log.info("bussiness service name : \"{}\"", joinPoint.getSignature().getName());
-		log.info("bussiness service process time : {}sec", String.format("%.2f", ((double) end - start) / 1000000000));
+        long end = System.nanoTime();
+        log.info("bussiness service name : \"{}\"", joinPoint.getSignature().getName());
+        log.info("bussiness service process time : {}sec", String.format("%.2f", ((double) end - start) / 1000000000));
 
-		return res;
-	}
+        return res;
+    }
 }

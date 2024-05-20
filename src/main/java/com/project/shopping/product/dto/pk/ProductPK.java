@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class ProductPK implements Serializable {
-	private Long prdtIndex;
-	private String prdtNo;
+    private Long prdtIndex;
+    private String prdtNo;
 }

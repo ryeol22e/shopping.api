@@ -13,37 +13,37 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class ProductRepository {
-	@Qualifier(value = "mariadbFactory")
-	private final JPAQueryFactory mariadbFactory;
+    @Qualifier(value = "mariadbFactory")
+    private final JPAQueryFactory mariadbFactory;
 
-	public List<ProductInfo> findProductList(ProductInfo dto) {
-		final long limit = 30;
-		final Function<String, BooleanExpression> prdtNoGt = lastPrdtNo -> lastPrdtNo != null && !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productInfo.prdtNo.gt(lastPrdtNo) : null;
+    public List<ProductInfo> findProductList(ProductInfo dto) {
+        final long limit = 30;
+        final Function<String, BooleanExpression> prdtNoGt = lastPrdtNo -> lastPrdtNo != null && !lastPrdtNo.isEmpty() && !lastPrdtNo.isBlank() ? productInfo.prdtNo.gt(lastPrdtNo) : null;
 
-		return mariadbFactory
-				.selectFrom(productInfo).where(
-						productInfo.cateNo.eq(dto.getCateNo()),
-						productInfo.useYn.eq(dto.getUseYn()),
-						productInfo.dispYn.eq(dto.getDispYn()),
-						prdtNoGt.apply(dto.getLastPrdtNo()))
-				.orderBy(productInfo.prdtNo.asc())
-				.limit(limit)
-				.fetch();
-	}
+        return mariadbFactory
+                .selectFrom(productInfo).where(
+                        productInfo.cateNo.eq(dto.getCateNo()),
+                        productInfo.useYn.eq(dto.getUseYn()),
+                        productInfo.dispYn.eq(dto.getDispYn()),
+                        prdtNoGt.apply(dto.getLastPrdtNo()))
+                .orderBy(productInfo.prdtNo.asc())
+                .limit(limit)
+                .fetch();
+    }
 
-	public ProductInfo findProduct(String prdtNo) {
-		return mariadbFactory.selectFrom(productInfo).where(productInfo.prdtNo.eq(prdtNo)).fetchOne();
-	}
+    public ProductInfo findProduct(String prdtNo) {
+        return mariadbFactory.selectFrom(productInfo).where(productInfo.prdtNo.eq(prdtNo)).fetchOne();
+    }
 
-	public long save(ProductInfo dto) {
-		return mariadbFactory.insert(productInfo)
-				.columns(productInfo.cateNo, productInfo.prdtNo, productInfo.prdtName,
-						productInfo.dispYn, productInfo.useYn, productInfo.normalPrice,
-						productInfo.sellPrice, productInfo.imagePath, productInfo.imageName,
-						productInfo.regDtime)
-				.values(dto.getCateNo(), dto.getPrdtNo(), dto.getPrdtName(), dto.getDispYn(),
-						dto.getUseYn(), dto.getNormalPrice(), dto.getSellPrice(),
-						dto.getImagePath(), dto.getImageName(), dto.getRegDtime())
-				.execute();
-	}
+    public long save(ProductInfo dto) {
+        return mariadbFactory.insert(productInfo)
+                .columns(productInfo.cateNo, productInfo.prdtNo, productInfo.prdtName,
+                        productInfo.dispYn, productInfo.useYn, productInfo.normalPrice,
+                        productInfo.sellPrice, productInfo.imagePath, productInfo.imageName,
+                        productInfo.regDtime)
+                .values(dto.getCateNo(), dto.getPrdtNo(), dto.getPrdtName(), dto.getDispYn(),
+                        dto.getUseYn(), dto.getNormalPrice(), dto.getSellPrice(),
+                        dto.getImagePath(), dto.getImageName(), dto.getRegDtime())
+                .execute();
+    }
 }

@@ -14,5 +14,5 @@ import org.springframework.aot.hint.annotation.Reflective;
 @Documented
 @Reflective
 public @interface CacheTime {
-	long time() default -1L;
+    long time() default -1L;
 }

@@ -30,42 +30,42 @@ import lombok.ToString;
 @JsonIgnoreProperties(value = {"imageData"}, allowSetters = true)
 public class BannerInfo implements Serializable {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private String bannerType;
-	private Blob imageData;
-	private String title;
-	private String description;
-	private char dispYn;
-	private char useYn;
-	private LocalDateTime dispStartDtm;
-	private LocalDateTime dispEndDtm;
-	@CreationTimestamp
-	private LocalDateTime rgstDtm;
-	@UpdateTimestamp
-	private LocalDateTime modDtm;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private String bannerType;
+    private Blob imageData;
+    private String title;
+    private String description;
+    private char dispYn;
+    private char useYn;
+    private LocalDateTime dispStartDtm;
+    private LocalDateTime dispEndDtm;
+    @CreationTimestamp
+    private LocalDateTime rgstDtm;
+    @UpdateTimestamp
+    private LocalDateTime modDtm;
 
-	@Transient
-	private String dispStart;
-	@Transient
-	private String dispEnd;
-	@Transient
-	private MultipartFile file;
-	@Transient
-	private byte[] image;
+    @Transient
+    private String dispStart;
+    @Transient
+    private String dispEnd;
+    @Transient
+    private MultipartFile file;
+    @Transient
+    private byte[] image;
 
-	public void setImageData(Blob data) {
-		this.imageData = data;
-	}
+    public void setImageData(Blob data) {
+        this.imageData = data;
+    }
 
-	public void setImage(byte[] bytes) {
-		this.image = bytes;
-	}
+    public void setImage(byte[] bytes) {
+        this.image = bytes;
+    }
 
-	public void setDispDate() {
-		this.dispStartDtm =
-				LocalDateTime.of(LocalDate.parse(this.dispStart), LocalTime.of(00, 00, 00));
-		this.dispEndDtm = LocalDateTime.of(LocalDate.parse(this.dispEnd), LocalTime.of(23, 59, 59));
-	}
+    public void setDispDate() {
+        this.dispStartDtm =
+                LocalDateTime.of(LocalDate.parse(this.dispStart), LocalTime.of(00, 00, 00));
+        this.dispEndDtm = LocalDateTime.of(LocalDate.parse(this.dispEnd), LocalTime.of(23, 59, 59));
+    }
 }

@@ -16,22 +16,22 @@ import jakarta.servlet.ServletResponse;
  * @date 2024.05.12
  */
 public class ApiXssFilter implements Filter {
-	private XssEscapeFilter xssEscapeFilter = XssEscapeFilter.getInstance();
+    private XssEscapeFilter xssEscapeFilter = XssEscapeFilter.getInstance();
 
-	@Override
-	public void init(FilterConfig filterConfig) throws ServletException {
-		Filter.super.init(filterConfig);
-	}
+    @Override
+    public void init(FilterConfig filterConfig) throws ServletException {
+        Filter.super.init(filterConfig);
+    }
 
-	@Override
-	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-		chain.doFilter(new XssServeltRequestWrapper(request, xssEscapeFilter), response);
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
+        chain.doFilter(new XssServeltRequestWrapper(request, xssEscapeFilter), response);
 
-	}
+    }
 
-	@Override
-	public void destroy() {
-		Filter.super.destroy();
-	}
+    @Override
+    public void destroy() {
+        Filter.super.destroy();
+    }
 
 }

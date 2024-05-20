@@ -17,22 +17,22 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/admin")
 public class AdminController {
-	private final AdminService adminService;
+    private final AdminService adminService;
 
 
-	@GetMapping("/menu")
-	public ResponseEntity<List<CommonField>> getMenu(CommonField param) throws Exception {
-		return ResponseEntity.ok(adminService.getAdminMenuList(param));
-	}
+    @GetMapping("/menu")
+    public ResponseEntity<List<CommonField>> getMenu(CommonField param) throws Exception {
+        return ResponseEntity.ok(adminService.getAdminMenuList(param));
+    }
 
-	@PostMapping("/banner/save")
-	public ResponseEntity<Boolean> registBanner(BannerInfo param) throws Exception {
-		return ResponseEntity.ok(adminService.registBanner(param));
-	}
+    @PostMapping("/banner/save")
+    public ResponseEntity<Boolean> registBanner(BannerInfo param) throws Exception {
+        return ResponseEntity.ok(adminService.registBanner(param));
+    }
 
-	@PostMapping("/product/{prdtNo}")
-	public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductInfo parameter) {
-		return ResponseEntity.ok(adminService.saveProduct(parameter));
-	}
+    @PostMapping("/product/{prdtNo}")
+    public ResponseEntity<Boolean> saveProduct(@PathVariable(name = "prdtNo", required = true) String prdtNo, ProductInfo parameter) {
+        return ResponseEntity.ok(adminService.saveProduct(parameter));
+    }
 
 }

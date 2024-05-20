@@ -10,13 +10,13 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 @EnableAspectJAutoProxy
 public class ShoppingApplication implements ApplicationRunner {
 
-	public static void main(String[] args) {
-		SpringApplication.run(ShoppingApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(ShoppingApplication.class, args);
+    }
 
-	@Override
-	public void run(ApplicationArguments args) throws Exception {
+    @Override
+    public void run(ApplicationArguments args) throws Exception {
 
-	}
+    }
 
 }

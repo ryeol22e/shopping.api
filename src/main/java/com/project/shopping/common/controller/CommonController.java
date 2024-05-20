@@ -16,14 +16,13 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/common")
 public class CommonController {
-	private final CommonService commonService;
+    private final CommonService commonService;
 
-	@GetMapping("/{codeType}")
-	public ResponseEntity<List<CommonField>> getHeaderList(
-			@PathVariable(name = "codeType", required = true) String codeType, CommonField param) {
-		log.info("commonCode codeType is {}", codeType);
-		log.info("commonCode data is {}", param);
+    @GetMapping("/{codeType}")
+    public ResponseEntity<List<CommonField>> getHeaderList(@PathVariable(required = true) String codeType, CommonField param) {
+        log.info("commonCode codeType is {}", codeType);
+        log.info("commonCode data is {}", param);
 
-		return ResponseEntity.ok(commonService.getCommonList(param));
-	}
+        return ResponseEntity.ok(commonService.getCommonList(param));
+    }
 }

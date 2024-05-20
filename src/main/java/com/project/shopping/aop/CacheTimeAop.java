@@ -26,51 +26,51 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class CacheTimeAop {
-	private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-	@Around("@annotation(org.springframework.cache.annotation.Cacheable) && @annotation(com.project.shopping.zconfig.annotations.CacheTime)")
-	public Object cacheable(ProceedingJoinPoint joinPoint) throws Throwable {
+    @Around("@annotation(org.springframework.cache.annotation.Cacheable) && @annotation(com.project.shopping.zconfig.annotations.CacheTime)")
+    public Object cacheable(ProceedingJoinPoint joinPoint) throws Throwable {
 
-		MethodSignature signature = (MethodSignature) joinPoint.getSignature();
-		Method method = signature.getMethod();
-		Cacheable cacheable = method.getAnnotation(Cacheable.class);
-		CacheTime cacheTime = method.getAnnotation(CacheTime.class);
-		String[] values = cacheable.value();
-		String key = getSPELValue(signature.getParameterNames(), joinPoint.getArgs(), cacheable.key());
-		StringBuilder resultKey = new StringBuilder();
-		long expired = cacheTime.time();
+        MethodSignature signature = (MethodSignature) joinPoint.getSignature();
+        Method method = signature.getMethod();
+        Cacheable cacheable = method.getAnnotation(Cacheable.class);
+        CacheTime cacheTime = method.getAnnotation(CacheTime.class);
+        String[] values = cacheable.value();
+        String key = getSPELValue(signature.getParameterNames(), joinPoint.getArgs(), cacheable.key());
+        StringBuilder resultKey = new StringBuilder();
+        long expired = cacheTime.time();
 
-		for (int i = 0, length = values.length; i < length; i++) {
-			resultKey.append(values[i]);
+        for (int i = 0, length = values.length; i < length; i++) {
+            resultKey.append(values[i]);
 
-			if (i + 1 < length) {
-				resultKey.append("::");
-			}
-		}
+            if (i + 1 < length) {
+                resultKey.append("::");
+            }
+        }
 
-		if (key != null && !key.equals("")) {
-			resultKey.append("::").append(key);
-		}
-		Object result = joinPoint.proceed();
+        if (key != null && !key.equals("")) {
+            resultKey.append("::").append(key);
+        }
+        Object result = joinPoint.proceed();
 
-		if (Optional.ofNullable(redisTemplate.hasKey(resultKey.toString())).isPresent()) {
-			redisTemplate.opsForValue().getAndExpire(resultKey.toString(), Duration.ofHours(expired));
-		}
+        if (Optional.ofNullable(redisTemplate.hasKey(resultKey.toString())).isPresent()) {
+            redisTemplate.opsForValue().getAndExpire(resultKey.toString(), Duration.ofHours(expired));
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	private String getSPELValue(String[] parameterNames, Object[] args, String name) {
-		ExpressionParser parser = new SpelExpressionParser();
-		EvaluationContext context = new StandardEvaluationContext();
+    private String getSPELValue(String[] parameterNames, Object[] args, String name) {
+        ExpressionParser parser = new SpelExpressionParser();
+        EvaluationContext context = new StandardEvaluationContext();
 
-		for (int i = 0, length = parameterNames.length; i < length; i++) {
+        for (int i = 0, length = parameterNames.length; i < length; i++) {
 
-			context.setVariable(parameterNames[i], args[i]);
+            context.setVariable(parameterNames[i], args[i]);
 
-		}
+        }
 
-		return (String) parser.parseExpression(name).getValue(context);
-	}
+        return (String) parser.parseExpression(name).getValue(context);
+    }
 
 }

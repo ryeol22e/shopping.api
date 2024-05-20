@@ -11,11 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 @Deprecated
 @Slf4j
 public class LoginFailHandlers implements AuthenticationFailureHandler {
-	@Override
-	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
-		log.error("login fail.");
-		response.setContentType("application/json;charset=UTF-8");
-		response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-		response.sendError(HttpServletResponse.SC_BAD_REQUEST, "로그인에 실패했습니다");
-	}
+    @Override
+    public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        log.error("login fail.");
+        response.setContentType("application/json;charset=UTF-8");
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        response.sendError(HttpServletResponse.SC_BAD_REQUEST, "로그인에 실패했습니다");
+    }
 }

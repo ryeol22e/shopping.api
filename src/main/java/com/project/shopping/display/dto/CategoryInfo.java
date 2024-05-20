@@ -19,15 +19,15 @@ import lombok.ToString;
 @Table
 @NoArgsConstructor
 public class CategoryInfo implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long cateId;
-	@Id
-	private String cateNo;
-	private String cateDepth;
-	private String upCateNo;
-	private String cateName;
-	private String cateFullPath;
-	private char useYn;
-	private char dispYn;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long cateId;
+    @Id
+    private String cateNo;
+    private String cateDepth;
+    private String upCateNo;
+    private String cateName;
+    private String cateFullPath;
+    private char useYn;
+    private char dispYn;
 }

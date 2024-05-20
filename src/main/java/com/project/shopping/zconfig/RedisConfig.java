@@ -38,97 +38,97 @@ import lombok.extern.slf4j.Slf4j;
 @EnableCaching
 @Configuration
 public class RedisConfig implements CachingConfigurer {
-	@Value("${spring.data.redis.host}")
-	private String host;
-	@Value("${spring.data.redis.port}")
-	private int port;
-	private Map<String, Duration> configMap;
+    @Value("${spring.data.redis.host}")
+    private String host;
+    @Value("${spring.data.redis.port}")
+    private int port;
+    private Map<String, Duration> configMap;
 
-	@Autowired(required = false)
-	public void setConfiguration(Map<String, Duration> configMap) {
-		this.configMap = configMap;
-	}
+    @Autowired(required = false)
+    public void setConfiguration(Map<String, Duration> configMap) {
+        this.configMap = configMap;
+    }
 
-	@Bean
-	RedisConnectionFactory redisConnectionFactory() {
-		return new LettuceConnectionFactory(host, port);
-	}
+    @Bean
+    RedisConnectionFactory redisConnectionFactory() {
+        return new LettuceConnectionFactory(host, port);
+    }
 
-	@Bean
-	CacheManager cacheManager(ResourceLoader resourceLoader, LettuceConnectionFactory factory) {
-		final RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder
-				.fromConnectionFactory(factory);
-		final RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
-				.disableCachingNullValues()
-				.serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new JsonRedisSerializer()))
-				.entryTtl(Duration.ofHours(2L));
-		builder.cacheDefaults(configuration);
-		if (configMap != null) {
-			configMap.entrySet().forEach(e -> builder.withCacheConfiguration(e.getKey(), configuration.entryTtl(e.getValue())));
-		}
-		return builder.build();
+    @Bean
+    CacheManager cacheManager(ResourceLoader resourceLoader, LettuceConnectionFactory factory) {
+        final RedisCacheManager.RedisCacheManagerBuilder builder = RedisCacheManager.RedisCacheManagerBuilder
+                .fromConnectionFactory(factory);
+        final RedisCacheConfiguration configuration = RedisCacheConfiguration.defaultCacheConfig()
+                .disableCachingNullValues()
+                .serializeValuesWith(RedisSerializationContext.SerializationPair.fromSerializer(new JsonRedisSerializer()))
+                .entryTtl(Duration.ofHours(2L));
+        builder.cacheDefaults(configuration);
+        if (configMap != null) {
+            configMap.entrySet().forEach(e -> builder.withCacheConfiguration(e.getKey(), configuration.entryTtl(e.getValue())));
+        }
+        return builder.build();
 
-	}
+    }
 
-	protected static class JsonRedisSerializer implements RedisSerializer<Object> {
-		private final ObjectMapper mapper;
+    protected static class JsonRedisSerializer implements RedisSerializer<Object> {
+        private final ObjectMapper mapper;
 
-		public JsonRedisSerializer() {
-			final SimpleFilterProvider filterProvider = new SimpleFilterProvider();
-			filterProvider.addFilter("maskFilter", SimpleBeanPropertyFilter.serializeAll());
-			final PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build();
-			this.mapper = new ObjectMapper().activateDefaultTyping(ptv, DefaultTyping.NON_FINAL, As.PROPERTY);
-			this.mapper.setFilterProvider(filterProvider);
-		}
+        public JsonRedisSerializer() {
+            final SimpleFilterProvider filterProvider = new SimpleFilterProvider();
+            filterProvider.addFilter("maskFilter", SimpleBeanPropertyFilter.serializeAll());
+            final PolymorphicTypeValidator ptv = BasicPolymorphicTypeValidator.builder().allowIfBaseType(Object.class).build();
+            this.mapper = new ObjectMapper().activateDefaultTyping(ptv, DefaultTyping.NON_FINAL, As.PROPERTY);
+            this.mapper.setFilterProvider(filterProvider);
+        }
 
-		@Override
-		public byte[] serialize(Object object) {
-			try {
-				return mapper.writeValueAsBytes(object);
-			} catch (JsonProcessingException e) {
-				throw new SerializationException(e.getMessage(), e);
-			}
-		}
+        @Override
+        public byte[] serialize(Object object) {
+            try {
+                return mapper.writeValueAsBytes(object);
+            } catch (JsonProcessingException e) {
+                throw new SerializationException(e.getMessage(), e);
+            }
+        }
 
-		@Override
-		public Object deserialize(byte[] bytes) {
-			if (bytes == null) {
-				return null;
-			}
+        @Override
+        public Object deserialize(byte[] bytes) {
+            if (bytes == null) {
+                return null;
+            }
 
-			try {
-				return mapper.readValue(bytes, Object.class);
-			} catch (IOException e) {
-				throw new SerializationException(e.getMessage(), e);
-			}
-		}
+            try {
+                return mapper.readValue(bytes, Object.class);
+            } catch (IOException e) {
+                throw new SerializationException(e.getMessage(), e);
+            }
+        }
 
-	}
+    }
 
-	private static class RelaxedCacheErrorHandler extends SimpleCacheErrorHandler {
-		@Override
-		public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {
+    private static class RelaxedCacheErrorHandler extends SimpleCacheErrorHandler {
+        @Override
+        public void handleCacheGetError(RuntimeException exception, Cache cache, Object key) {
 
-			if (log.isErrorEnabled()) {
-				log.error("handleCacheGetError error : {}", exception.getMessage());
-			}
-		}
-	}
+            if (log.isErrorEnabled()) {
+                log.error("handleCacheGetError error : {}", exception.getMessage());
+            }
+        }
+    }
 
-	@Override
-	public CacheErrorHandler errorHandler() {
-		return new RelaxedCacheErrorHandler();
-	}
+    @Override
+    public CacheErrorHandler errorHandler() {
+        return new RelaxedCacheErrorHandler();
+    }
 
-	@Bean
-	RedisTemplate<String, Object> redisTemplate() {
-		RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
+    @Bean
+    RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 
-		redisTemplate.setConnectionFactory(redisConnectionFactory());
-		redisTemplate.setKeySerializer(new StringRedisSerializer());
-		redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
+        redisTemplate.setConnectionFactory(redisConnectionFactory());
+        redisTemplate.setKeySerializer(new StringRedisSerializer());
+        redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
 
-		return redisTemplate;
-	}
+        return redisTemplate;
+    }
 
 }

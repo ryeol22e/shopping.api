@@ -11,11 +11,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class DisplayService {
-	private final BannerRepository bannerRepository;
+    private final BannerRepository bannerRepository;
 
-	@Cacheable(key = "#dto.bannerType + #dto.useYn + #dto.dispYn", value = "getBannerList", unless = "#result == null")
-	@CacheTime(time = 24L)
-	public List<BannerInfo> getBannerList(BannerInfo dto) {
-		return bannerRepository.findByBannerList(dto);
-	}
+    @Cacheable(key = "#dto.bannerType + #dto.useYn + #dto.dispYn", value = "getBannerList", unless = "#result == null")
+    @CacheTime(time = 24L)
+    public List<BannerInfo> getBannerList(BannerInfo dto) {
+        return bannerRepository.findByBannerList(dto);
+    }
 }

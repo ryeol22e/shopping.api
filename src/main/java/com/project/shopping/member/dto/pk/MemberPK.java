@@ -9,6 +9,6 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class MemberPK implements Serializable {
-	private Long memberNo;
-	private String memberId;
+    private Long memberNo;
+    private String memberId;
 }

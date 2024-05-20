@@ -10,9 +10,9 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RedisHash(value = "token", timeToLive = 3600L)
 public class TokenInfo {
-	@Id
-	private final String memberId;
-	private final String accessToken;
-	private final String refreshToken;
+    @Id
+    private final String memberId;
+    private final String accessToken;
+    private final String refreshToken;
 
 }

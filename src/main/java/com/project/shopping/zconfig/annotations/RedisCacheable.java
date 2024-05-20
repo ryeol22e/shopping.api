@@ -15,13 +15,13 @@ import org.springframework.core.annotation.AliasFor;
 @Documented
 @Reflective
 public @interface RedisCacheable {
-	@AliasFor("cacheNames")
-	String[] value() default {};
+    @AliasFor("cacheNames")
+    String[] value() default {};
 
-	@AliasFor("value")
-	String[] cacheNames() default {};
+    @AliasFor("value")
+    String[] cacheNames() default {};
 
-	String key() default "";
+    String key() default "";
 
-	long expired() default 60L;
+    long expired() default 60L;
 }

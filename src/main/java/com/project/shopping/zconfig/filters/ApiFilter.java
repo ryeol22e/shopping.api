@@ -22,35 +22,35 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 public class ApiFilter extends OncePerRequestFilter {
-	private final MemberService memberService;
+    private final MemberService memberService;
 
-	@Override
-	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-		String memberNo = "99999";
-		String memberName = MemberEnum.ANONYMOUS.name();
-		String memberRole = MemberEnum.ANONYMOUS.getValue();
-		Claims info = memberService.getTokenInfo(request);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        String memberNo = "99999";
+        String memberName = MemberEnum.ANONYMOUS.name();
+        String memberRole = MemberEnum.ANONYMOUS.getValue();
+        Claims info = memberService.getTokenInfo(request);
 
-		if (info != null) {
-			memberNo = info.get("memberNo").toString();
-			memberName = info.get("memberName").toString();
-			memberRole = info.get("memberRole").toString();
-		} else {
-			Cookie cookie = new Cookie("LOGIN_ID", null);
+        if (info != null) {
+            memberNo = info.get("memberNo").toString();
+            memberName = info.get("memberName").toString();
+            memberRole = info.get("memberRole").toString();
+        } else {
+            Cookie cookie = new Cookie("LOGIN_ID", null);
 
-			cookie.setMaxAge(0);
-			cookie.setPath("/");
-			response.addCookie(cookie);
-		}
+            cookie.setMaxAge(0);
+            cookie.setPath("/");
+            response.addCookie(cookie);
+        }
 
 
-		GrantedAuthority authority = new SimpleGrantedAuthority(memberRole);
-		List<GrantedAuthority> authorities = List.of(authority);
-		UserAuthentication authentication = new UserAuthentication(new MemberInfo(Long.parseLong(memberNo), memberName, memberRole), null, authorities);
+        GrantedAuthority authority = new SimpleGrantedAuthority(memberRole);
+        List<GrantedAuthority> authorities = List.of(authority);
+        UserAuthentication authentication = new UserAuthentication(new MemberInfo(Long.parseLong(memberNo), memberName, memberRole), null, authorities);
 
-		authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
+        authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+        SecurityContextHolder.getContext().setAuthentication(authentication);
 
-		filterChain.doFilter(request, response);
-	}
+        filterChain.doFilter(request, response);
+    }
 }

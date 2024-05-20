@@ -16,21 +16,21 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/member")
 @RequiredArgsConstructor
 public class LoginController {
-	private final LoginService loginService;
+    private final LoginService loginService;
 
-	@PostMapping("/login")
-	public ResponseEntity<Boolean> login(@RequestBody MemberInfo param) {
-		return ResponseEntity.ok(loginService.loginMemberProcess(param));
-	}
+    @PostMapping("/login")
+    public ResponseEntity<Boolean> login(@RequestBody MemberInfo param) {
+        return ResponseEntity.ok(loginService.loginMemberProcess(param));
+    }
 
-	@GetMapping("/logout")
-	public ResponseEntity<Boolean> logout(HttpServletResponse response) {
-		Cookie cookie = new Cookie("LOGIN_ID", null);
+    @GetMapping("/logout")
+    public ResponseEntity<Boolean> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("LOGIN_ID", null);
 
-		cookie.setMaxAge(0);
-		cookie.setPath("/");
-		response.addCookie(cookie);
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
+        response.addCookie(cookie);
 
-		return ResponseEntity.ok(true);
-	}
+        return ResponseEntity.ok(true);
+    }
 }

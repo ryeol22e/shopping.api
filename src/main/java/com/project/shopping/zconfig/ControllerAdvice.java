@@ -13,16 +13,16 @@ import lombok.extern.slf4j.Slf4j;
 @RestControllerAdvice
 public class ControllerAdvice {
 
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.initDirectFieldAccess();
-	}
+    @InitBinder
+    public void initBinder(WebDataBinder binder) {
+        binder.initDirectFieldAccess();
+    }
 
-	@ExceptionHandler(Exception.class)
-	public ResponseEntity<String> exceptionHandler(HttpServletRequest request, Exception e) {
-		String message = e.getMessage();
-		log.error("uri : {}, reason : {}", request.getRequestURI(), e);
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> exceptionHandler(HttpServletRequest request, Exception e) {
+        String message = e.getMessage();
+        log.error("uri : {}, reason : {}", request.getRequestURI(), e);
 
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
-	}
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(message);
+    }
 }

@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode
 @NoArgsConstructor
 public class BannerPK implements Serializable {
-	private Long id;
+    private Long id;
 }

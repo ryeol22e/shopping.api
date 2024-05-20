@@ -9,14 +9,14 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-	private final ProductRepository productRepository;
+    private final ProductRepository productRepository;
 
-	public List<ProductInfo> getProductList(ProductInfo productDTO) {
-		return productRepository.findProductList(productDTO);
-	}
+    public List<ProductInfo> getProductList(ProductInfo productDTO) {
+        return productRepository.findProductList(productDTO);
+    }
 
-	public ProductInfo getProductDetail(String prdtNo) {
-		return productRepository.findProduct(prdtNo);
-	}
+    public ProductInfo getProductDetail(String prdtNo) {
+        return productRepository.findProduct(prdtNo);
+    }
 
 }

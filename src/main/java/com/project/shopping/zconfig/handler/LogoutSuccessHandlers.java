@@ -11,16 +11,16 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @Deprecated
 public class LogoutSuccessHandlers implements LogoutSuccessHandler {
-	@Override
-	public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
-		Cookie cookie = new Cookie("ACCESS_TOKEN", null);
+    @Override
+    public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        Cookie cookie = new Cookie("ACCESS_TOKEN", null);
 
-		cookie.setMaxAge(0);
-		cookie.setPath("/");
+        cookie.setMaxAge(0);
+        cookie.setPath("/");
 
-		response.addCookie(cookie);
-		response.setContentType(MediaType.APPLICATION_JSON_VALUE);
-		response.setStatus(HttpServletResponse.SC_OK);
-		response.getWriter().write(String.valueOf(true));
-	}
+        response.addCookie(cookie);
+        response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getWriter().write(String.valueOf(true));
+    }
 }

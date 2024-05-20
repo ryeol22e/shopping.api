@@ -16,13 +16,13 @@ import lombok.ToString;
 @Table
 @NoArgsConstructor
 public class CommonField implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long codeId;
-	private String codeType;
-	private Integer codeDepth;
-	private String codeName;
-	private char useYn;
-	private String addInfo1;
-	private String addInfo2;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long codeId;
+    private String codeType;
+    private Integer codeDepth;
+    private String codeName;
+    private char useYn;
+    private String addInfo1;
+    private String addInfo2;
 }

@@ -12,22 +12,22 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class BannerRepository {
-	@Qualifier(value = "mariadbFactory")
-	private final JPAQueryFactory mariadbFactory;
+    @Qualifier(value = "mariadbFactory")
+    private final JPAQueryFactory mariadbFactory;
 
-	public List<BannerInfo> findByBannerList(BannerInfo dto) {
-		LocalDateTime tody = LocalDateTime.now();
+    public List<BannerInfo> findByBannerList(BannerInfo dto) {
+        LocalDateTime tody = LocalDateTime.now();
 
-		return mariadbFactory.selectFrom(bannerInfo)
-				.where(bannerInfo.bannerType.eq(dto.getBannerType()),
-						bannerInfo.useYn.eq(dto.getUseYn()),
-						bannerInfo.dispYn.eq(dto.getDispYn()),
-						bannerInfo.dispStartDtm.loe(tody),
-						bannerInfo.dispEndDtm.goe(tody))
-				.fetch();
-	}
+        return mariadbFactory.selectFrom(bannerInfo)
+                .where(bannerInfo.bannerType.eq(dto.getBannerType()),
+                        bannerInfo.useYn.eq(dto.getUseYn()),
+                        bannerInfo.dispYn.eq(dto.getDispYn()),
+                        bannerInfo.dispStartDtm.loe(tody),
+                        bannerInfo.dispEndDtm.goe(tody))
+                .fetch();
+    }
 
-	public long save(BannerInfo dto) {
-		return mariadbFactory.insert(bannerInfo).columns(bannerInfo).values(dto).execute();
-	}
+    public long save(BannerInfo dto) {
+        return mariadbFactory.insert(bannerInfo).columns(bannerInfo).values(dto).execute();
+    }
 }

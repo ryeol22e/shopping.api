@@ -11,13 +11,13 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class CategoryRepository {
-	@Qualifier(value = "mariadbFactory")
-	private final JPAQueryFactory mariadbFactory;
+    @Qualifier(value = "mariadbFactory")
+    private final JPAQueryFactory mariadbFactory;
 
-	public List<CategoryInfo> findUpCateList(CategoryInfo dto) {
-		return mariadbFactory.selectFrom(categoryInfo).where(
-				dto.getUpCateNo() == null ? null : categoryInfo.upCateNo.eq(dto.getUpCateNo()),
-				categoryInfo.useYn.eq(dto.getUseYn()), categoryInfo.dispYn.eq(dto.getDispYn()))
-				.fetch();
-	}
+    public List<CategoryInfo> findUpCateList(CategoryInfo dto) {
+        return mariadbFactory.selectFrom(categoryInfo).where(
+                dto.getUpCateNo() == null ? null : categoryInfo.upCateNo.eq(dto.getUpCateNo()),
+                categoryInfo.useYn.eq(dto.getUseYn()), categoryInfo.dispYn.eq(dto.getDispYn()))
+                .fetch();
+    }
 }

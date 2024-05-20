@@ -19,46 +19,46 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class AdminService {
-	private final CommonService commonService;
-	private final BannerRepository bannerRepository;
-	private final ProductRepository productRepository;
+    private final CommonService commonService;
+    private final BannerRepository bannerRepository;
+    private final ProductRepository productRepository;
 
-	public List<CommonField> getAdminMenuList(CommonField param) throws Exception {
-		return commonService.getCommonList(param);
-	}
+    public List<CommonField> getAdminMenuList(CommonField param) throws Exception {
+        return commonService.getCommonList(param);
+    }
 
-	public Boolean registBanner(BannerInfo param) throws Exception {
-		boolean flag = true;
+    public Boolean registBanner(BannerInfo param) throws Exception {
+        boolean flag = true;
 
-		param.setImageData(new SerialBlob(param.getFile().getBytes()));
-		param.setDispDate();
-		long data = bannerRepository.save(param);
+        param.setImageData(new SerialBlob(param.getFile().getBytes()));
+        param.setDispDate();
+        long data = bannerRepository.save(param);
 
-		if (data != 0) {
-			flag = false;
-			throw new Exception("저장 실패.");
-		}
+        if (data != 0) {
+            flag = false;
+            throw new Exception("저장 실패.");
+        }
 
-		return flag;
-	}
+        return flag;
+    }
 
-	@Transactional
-	public boolean saveProduct(ProductInfo product) {
-		boolean result = false;
-		MultipartFile image = product.getFile();
-		String path = UtilsData.getFileBasePath();
+    @Transactional
+    public boolean saveProduct(ProductInfo product) {
+        boolean result = false;
+        MultipartFile image = product.getFile();
+        String path = UtilsData.getFileBasePath();
 
-		if (UtilsData.fileUpload(image, path)) {
-			String imagePath = path;
-			String imageName = image.getOriginalFilename();
+        if (UtilsData.fileUpload(image, path)) {
+            String imagePath = path;
+            String imageName = image.getOriginalFilename();
 
-			product.setImageData(imagePath, imageName);
-			log.info("save product data : {}", product);
-			productRepository.save(product);
-			result = true;
-		}
+            product.setImageData(imagePath, imageName);
+            log.info("save product data : {}", product);
+            productRepository.save(product);
+            result = true;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
 }

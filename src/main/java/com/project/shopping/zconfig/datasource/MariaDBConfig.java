@@ -21,43 +21,43 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableJpaRepositories(
-		basePackages = {"com.project.shopping.*.repository"},
-		entityManagerFactoryRef = "mariaEntityManagerFactory",
-		transactionManagerRef = "mariaTransactionManager")
+        basePackages = {"com.project.shopping.*.repository"},
+        entityManagerFactoryRef = "mariaEntityManagerFactory",
+        transactionManagerRef = "mariaTransactionManager")
 @RequiredArgsConstructor
 public class MariaDBConfig {
-	private final JpaProperties jpaProperties;
-	private final HibernateProperties hibernateProperties;
+    private final JpaProperties jpaProperties;
+    private final HibernateProperties hibernateProperties;
 
-	@Bean
-	@Primary
-	@ConfigurationProperties(prefix = "datasource.mariadb.hikari")
-	HikariConfig hikariConfig() {
-		return new HikariConfig();
-	}
+    @Bean
+    @Primary
+    @ConfigurationProperties(prefix = "datasource.mariadb.hikari")
+    HikariConfig hikariConfig() {
+        return new HikariConfig();
+    }
 
-	@Bean
-	@Primary
-	DataSource mariaDataSource() {
-		return new HikariDataSource(hikariConfig());
-	}
+    @Bean
+    @Primary
+    DataSource mariaDataSource() {
+        return new HikariDataSource(hikariConfig());
+    }
 
-	@Bean
-	@Primary
-	LocalContainerEntityManagerFactoryBean mariaEntityManagerFactory(EntityManagerFactoryBuilder builder) {
-		Map<String, Object> propertiesMap = hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
+    @Bean
+    @Primary
+    LocalContainerEntityManagerFactoryBean mariaEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+        Map<String, Object> propertiesMap = hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
 
-		return builder.dataSource(mariaDataSource())
-				.packages("com.project.shopping.*.dto")
-				.persistenceUnit("mariaEntityManager")
-				.properties(propertiesMap)
-				.build();
-	}
+        return builder.dataSource(mariaDataSource())
+                .packages("com.project.shopping.*.dto")
+                .persistenceUnit("mariaEntityManager")
+                .properties(propertiesMap)
+                .build();
+    }
 
-	@Bean
-	@Primary
-	PlatformTransactionManager mariaTransactionManager(@Qualifier("mariaEntityManagerFactory") LocalContainerEntityManagerFactoryBean factoryBean) {
-		return new JpaTransactionManager(factoryBean.getObject());
-	}
+    @Bean
+    @Primary
+    PlatformTransactionManager mariaTransactionManager(@Qualifier("mariaEntityManagerFactory") LocalContainerEntityManagerFactoryBean factoryBean) {
+        return new JpaTransactionManager(factoryBean.getObject());
+    }
 
 }

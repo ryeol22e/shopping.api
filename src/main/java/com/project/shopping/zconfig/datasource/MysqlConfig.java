@@ -23,39 +23,39 @@ import lombok.RequiredArgsConstructor;
 @Conditional(UseMysql.class)
 @Configuration
 @EnableJpaRepositories(
-		basePackages = {"com.project.shopping.*.repository"},
-		entityManagerFactoryRef = "mysqlEntityManagerFactory",
-		transactionManagerRef = "mysqlTransactionManager")
+        basePackages = {"com.project.shopping.*.repository"},
+        entityManagerFactoryRef = "mysqlEntityManagerFactory",
+        transactionManagerRef = "mysqlTransactionManager")
 @RequiredArgsConstructor
 public class MysqlConfig {
-	private final JpaProperties jpaProperties;
-	private final HibernateProperties hibernateProperties;
+    private final JpaProperties jpaProperties;
+    private final HibernateProperties hibernateProperties;
 
-	@Bean
-	@ConfigurationProperties(prefix = "datasource.mysql.hikari")
-	HikariConfig hikariConfig() {
-		return new HikariConfig();
-	}
+    @Bean
+    @ConfigurationProperties(prefix = "datasource.mysql.hikari")
+    HikariConfig hikariConfig() {
+        return new HikariConfig();
+    }
 
-	@Bean
-	DataSource mysqlDataSource() {
-		return new HikariDataSource(hikariConfig());
-	}
+    @Bean
+    DataSource mysqlDataSource() {
+        return new HikariDataSource(hikariConfig());
+    }
 
-	@Bean
-	LocalContainerEntityManagerFactoryBean mysqlEntityManagerFactory(EntityManagerFactoryBuilder builder) {
-		Map<String, Object> propertiesMap = hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
+    @Bean
+    LocalContainerEntityManagerFactoryBean mysqlEntityManagerFactory(EntityManagerFactoryBuilder builder) {
+        Map<String, Object> propertiesMap = hibernateProperties.determineHibernateProperties(jpaProperties.getProperties(), new HibernateSettings());
 
-		return builder.dataSource(mysqlDataSource())
-				.packages("com.project.shopping.*.dto")
-				.persistenceUnit("mysqlEntityManager")
-				.properties(propertiesMap)
-				.build();
-	}
+        return builder.dataSource(mysqlDataSource())
+                .packages("com.project.shopping.*.dto")
+                .persistenceUnit("mysqlEntityManager")
+                .properties(propertiesMap)
+                .build();
+    }
 
-	@Bean
-	PlatformTransactionManager mysqlTransactionManager(@Qualifier("mysqlEntityManagerFactory") LocalContainerEntityManagerFactoryBean factoryBean) {
-		return new JpaTransactionManager(factoryBean.getObject());
-	}
+    @Bean
+    PlatformTransactionManager mysqlTransactionManager(@Qualifier("mysqlEntityManagerFactory") LocalContainerEntityManagerFactoryBean factoryBean) {
+        return new JpaTransactionManager(factoryBean.getObject());
+    }
 
 }

@@ -15,21 +15,21 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/display")
 public class DisplayController {
-	private final DisplayService displayService;
-	private final ProductService productService;
+    private final DisplayService displayService;
+    private final ProductService productService;
 
-	@GetMapping("/main/banner")
-	public ResponseEntity<List<BannerInfo>> getMainBanner(BannerInfo bannerDTO) {
-		return ResponseEntity.ok(displayService.getBannerList(bannerDTO));
-	}
+    @GetMapping("/main/banner")
+    public ResponseEntity<List<BannerInfo>> getMainBanner(BannerInfo bannerDTO) {
+        return ResponseEntity.ok(displayService.getBannerList(bannerDTO));
+    }
 
-	@GetMapping("/main/corner")
-	public ResponseEntity<String> getMainCorner() {
-		return ResponseEntity.ok("");
-	}
+    @GetMapping("/main/corner")
+    public ResponseEntity<String> getMainCorner() {
+        return ResponseEntity.ok("");
+    }
 
-	@GetMapping("/product/list")
-	public ResponseEntity<List<ProductInfo>> getProductList(ProductInfo productDTO) {
-		return ResponseEntity.ok(productService.getProductList(productDTO));
-	}
+    @GetMapping("/product/list")
+    public ResponseEntity<List<ProductInfo>> getProductList(ProductInfo productDTO) {
+        return ResponseEntity.ok(productService.getProductList(productDTO));
+    }
 }

@@ -9,12 +9,12 @@ import jakarta.persistence.PersistenceContext;
 
 @Configuration
 public class MariaDB {
-	@PersistenceContext(unitName = "mariaEntityManager")
-	private EntityManager mariaEntityManager;
+    @PersistenceContext(unitName = "mariaEntityManager")
+    private EntityManager mariaEntityManager;
 
-	@Primary
-	@Bean(name = "mariadbFactory")
-	JPAQueryFactory mariadbFactory() {
-		return new JPAQueryFactory(mariaEntityManager);
-	}
+    @Primary
+    @Bean(name = "mariadbFactory")
+    JPAQueryFactory mariadbFactory() {
+        return new JPAQueryFactory(mariaEntityManager);
+    }
 }

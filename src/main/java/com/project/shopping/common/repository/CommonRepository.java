@@ -11,15 +11,15 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class CommonRepository {
-	@Qualifier(value = "mariadbFactory")
-	private final JPAQueryFactory mariadbFactory;
+    @Qualifier(value = "mariadbFactory")
+    private final JPAQueryFactory mariadbFactory;
 
-	public List<CommonField> findByCommonCodeList(CommonField dto) {
-		QCommonField commonField = QCommonField.commonField;
-		return mariadbFactory.selectFrom(commonField)
-				.where(commonField.codeType.eq(dto.getCodeType()),
-						commonField.codeDepth.eq(dto.getCodeDepth()),
-						commonField.useYn.eq(dto.getUseYn()))
-				.fetch();
-	}
+    public List<CommonField> findByCommonCodeList(CommonField dto) {
+        QCommonField commonField = QCommonField.commonField;
+        return mariadbFactory.selectFrom(commonField)
+                .where(commonField.codeType.eq(dto.getCodeType()),
+                        commonField.codeDepth.eq(dto.getCodeDepth()),
+                        commonField.useYn.eq(dto.getUseYn()))
+                .fetch();
+    }
 }

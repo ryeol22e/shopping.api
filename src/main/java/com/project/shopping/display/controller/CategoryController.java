@@ -15,11 +15,11 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @RequestMapping("/api/cate")
 public class CategoryController {
-	private final CategoryService categoryService;
+    private final CategoryService categoryService;
 
-	@GetMapping("/list")
-	public ResponseEntity<List<CategoryInfo>> getCateList(CategoryInfo parameter) {
-		log.info("request category list.");
-		return ResponseEntity.ok(categoryService.getCateList(parameter));
-	}
+    @GetMapping("/list")
+    public ResponseEntity<List<CategoryInfo>> getCateList(CategoryInfo parameter) {
+        log.info("request category list.");
+        return ResponseEntity.ok(categoryService.getCateList(parameter));
+    }
 }

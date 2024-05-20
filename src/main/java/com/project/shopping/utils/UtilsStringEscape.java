@@ -11,27 +11,27 @@ import com.nhncorp.lucy.security.xss.XssPreventer;
  * @date 2024.05.12
  */
 public class UtilsStringEscape extends CharacterEscapes {
-	private final int[] asciiEscapes;
+    private final int[] asciiEscapes;
 
-	public UtilsStringEscape() {
-		asciiEscapes = CharacterEscapes.standardAsciiEscapesForJSON();
-		asciiEscapes['<'] = CharacterEscapes.ESCAPE_CUSTOM;
-		asciiEscapes['>'] = CharacterEscapes.ESCAPE_CUSTOM;
-		asciiEscapes['&'] = CharacterEscapes.ESCAPE_CUSTOM;
-		asciiEscapes['\"'] = CharacterEscapes.ESCAPE_CUSTOM;
-		asciiEscapes['('] = CharacterEscapes.ESCAPE_CUSTOM;
-		asciiEscapes[')'] = CharacterEscapes.ESCAPE_CUSTOM;
-		asciiEscapes['#'] = CharacterEscapes.ESCAPE_CUSTOM;
-		asciiEscapes['\''] = CharacterEscapes.ESCAPE_CUSTOM;
-	}
+    public UtilsStringEscape() {
+        asciiEscapes = CharacterEscapes.standardAsciiEscapesForJSON();
+        asciiEscapes['<'] = CharacterEscapes.ESCAPE_CUSTOM;
+        asciiEscapes['>'] = CharacterEscapes.ESCAPE_CUSTOM;
+        asciiEscapes['&'] = CharacterEscapes.ESCAPE_CUSTOM;
+        asciiEscapes['\"'] = CharacterEscapes.ESCAPE_CUSTOM;
+        asciiEscapes['('] = CharacterEscapes.ESCAPE_CUSTOM;
+        asciiEscapes[')'] = CharacterEscapes.ESCAPE_CUSTOM;
+        asciiEscapes['#'] = CharacterEscapes.ESCAPE_CUSTOM;
+        asciiEscapes['\''] = CharacterEscapes.ESCAPE_CUSTOM;
+    }
 
-	@Override
-	public int[] getEscapeCodesForAscii() {
-		return asciiEscapes;
-	}
+    @Override
+    public int[] getEscapeCodesForAscii() {
+        return asciiEscapes;
+    }
 
-	@Override
-	public SerializableString getEscapeSequence(int ch) {
-		return new SerializedString(XssPreventer.escape(Character.toString((char) ch)));
-	}
+    @Override
+    public SerializableString getEscapeSequence(int ch) {
+        return new SerializedString(XssPreventer.escape(Character.toString((char) ch)));
+    }
 }

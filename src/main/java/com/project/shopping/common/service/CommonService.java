@@ -13,13 +13,13 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class CommonService {
-	private final CommonRepository commonRepository;
+    private final CommonRepository commonRepository;
 
-	@CacheTime(time = 1L)
-	@Cacheable(key = "#param.codeType + #param.codeDepth + #param.useYn", value = "getCommonList", unless = "#result == null")
-	public List<CommonField> getCommonList(CommonField param) {
-		log.info("common code type : {}", param.getCodeType());
-		return commonRepository.findByCommonCodeList(param);
-	}
+    @CacheTime(time = 1L)
+    @Cacheable(key = "#param.codeType + #param.codeDepth + #param.useYn", value = "getCommonList", unless = "#result == null")
+    public List<CommonField> getCommonList(CommonField param) {
+        log.info("common code type : {}", param.getCodeType());
+        return commonRepository.findByCommonCodeList(param);
+    }
 
 }

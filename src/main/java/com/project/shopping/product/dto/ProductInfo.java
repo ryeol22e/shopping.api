@@ -27,39 +27,39 @@ import lombok.ToString;
 @NoArgsConstructor
 @JsonIgnoreProperties(value = {}, allowSetters = true)
 public class ProductInfo implements Serializable {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long prdtIndex;
-	@Id
-	private String prdtNo;
-	private String cateNo;
-	private String prdtName;
-	private char dispYn;
-	private char useYn;
-	private String normalPrice;
-	private String sellPrice;
-	private String imagePath;
-	private String imageName;
-	@Transient
-	private String lastPrdtNo;
-	@CreationTimestamp
-	private LocalDateTime regDtime = LocalDateTime.now();
-	@UpdateTimestamp
-	private LocalDateTime updateDtime = LocalDateTime.now();
-	@Transient
-	private MultipartFile file;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long prdtIndex;
+    @Id
+    private String prdtNo;
+    private String cateNo;
+    private String prdtName;
+    private char dispYn;
+    private char useYn;
+    private String normalPrice;
+    private String sellPrice;
+    private String imagePath;
+    private String imageName;
+    @Transient
+    private String lastPrdtNo;
+    @CreationTimestamp
+    private LocalDateTime regDtime = LocalDateTime.now();
+    @UpdateTimestamp
+    private LocalDateTime updateDtime = LocalDateTime.now();
+    @Transient
+    private MultipartFile file;
 
-	public void setImageData(String imagePath, String imageName) {
-		this.imagePath = imagePath;
-		this.imageName = imageName;
-	}
+    public void setImageData(String imagePath, String imageName) {
+        this.imagePath = imagePath;
+        this.imageName = imageName;
+    }
 
-	public String getImageFullPath() {
-		String imageFullPath = "";
-		if (this.imagePath != null && this.imageName != null) {
-			imageFullPath = this.imagePath.concat(File.separator).concat(this.imageName);
-		}
+    public String getImageFullPath() {
+        String imageFullPath = "";
+        if (this.imagePath != null && this.imageName != null) {
+            imageFullPath = this.imagePath.concat(File.separator).concat(this.imageName);
+        }
 
-		return imageFullPath;
-	}
+        return imageFullPath;
+    }
 }

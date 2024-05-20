@@ -18,36 +18,36 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @RequestMapping("/api/member")
 public class MemberController {
-	private final MemberService memberService;
+    private final MemberService memberService;
 
-	@GetMapping("/auth")
-	public ResponseEntity<Boolean> authCheck(HttpServletRequest request) {
-		return ResponseEntity.ok(memberService.getTokenInfo(request) != null);
-	}
+    @GetMapping("/auth")
+    public ResponseEntity<Boolean> authCheck(HttpServletRequest request) {
+        return ResponseEntity.ok(memberService.getTokenInfo(request) != null);
+    }
 
-	@GetMapping("/info")
-	public ResponseEntity<Map<String, Object>> defaultInfo(HttpServletRequest request) {
-		Map<String, Object> defaultInfo = new HashMap<>();
-		Claims info = memberService.getTokenInfo(request);
-		String memberNo = info.get("memberNo").toString();
-		String memberName = info.get("memberName").toString();
-		String memberRole = info.get("memberRole").toString();
+    @GetMapping("/info")
+    public ResponseEntity<Map<String, Object>> defaultInfo(HttpServletRequest request) {
+        Map<String, Object> defaultInfo = new HashMap<>();
+        Claims info = memberService.getTokenInfo(request);
+        String memberNo = info.get("memberNo").toString();
+        String memberName = info.get("memberName").toString();
+        String memberRole = info.get("memberRole").toString();
 
-		defaultInfo.put("memberNo", memberNo);
-		defaultInfo.put("memberName", memberName);
-		defaultInfo.put("memberRole", memberRole);
+        defaultInfo.put("memberNo", memberNo);
+        defaultInfo.put("memberName", memberName);
+        defaultInfo.put("memberRole", memberRole);
 
 
-		return ResponseEntity.ok(defaultInfo);
-	}
+        return ResponseEntity.ok(defaultInfo);
+    }
 
-	@PostMapping("/join")
-	public ResponseEntity<Boolean> join(@RequestBody MemberInfo member) {
-		return ResponseEntity.ok(memberService.joinMember(member));
-	}
+    @PostMapping("/join")
+    public ResponseEntity<Boolean> join(@RequestBody MemberInfo member) {
+        return ResponseEntity.ok(memberService.joinMember(member));
+    }
 
-	@PostMapping("/auth/number")
-	public ResponseEntity<String> authNumber(@RequestBody MemberInfo member) {
-		return ResponseEntity.ok(memberService.authNumber(member));
-	}
+    @PostMapping("/auth/number")
+    public ResponseEntity<String> authNumber(@RequestBody MemberInfo member) {
+        return ResponseEntity.ok(memberService.authNumber(member));
+    }
 }

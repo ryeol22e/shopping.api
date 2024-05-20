@@ -26,81 +26,81 @@ import lombok.RequiredArgsConstructor;
 @EnableWebSecurity
 @RequiredArgsConstructor
 public class SecurityConfig {
-	@Value("${spring.profiles.active}")
-	private String profile;
-	@Value("${client.url}")
-	private String clientUrl;
-	private final MemberService memberService;
+    @Value("${spring.profiles.active}")
+    private String profile;
+    @Value("${client.url}")
+    private String clientUrl;
+    private final MemberService memberService;
 
-	/**
-	 * password encoder
-	 * 
-	 * @return
-	 */
-	@Bean
-	BCryptPasswordEncoder bCryptPasswordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    /**
+     * password encoder
+     * 
+     * @return
+     */
+    @Bean
+    BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	/**
-	 * security filter chain
-	 * 
-	 * @param http
-	 * @return
-	 * @throws Exception
-	 */
-	@Bean
-	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		final String[] ignorePathArray = {"/api/member/auth", "/api/member/login", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
+    /**
+     * security filter chain
+     * 
+     * @param http
+     * @return
+     * @throws Exception
+     */
+    @Bean
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        final String[] ignorePathArray = {"/api/member/auth", "/api/member/login", "/api/common/**", "/api/display/**", "/api/product/**", "/api/cate/**"};
 
-		http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable()).formLogin(login -> login.disable()).logout(logout -> logout.disable())
-				.sessionManagement(
-						session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-				.exceptionHandling(
-						handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
+        http.httpBasic(basic -> basic.disable()).csrf(csrf -> csrf.disable()).formLogin(login -> login.disable()).logout(logout -> logout.disable())
+                .sessionManagement(
+                        session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(
+                        handling -> handling.authenticationEntryPoint(new AuthEntryPoint()))
 
-				.authorizeHttpRequests(auth -> {
-					auth.requestMatchers(ignorePathArray).permitAll();
-					auth.requestMatchers("/api/member/**").authenticated();
-					auth.requestMatchers("/api/auth/**").authenticated();
-					auth.requestMatchers("/api/chat/**").authenticated();
-					auth.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue());
-				})
-				.addFilterBefore(new ApiFilter(memberService), UsernamePasswordAuthenticationFilter.class);
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(ignorePathArray).permitAll();
+                    auth.requestMatchers("/api/member/**").authenticated();
+                    auth.requestMatchers("/api/auth/**").authenticated();
+                    auth.requestMatchers("/api/chat/**").authenticated();
+                    auth.requestMatchers("/api/admin/**").hasAnyAuthority(MemberEnum.ADMIN.getValue());
+                })
+                .addFilterBefore(new ApiFilter(memberService), UsernamePasswordAuthenticationFilter.class);
 
-		return http.build();
-	}
+        return http.build();
+    }
 
 
-	@Bean
-	CorsFilter corsFilter() {
-		CorsConfiguration config = new CorsConfiguration();
-		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+    @Bean
+    CorsFilter corsFilter() {
+        CorsConfiguration config = new CorsConfiguration();
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 
-		config.setAllowCredentials(true);
-		// config.setAllowedOrigins(ORIGIN_LIST);
+        config.setAllowCredentials(true);
+        // config.setAllowedOrigins(ORIGIN_LIST);
 
-		config.addAllowedOrigin(clientUrl);
-		config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
-		config.addAllowedHeader(HttpHeaders.AUTHORIZATION);
-		config.addAllowedMethod(HttpMethod.GET);
-		config.addAllowedMethod(HttpMethod.POST);
-		config.setMaxAge(3600L);
+        config.addAllowedOrigin(clientUrl);
+        config.addAllowedHeader(HttpHeaders.CONTENT_TYPE);
+        config.addAllowedHeader(HttpHeaders.AUTHORIZATION);
+        config.addAllowedMethod(HttpMethod.GET);
+        config.addAllowedMethod(HttpMethod.POST);
+        config.setMaxAge(3600L);
 
-		source.registerCorsConfiguration("/**", config);
+        source.registerCorsConfiguration("/**", config);
 
-		return new CorsFilter(source);
-	}
+        return new CorsFilter(source);
+    }
 
-	@Bean
-	FilterRegistrationBean<ApiXssFilter> filterRegistrationBean() {
-		FilterRegistrationBean<ApiXssFilter> filterRegistration = new FilterRegistrationBean<>();
+    @Bean
+    FilterRegistrationBean<ApiXssFilter> filterRegistrationBean() {
+        FilterRegistrationBean<ApiXssFilter> filterRegistration = new FilterRegistrationBean<>();
 
-		filterRegistration.setFilter(new ApiXssFilter());
-		filterRegistration.setOrder(1);
-		filterRegistration.addUrlPatterns("/*");
+        filterRegistration.setFilter(new ApiXssFilter());
+        filterRegistration.setOrder(1);
+        filterRegistration.addUrlPatterns("/*");
 
-		return filterRegistration;
-	}
+        return filterRegistration;
+    }
 
 }

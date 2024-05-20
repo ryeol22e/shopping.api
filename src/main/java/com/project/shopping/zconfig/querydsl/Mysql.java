@@ -11,12 +11,12 @@ import jakarta.persistence.PersistenceContext;
 @Conditional(UseMysql.class)
 @Configuration
 public class Mysql {
-	@PersistenceContext(unitName = "mysqlEntityManager")
-	private EntityManager mysqlEntityManager;
+    @PersistenceContext(unitName = "mysqlEntityManager")
+    private EntityManager mysqlEntityManager;
 
-	@Bean(name = "mysqlFactory")
-	JPAQueryFactory mysqlFactory() {
-		return new JPAQueryFactory(mysqlEntityManager);
-	}
+    @Bean(name = "mysqlFactory")
+    JPAQueryFactory mysqlFactory() {
+        return new JPAQueryFactory(mysqlEntityManager);
+    }
 
 }

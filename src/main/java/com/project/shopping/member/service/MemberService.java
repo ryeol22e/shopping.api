@@ -20,73 +20,73 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
-	private final MemberRepository memberRepository;
-	private final TokenRepository tokenRepository;
+    private final MemberRepository memberRepository;
+    private final TokenRepository tokenRepository;
 
-	public String authNumber(MemberInfo member) {
-		log.info("data : {}", member);
-		String authNumber = String.valueOf(Math.floor(Math.random() * 900000));
+    public String authNumber(MemberInfo member) {
+        log.info("data : {}", member);
+        String authNumber = String.valueOf(Math.floor(Math.random() * 900000));
 
-		member.setAuthNumber(authNumber.substring(0, authNumber.lastIndexOf(".")));
+        member.setAuthNumber(authNumber.substring(0, authNumber.lastIndexOf(".")));
 
-		log.info("auth number is {}", authNumber);
-		return authNumber;
-	}
+        log.info("auth number is {}", authNumber);
+        return authNumber;
+    }
 
-	@Transactional
-	public Boolean joinMember(MemberInfo member) {
-		Boolean result = false;
+    @Transactional
+    public Boolean joinMember(MemberInfo member) {
+        Boolean result = false;
 
-		member.changeBcryptPassword();
+        member.changeBcryptPassword();
 
-		if (MemberEnum.getAdminData().containsKey(member.getMemberId())) {
-			member.setMemberRole(MemberEnum.ADMIN.getValue());
-		} else {
-			member.setMemberRole(MemberEnum.MEMBER.getValue());
-		}
+        if (MemberEnum.getAdminData().containsKey(member.getMemberId())) {
+            member.setMemberRole(MemberEnum.ADMIN.getValue());
+        } else {
+            member.setMemberRole(MemberEnum.MEMBER.getValue());
+        }
 
-		long memberResult = memberRepository.save(member);
+        long memberResult = memberRepository.save(member);
 
-		if (memberResult != 0) {
-			result = true;
-		}
+        if (memberResult != 0) {
+            result = true;
+        }
 
-		return result;
-	}
+        return result;
+    }
 
-	public String getToken(String memberId) {
-		TokenInfo info = tokenRepository.findById(memberId).orElse(null);
-		String resultToken = "";
+    public String getToken(String memberId) {
+        TokenInfo info = tokenRepository.findById(memberId).orElse(null);
+        String resultToken = "";
 
-		try {
-			String accessToken = info.getAccessToken();
-			String refreshToken = info.getRefreshToken();
-			Claims jwt = UtilsMemberToken.getInfo(accessToken);
+        try {
+            String accessToken = info.getAccessToken();
+            String refreshToken = info.getRefreshToken();
+            Claims jwt = UtilsMemberToken.getInfo(accessToken);
 
-			if (jwt != null) {
-				resultToken = info.getAccessToken();
-			} else {
-				jwt = UtilsMemberToken.getInfo(refreshToken);
+            if (jwt != null) {
+                resultToken = info.getAccessToken();
+            } else {
+                jwt = UtilsMemberToken.getInfo(refreshToken);
 
-				if (jwt != null) {
-					resultToken = refreshToken;
-				}
-			}
-		} catch (Exception e) {
-			log.error("not exists token", e.getMessage());
-		}
+                if (jwt != null) {
+                    resultToken = refreshToken;
+                }
+            }
+        } catch (Exception e) {
+            log.error("not exists token", e.getMessage());
+        }
 
-		return resultToken;
-	}
+        return resultToken;
+    }
 
-	public Claims getTokenInfo(HttpServletRequest request) {
-		Cookie[] cookies = Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]);
-		String memberId = Stream.of(cookies)
-				.filter(cookie -> "LOGIN_ID".equalsIgnoreCase(cookie.getName()))
-				.map(Cookie::getValue)
-				.findFirst().orElse("");
+    public Claims getTokenInfo(HttpServletRequest request) {
+        Cookie[] cookies = Optional.ofNullable(request.getCookies()).orElse(new Cookie[0]);
+        String memberId = Stream.of(cookies)
+                .filter(cookie -> "LOGIN_ID".equalsIgnoreCase(cookie.getName()))
+                .map(Cookie::getValue)
+                .findFirst().orElse("");
 
-		return UtilsMemberToken.getInfo(this.getToken(memberId));
-	}
+        return UtilsMemberToken.getInfo(this.getToken(memberId));
+    }
 
 }
