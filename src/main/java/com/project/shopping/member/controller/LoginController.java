@@ -10,6 +10,7 @@ import com.project.shopping.member.dto.MemberInfo;
 import com.project.shopping.member.service.LoginService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,7 +20,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity<Boolean> login(@RequestBody MemberInfo param) {
+    public ResponseEntity<Boolean> login(@Valid @RequestBody MemberInfo param) {
         return ResponseEntity.ok(loginService.loginMemberProcess(param));
     }
 
