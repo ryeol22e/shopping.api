@@ -8,21 +8,41 @@
         </encoder>
     </appender>
 
-    <!-- <logger name="org.springframework.core" value="info"/>
-	<logger name="org.springframework.beans" value="info"/>
-	<logger name="org.springframework.context" value="info"/>
-	<logger name="org.springframework.web" value="info"/> -->
+    <logger name="jdbc" level="OFF" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
 
-    <!-- <logger name="com.project.shopping">
-		<level value="info" />
-	</logger>
+    <logger name="com.project.shopping" value="info" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
 
-	<logger name="java.sql">
-		<level value="debug" />
-	</logger> -->
+    <!-- jdbc.sqlonly : SQL 쿼리 문장에 대한 로그(전달인자 포함한 문장) -->
+    <logger name="jdbc.sqlonly" value="info" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- jdbc.sqltiming : SQL 문장과 실행시키는데 소요된 시간(밀리초)에 대한 로그 -->
+    <logger name="jdbc.sqltiming" value="OFF" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- jdbc.audit : JDBC 호출 정보에 대한 로그(ResultSet 제외) => 내용 많음 -->
+    <logger name="jdbc.audit" value="warn" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- jdbc.result : ResultSet 을 포함한 JDBC 호출 정보에 대한 로그 => 내용 많음 -->
+    <logger name="jdbc.result" value="warn" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
+
+    <!-- jdbc.result : SELECT 실행 결과(데이터 테이블) 에 대한 로그 -->
+    <logger name="jdbc.resultsettable" value="info" additivity="false">
+        <appender-ref ref="STDOUT" />
+    </logger>
 
     <root level="info">
-        <!-- <appender-ref ref="FILEOUT"/>  -->
+        <!-- <appender-ref ref="FILEOUT" /> -->
         <appender-ref ref="STDOUT" />
     </root>
 </configuration>
